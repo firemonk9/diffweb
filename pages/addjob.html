@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Add Job</title>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+	<link rel="stylesheet" href="../dist/css/sb-admin-2.css">
+	<link rel="stylesheet" href="../dist/css/bootstrap-tagsinput.css">
+	<link rel="stylesheet" href="../dist/css/custom.css">
+	<link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+	<script src="https://johnny.github.io/jquery-sortable/js/jquery-sortable.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+	<script src="../dist/js/bootstrap-tagsinput.min.js"></script>
+	<script src="../dist/js/bootstrap-tagsinput-angular.min.js"></script>
+
+	<!-- Select JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+	<script src="../dist/js/bootstrap-table-export.js"></script>
+	<script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+	<script src="../dist/js/app.js"></script>
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+	<style>
+		.clickable{
+			cursor: pointer;
+		}
+		.panel-heading span {
+			margin-top: -20px;
+			font-size: 15px;
+		}
+
+		#stats th, #stats td {
+			border: 1px !important;
+		}
+
+		.data-filter-header{
+			border-bottom: 1px solid #f7f7f7;
+			margin-left: 15px;
+			padding-bottom: 15px;
+			margin-bottom: 30px;
+			margin-top: 15px;
+		}
+
+		#src_column .glyphicon{
+			top: -15px;
+		}
+
+		.badge{
+			margin-right: 4px;
+		}
+
+		#mapper div img{
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	<script type="text/javascript">
+		var srcJobId = "", distJobId = "";
+
+		var srcAjax = null, distAjax = null;
+
+		var jobId = "";
+
+		var srcColumns, distColumns;
+		var srcRecordCnt = 0, distRecordCnt = 0;
+		var srcValidated = false, distValidated = false;
+		var dataResetted = false;
+
+		var advancedRuleEmpty = true;
+
+		function initForm(type){
+			if (type === 0) {	// Hide All Input
+				$('#form_advanced').hide();
+
+				$('#src_file_delimiter').hide();
+				$('#src_file_header').hide();
+				$('#src_custom_schema').hide();
+				
+				$('#src_jdbc_url').hide();
+				$('#src_jdbc_user').hide();
+				$('#src_jdbc_pass').hide();
+				$('#src_jdbc_table').hide();
+				$('#src_jdbc_driver').hide();
+
+				$('#src_progress').hide();
+				$('#src_table_panel').hide();
+				$('#src_form_panel').show();
+
+				$('#dist_file_delimiter').hide();
+				$('#dist_file_header').hide();
+				$('#dist_custom_schema').hide();
+				
+				$('#dist_jdbc_url').hide();
+				$('#dist_jdbc_user').hide();
+				$('#dist_jdbc_pass').hide();
+				$('#dist_jdbc_table').hide();
+				$('#dist_jdbc_driver').hide();
+
+				$('#dist_progress').hide();
+				$('#dist_table_panel').hide();
+				$('#dist_form_panel').show();
+			} else if (type === 1){
+				$('#form_advanced').hide();
+
+				$('#src_file_delimiter').hide();
+				$('#src_file_header').hide();
+				$('#src_custom_schema').hide();
+				
+				$('#src_jdbc_url').hide();
+				$('#src_jdbc_user').hide();
+				$('#src_jdbc_pass').hide();
+				$('#src_jdbc_table').hide();
+				$('#src_jdbc_driver').hide();
+
+				$('#src_progress').hide();
+				$('#src_table_panel').hide();
+			} else if (type === 2){
+				$('#form_advanced').hide();
+
+				$('#dist_file_delimiter').hide();
+				$('#dist_file_header').hide();
+				$('#dist_custom_schema').hide();
+				
+				$('#dist_jdbc_url').hide();
+				$('#dist_jdbc_user').hide();
+				$('#dist_jdbc_pass').hide();
+				$('#dist_jdbc_table').hide();
+				$('#dist_jdbc_driver').hide();
+
+				$('#dist_progress').hide();
+				$('#dist_table_panel').hide();
+			}
+			$('#btn_save_job').prop('disabled', true);
+		}
+
+		function createSrcTableHeader(){
+			var table, columns;
+			table = document.getElementById("src_table")
+			columns = srcColumns;
+
+			if (table == null || columns == null)
+				return;
+			table.innerHTML = "";
+			var thead = document.createElement("thead");
+			var tr = document.createElement("tr");
+			for (var i = 0; i < columns.length; i++) {
+				var col = columns[i];
+				var colname = col.name;
+				var coltype = col.dataType;
+
+				var th = document.createElement("th");
+				th.setAttribute("data-field", colname);
+				th.setAttribute("data-sortable", "true");
+				th.innerHTML = colname;
+				tr.appendChild(th);
+			}
+			thead.appendChild(tr);
+			table.appendChild(thead);
+		}
+
+		function createDistTableHeader(){
+			var table, columns;
+			table = document.getElementById("dist_table");
+			columns = distColumns;
+			if (table == null || columns == null)
+				return;
+			table.innerHTML = "";
+			var thead = document.createElement("thead");
+			var tr = document.createElement("tr");
+			for (var i = 0; i < columns.length; i++) {
+				var col = columns[i];
+				var colname = col.name;
+				var coltype = col.dataType;
+
+				var th = document.createElement("th");
+				th.setAttribute("data-field", colname);
+				th.setAttribute("data-sortable", "true");
+				th.innerHTML = colname;
+				tr.appendChild(th);
+			}
+			thead.appendChild(tr);
+			table.appendChild(thead);
+		}
+
+		function createListData() {
+			if (advancedRuleEmpty == true) {
+				//make src and dist transformation column inputs to typeahead
+				createTypeahead($('.src_trans_column'), srcColumns, 'name');
+				createTypeahead($('.dist_trans_column'), distColumns, 'name');
+
+				prepareAdvancedRule(true, '', srcColumns, [],
+						distColumns, [],
+						[],
+						[], [], '', '', false, srcRecordCnt != distRecordCnt, 0
+				);
+			}
+		}
+
+		function submitJobJson() {
+			var data = getInputData(srcRecordCnt != distRecordCnt);
+			if (data.jobname == "") {
+				alert("You should input job name.");
+				return;
+			}
+			if (data.primaryKey.length <= 0) {
+				alert("You should set at least one key.");
+				return;
+			}
+			var jsonStr = makeInputJson(data.jobname,data.compareCommonColumnsOnly,
+					data.validateRowsCount,data.randomSample,data.matchBoth,true,
+					data.columnMapping,data.srcFile,data.distFile,data.primaryKey);
+			$.ajax({
+				type: "POST",
+				url: "/job",
+				crossDomain: true,
+				dataType: 'json',
+				data: jsonStr,
+				contentType: 'application/json',
+				success: function (response) {
+					jobId = response.jobIds[0];
+					if (jobId == "" || jobId == null) {
+						document.getElementById("error-msg").innerHTML = "Please create job first.";
+						$(".alert-danger").show();
+					}
+					else {
+						document.getElementById("saved_job").innerHTML = "Job saved succesfully. Your job Id is '" + jobId + "'";
+						$(".alert-success").show();
+					}
+					var url = window.location.href;
+					url = url.substring(0, url.lastIndexOf('/'));
+					window.location.href = url + '/home.html';
+				},
+				error: function (response) {
+					$('#advancedRulesModal').modal('hide');
+				}
+			});
+		}
+
+		function getSrcSampleJobData() {
+			if (dataResetted)
+				return;
+			srcAjax = $.ajax({
+				type: "GET",
+				url: "/job/" + srcJobId,
+				dataType: "json",
+				data: {},
+				success: function (response) {
+					if (response.status == "RUNNING") {
+						setTimeout(function(){
+							getSrcSampleJobData();
+						}, 3000);
+					} else {
+						console.log(response);
+						if (response.exception != null) {
+							document.getElementById("exception-msg").innerHTML = response.exception;
+							$('.alert-warning').show();
+							$('#src_progress').hide();
+							$('#src_form_panel').show();
+							return;
+						}
+						srcColumns = response.schema;
+						createSrcTableHeader();
+
+						srcRecordCnt = response.sampleData.length;
+
+						var tabledata = Array();
+						for (var i = 0; i < response.sampleData.length; i++) {
+							var row = response.sampleData[i];
+							var rowdata = {};
+							for (var j = 0; j < row.length; j++) {
+								var cell = 	row[j];
+								var col = cell.col;
+								var colType = cell.colType;
+								var value = cell.value;
+								rowdata[col] = value;
+							}
+							tabledata.push(rowdata);
+						}
+
+						$('#src_table').bootstrapTable("destroy");
+						$('#src_table').bootstrapTable({
+							data: tabledata
+						});
+						$('#src_table').bootstrapTable('refresh');
+
+						srcValidated = true;
+
+						$('#src_progress').hide();
+						$('#src_table_panel').show();
+
+						if (srcValidated == true && distValidated == true) {
+							$('#btn_save_job').prop('disabled', false);
+							$('#form_advanced').show();
+						}
+
+						document.getElementById("success-msg").innerHTML = "Source job table successfully created.";
+						$('.alert-info').show();
+						srcAjax = null;
+					}
+				},
+				error: function(response) {
+					document.getElementById("error-msg").innerHTML = "Data is not correct.";
+					$('.alert-danger').show();
+					$('#src_progress').hide();
+
+					srcAjax = null;
+				}
+			});
+		}
+
+		function getDistSampleJobData() {
+			if (dataResetted)
+				return;
+			distAjax = $.ajax({
+				type: "GET",
+				url: "/job/" + distJobId,
+				//url: "/job/5831337478162-SAMPLE",
+				dataType: "json",
+				data: {},
+				success: function (response) {
+					if (response.status == "RUNNING") {
+						setTimeout(function(){
+							getDistSampleJobData();
+						}, 3000);
+					} else {
+						console.log(response);
+						if (response.exception != null) {
+							document.getElementById("exception-msg").innerHTML = response.exception;
+							$('#dist_progress').hide();
+							$('.alert-warning').show();
+							$('#dist_form_panel').show();
+							return;
+						}
+						distColumns = response.schema;
+						createDistTableHeader();
+						/*
+						if (response.sampleData.length > 0) {
+							var row = response.sampleData[0];
+							if (row.length > 0) {
+								distColumns = row;
+								createDistTableHeader();
+							}
+						}
+						*/
+						distRecordCnt = response.sampleData.length;
+
+						var tabledata = Array();
+						for (var i = 0; i < response.sampleData.length; i++) {
+							var row = response.sampleData[i];
+							var rowdata = {};
+							for (var j = 0; j < row.length; j++) {
+								var cell = 	row[j];
+								var col = cell.col;
+								var colType = cell.colType;
+								var value = cell.value;
+								rowdata[col] = value;
+							}
+							tabledata.push(rowdata);
+						}
+						$('#dist_table').bootstrapTable("destroy");
+						$('#dist_table').bootstrapTable({
+							data: tabledata
+						});
+						$('#dist_table').bootstrapTable('refresh');
+
+						distValidated = true;
+
+						$('#dist_progress').hide();
+						$('#dist_table_panel').show();
+
+						if (srcValidated == true && distValidated == true) {
+							$('#btn_save_job').prop('disabled', false);
+							$('#form_advanced').show();
+						}
+
+						document.getElementById("success-msg").innerHTML = "Dist job table successfully created.";
+						$('.alert-info').show();
+
+						distAjax = null;
+					}
+				},
+				error: function(response) {
+					document.getElementById("error-msg").innerHTML = "Data is not correct.";
+					$('.alert-danger').show();
+					$('#dist_progress').hide();
+
+					distAjax = null;
+				}
+			});
+		}
+
+		function resetFormData() {
+			$('#src_file_path input').val("");
+			$("#select_src_type").prop("selectedIndex", 0);
+			$('#src_file_delimiter input').val("");
+			$('#src_header').prop("selectedIndex", 0);
+			$('#src_custom_schema input').val("");
+			$('#src_jdbc_url input').val("");
+			$('#src_jdbc_user input').val("");
+			$('#src_jdbc_pass input').val("");
+			$('#src_jdbc_table input').val("");
+			$('#src_jdbc_driver input').val("");
+
+			$('#dist_file_path input').val("");
+			$("#select_dist_type").prop("selectedIndex", 0);
+			$('#dist_file_delimiter input').val("");
+			$('#dist_header').prop("selectedIndex", 0);
+			$('#dist_custom_schema input').val("");
+			$('#dist_jdbc_url input').val("");
+			$('#dist_jdbc_user input').val("");
+			$('#dist_jdbc_pass input').val("");
+			$('#dist_jdbc_table input').val("");
+			$('#dist_jdbc_driver input').val("");
+
+			initForm(0);
+		}
+
+		function resetData() {
+			if (srcAjax != null)
+				srcAjax.abort();
+			if (distAjax != null)
+				distAjax.abort();
+
+			resetFormData();
+			resetRuleData();
+
+			advancedRuleEmpty = true;
+
+			dataResetted = true;
+			primaryKey = [];
+		}
+
+		function setListeners() {
+			$(document).on('mouseenter', ".li-tiff", function () {
+				var $this = $(this);
+				if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
+					$this.tooltip({
+						title: $this.text(),
+						placement: "bottom"
+					});
+					$this.tooltip('show');
+				}
+			});
+
+			$("#btn_src_validate").click(function(){
+				/*
+				$('#src_form_panel').bootstrapValidator({fields: {src_path: {validators: {notEmpty: { message: ' ' }}}}});
+				*/
+
+				dataResetted = false;
+
+				var params = {};
+				var format = $('#select_src_type').val();
+				params["srcPath"] = $('#src_path').val();
+				if (params["srcPath"] == '')
+					return;
+				params["srcFormat"] = format;
+				if (format == "CSV") {
+					params["header"] = $('#src_header').val() == "True" ? true : false;
+					params["srcDelimiter"] = $('#src_delimiter').val();
+					if (params["srcDelimiter"] == '')
+						return;
+					if ($('#src_file_schema').val() == '') {
+						if (params["header"] == false){
+							return;
+							alert("You should input schema.");
+						}
+						params["useOtherSchema"] = false;
+					} else {
+						params["useOtherSchema"] = true;
+						params["columns"] = $('#src_file_schema').val().split(params["srcDelimiter"]);
+					}
+				}
+
+				var jsonStr = JSON.stringify(params);
+
+				$('#src_form_panel').hide();
+				$('#src_progress').show();
+				srcAjax = $.ajax({
+					type: "POST",
+					url: "/sampleData",
+					crossDomain: true,
+					dataType: 'json',
+					data: jsonStr,
+					contentType: 'application/json',
+					success: function (response) {
+						srcJobId = response.jobIds[0];
+						getSrcSampleJobData();
+					},
+					error: function (response) {
+						console.log(response);
+						document.getElementById("error-msg").innerHTML = "Data is not correct.";
+						$('.alert-danger').show();
+						srcAjax = null;
+						$('#src_form_panel').show();
+						$('#src_progress').hide();
+					}
+				});
+			});
+
+			$("#btn_dist_validate").click(function(){
+				dataResetted = false;
+
+				var params = {};
+				var format = $('#select_dist_type').val();
+				params["srcPath"] = $('#dist_path').val();
+				if (params["srcPath"] == '')
+					return;
+				params["srcFormat"] = format;
+				if (format == "CSV") {
+					params["header"] = $('#dist_header').val() == "True" ? true : false;
+					params["srcDelimiter"] = $('#dist_delimiter').val();
+					if (params["srcDelimiter"] == '')
+						return;
+					if ($('#dist_file_schema').val() == '') {
+						if (params["header"] == false){
+							return;
+							alert("You should input schema.");
+						}
+						params["useOtherSchema"] = false;
+					} else {
+						params["useOtherSchema"] = true;
+						params["columns"] = $('#dist_file_schema').val().split(params["srcDelimiter"]);
+					}
+				}
+
+				var jsonStr = JSON.stringify(params);
+
+				$('#dist_form_panel').hide();
+				$('#dist_progress').show();
+				distAjax = $.ajax({
+					type: "POST",
+					url: "/sampleData",
+					crossDomain: true,
+					dataType: 'json',
+					data: jsonStr,
+					contentType: 'application/json',
+					success: function (response) {
+						distJobId = response.jobIds[0];
+						getDistSampleJobData();
+					},
+					error: function (response) {
+						console.log(response);
+						document.getElementById("error-msg").innerHTML = "Data is not correct.";
+						$('.alert-danger').show();
+						distAjax = null;
+						$('#dist_form_panel').show();
+						$('#dist_progress').hide();
+					}
+				});
+				//$(".alert-info").show();
+			});
+
+			$('#btn_reset').on('click', function(e){
+				resetData();
+			});
+
+			$("#btn_save_job").on('click', function (e) {
+				submitJobJson();
+			});
+
+			$('#src_header').on('change', function() {
+				var selected = $(this).find("option:selected").val();
+				if (selected == "True")
+					$('#src_custom_schema').hide();
+				else
+					$('#src_custom_schema').show();
+			});
+
+			$('#dist_header').on('change', function() {
+				var selected = $(this).find("option:selected").val();
+				if (selected == "True")
+					$('#dist_custom_schema').hide();
+				else
+					$('#dist_custom_schema').show();
+			});
+
+			$('#select_src_type').on('change', function () {
+				var selected = $(this).find("option:selected").val();
+				$('#src_file_path').show();
+				// PARQUET, ORC, JDBC, CSV, JSON, AVRO
+				if (selected === "CSV"){
+					$('#src_file_delimiter').show();
+					$('#src_file_header').show();
+					if ($('#src_header').val() == "True")
+						$('#src_custom_schema').hide();
+					else
+						$('#src_custom_schema').hide();
+
+					$('#src_jdbc_url').hide();
+					$('#src_jdbc_user').hide();
+					$('#src_jdbc_pass').hide();
+					$('#src_jdbc_table').hide();
+					$('#src_jdbc_driver').hide();
+
+				} else if (selected === "JDBC"){
+					$('#src_file_path').hide();
+
+					$('#src_file_delimiter').hide();
+					$('#src_file_header').hide();
+					$('#src_custom_schema').hide();
+
+					$('#src_jdbc_url').show();
+					$('#src_jdbc_user').show();
+					$('#src_jdbc_pass').show();
+					$('#src_jdbc_table').show();
+					if (getCookie("localMode") == "true")
+						$('#src_jdbc_driver').hide();
+					else
+						$('#src_jdbc_driver').show();
+				} else {
+					initForm(1);
+				}
+			});
+
+			$('#select_dist_type').on('change', function () {
+				var selected = $(this).find("option:selected").val();
+				$('#dist_file_path').show();
+				// PARQUET, ORC, JDBC, CSV, JSON, AVRO
+				if (selected === "CSV"){
+					$('#dist_file_delimiter').show();
+					$('#dist_file_header').show();
+					if ($('#dist_header').val() == "True")
+						$('#dist_custom_schema').hide();
+					else
+						$('#dist_custom_schema').hide();
+
+					$('#dist_jdbc_url').hide();
+					$('#dist_jdbc_user').hide();
+					$('#dist_jdbc_pass').hide();
+					$('#dist_jdbc_table').hide();
+					$('#dist_jdbc_driver').hide();
+
+				} else if (selected === "JDBC"){
+					$('#dist_file_path').hide();
+
+					$('#dist_file_delimiter').hide();
+					$('#dist_file_header').hide();
+					$('#dist_custom_schema').hide();
+
+					$('#dist_jdbc_url').show();
+					$('#dist_jdbc_user').show();
+					$('#dist_jdbc_pass').show();
+					$('#dist_jdbc_table').show();
+					if (getCookie("localMode") == "true")
+						$('#dist_jdbc_driver').hide();
+					else
+						$('#dist_jdbc_driver').show();
+				} else {
+					initForm(2);
+				}
+			});
+
+			$('#btn_advanced_rules').on('click', function(e) {
+				createListData();
+				$('#advancedRulesModal').modal();
+			});
+
+			$('#btn_save_rules').on('click', function(e) {
+				advancedRuleEmpty = false;
+				$('#advancedRulesModal').modal('hide');
+			});
+
+			$('#btn_cancel_rules').on('click', function(e) {
+				advancedRuleEmpty = true;
+				$('.src_trans_column').tagsinput('removeAll');
+				$('.dist_trans_column').tagsinput('removeAll');
+
+				$('#src_trans_rule').val('');
+				$('#dist_trans_rule').val('');
+				$('#advancedRulesModal').modal('hide');
+			});
+
+			$('#src_trans_plus').on('click', function(e) {
+				var srcNext = document.getElementById("src_trans_next");
+				insertRule(srcNext, "src");
+				createTypeahead($('.src_trans_column'), srcColumns, 'name');
+			});
+
+			$('#src_trans_minus').on('click', function(e) {
+				removeRule($('.src-rule-extra'));
+			});
+
+			$('#dist_trans_plus').on('click', function(e) {
+				var srcNext = document.getElementById("dist_trans_next");
+				insertRule(srcNext, "dest");
+				createTypeahead($('.dist_trans_column'), distColumns, 'name');
+			});
+
+			$('#dist_trans_minus').on('click', function(e) {
+				removeRule($('.dist-rule-extra'));
+			});
+
+			//setMoveDownListener();
+			//setMoveUpListener();
+			setIncludeListener();
+			setExcludeListener();
+		}
+
+		$(function () {
+			$.ajax({
+				type: "GET",
+				url: "/startUp",
+				crossDomain: true,
+				dataType: 'json',
+				data: {},
+				success: function (response) {
+					setCookie("version", response.displayVersion);
+					setCookie("localMode", response.localMode);
+					setToolDetail();
+				},
+				error: function (response) {
+
+				}
+			});
+
+			$( "#src_column" ).sortable({
+				connectWith: ".connectedSortable1",
+				placeholder: "ui-state-highlight"
+			});
+
+			$( "#dist_column" ).sortable({
+				connectWith: ".connectedSortable2",
+				placeholder: "ui-state-highlight"
+			});
+
+			initForm(0);
+
+			setListeners();
+		});
+	</script>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+					<!--
+                    <span class="icon-bar"></span>
+                    -->
+                </button>
+				<a class="navbar-brand" href="home.html" style="font-size: 21px;" id="tool-name"></a>
+				<span class="navbar-brand" style="font-size: 18px;" id="tool-version"></span>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <a href="home.html">Home</a>
+                </li>
+                <li>
+                    <a href="addjob.html">Add Job</a>
+                </li>
+				<!--
+                <li>
+                    <a href="jobresults.html">Job Results</a>
+                </li>
+                -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+        </nav>
+
+        <div id="page-wrapper" style="margin: 0 0 0 0;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Add Job</h3>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-success alert-dismissible" role="alert" style="display:none;">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong>Success!</strong> <span id="saved_job">Saved job successfully.</span>
+					</div>
+
+                    <div class="alert alert-warning alert-dismissible" role="alert" style="display:none;">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong>EXCEPTION</strong> <span id="exception-msg">Error occures while loading data.</span>
+					</div>
+
+                    <div class="alert alert-info alert-dismissible" role="alert" style="display:none;">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong>SUCCESS</strong> <span id="success-msg">This data is validated successfully.</span>
+					</div>
+
+                    <div class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong>ERROR</strong> <span id="error-msg">Error occures while loading data.</span>
+					</div>
+                </div>
+            </div>
+
+			<div class="row" id="form_advanced">
+                <div class="col-lg-12" style="padding-bottom: 9px;">
+					<button id="btn_advanced_rules" type="button" class="btn btn-danger" >
+                        <i class="glyphicon glyphicon-pencil"></i> Edit Rules
+                    </button>
+				</div>
+			</div>
+            <div class="row">
+				<div class="col-lg-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">Source Dataset</div>
+						<!-- /.panel-heading -->
+						<div class="panel-body" id="src_form_panel">
+							<div class="row">
+								<div class="col-md-12">
+									<!-- CSV -->
+									<div class="form-group required" id="src_file_path">
+										<label class="col-sm-3">Dataset path</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Path..." class="form-control" name="src_path" id="src_path"></div>
+									</div>
+									<br><br>
+									<div class="form-group" id="src_file_format">
+										<label class="col-sm-3">Dataset Format</label>
+										<div class="col-sm-6">
+											<select class="form-control" id="select_src_type">
+												<option>PARQUET</option>
+												<option>ORC</option>
+												<option>JDBC</option>
+												<option>CSV</option>
+												<option>JSON</option>
+												<option>HIVE</option>
+												<option>AVRO</option>
+											</select>
+										</div>
+									</div>
+									<br><br>
+									<!-- CSV -->
+									<div class="form-group required" id="src_file_delimiter">
+										<label class="col-sm-3">Delimiter </label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Delimiter..." class="form-control" name="src_delimiter" id="src_delimiter">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required" id="src_file_header">
+										<label class="col-sm-3">Header </label>
+										<div class="col-sm-6">
+											<select class="form-control" id="src_header">
+												<option>True</option>
+												<option>False</option>
+											</select>
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group" id="src_custom_schema">
+										<label class="col-sm-3">Custom Schema</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Custom schema..." class="form-control" id="src_file_schema">
+										</div>
+										<br><br>
+									</div>
+									<!-- /#CSV -->
+									<!-- JDBC -->
+									<div class="form-group required" id="src_jdbc_url">
+										<label class="col-sm-3">URL</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Connection URL..." class="form-control" name="src_url" id="src_url">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required" id="src_jdbc_user">
+										<label class="col-sm-3">User</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="User..." class="form-control" name="src_user" id="src_user">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required" id="src_jdbc_pass">
+										<label class="col-sm-3">Password</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Password..." class="form-control" name="src_pass" id="src_pass">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required" id="src_jdbc_table">
+										<label class="col-sm-3">Table</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Table..." class="form-control" name="src_table">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required" id="src_jdbc_driver">
+										<label class="col-sm-3">Driver Path</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Insert sql here..." class="form-control" name="src_driver" id="src_driver">
+										</div>
+										<br>
+									</div>
+									<!-- /#JDBC -->
+									<div class="form-group" id="src_validate">
+										<label class="col-sm-3"> </label>
+										<div class="col-sm-6" style="text-align:right">
+											<button class='btn btn-warning' id="btn_src_validate">Validate</button>
+										</div>
+										<br>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body" id="src_progress">
+							<div class="progress progress-striped active" style="margin-bottom:0;">
+								<div class="progress-bar" style="width: 100%"></div>
+							</div>
+						</div>
+						<div class="panel-body" id="src_table_panel">
+							<table id="src_table" class="table table-hover"
+								   data-height="100%"
+								   data-search="true"
+								   data-show-export="true"
+								   data-show-columns="true"
+								   data-pagination="true" >
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">Destination Dataset</div>
+						<!-- /.panel-heading -->
+						<div class="panel-body" id="dist_form_panel">
+							<div class="row">
+								<div class="col-md-12">
+									<!-- CSV -->
+									<div class="form-group required" id="dist_file_path">
+										<label class="col-sm-3">Dataset path</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Path..." class="form-control" name="dist_path" id="dist_path">
+										</div>
+									</div>
+									<br><br>
+									<div class="form-group" id="dist_file_format">
+										<label class="col-sm-3">Dataset Format</label>
+										<div class="col-sm-6">
+											<select class="form-control" id="select_dist_type">
+												<option>PARQUET</option>
+												<option>ORC</option>
+												<option>JDBC</option>
+												<option>CSV</option>
+												<option>JSON</option>
+												<option>HIVE</option>
+												<option>AVRO</option>
+											</select>
+										</div>
+									</div>
+									<br><br>
+									<!-- CSV -->
+									<div class="form-group required" id="dist_file_delimiter">
+										<label class="col-sm-3">Delimiter </label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Delimiter..." class="form-control" name="dist_delimiter" id="dist_delimiter">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required" id="dist_file_header">
+										<label class="col-sm-3">Header </label>
+										<div class="col-sm-6">
+											<select class="form-control" id="dist_header">
+												<option>True</option>
+												<option>False</option>
+											</select>
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group" id="dist_custom_schema">
+										<label class="col-sm-3">Custom Schema</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Custom schema..." class="form-control" id="dist_file_schema">
+										</div>
+										<br><br>
+									</div>
+									<!-- /#CSV -->
+									<!-- JDBC -->
+									<div class="form-group required" id="dist_jdbc_url">
+										<label class="col-sm-3">URL</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Connection URL..." class="form-control" name="dist_url" id="dist_url">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required " id="dist_jdbc_user">
+										<label class="col-sm-3">User</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="User..." class="form-control" name="dist_user" id="dist_user">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required " id="dist_jdbc_pass">
+										<label class="col-sm-3">Password</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Password..." class="form-control" name="dist_pass" id="dist_pass">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required "  id="dist_jdbc_table">
+										<label class="col-sm-3">Table</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Table..." class="form-control" name="dist_table">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required " id="dist_jdbc_driver">
+										<label class="col-sm-3">Driver Path</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Insert sql here..." class="form-control" name="dist_driver" id="dist_driver">
+										</div>
+										<br>
+									</div>
+									<!-- /#JDBC -->
+									<div class="form-group" id="dist_validate">
+										<label class="col-sm-3"> </label>
+										<div class="col-sm-6" style="text-align:right">
+											<button class='btn btn-warning' id="btn_dist_validate">Validate</button>
+										</div>
+										<br>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body" id="dist_progress">
+							<div class="progress progress-striped active" style="margin-bottom:0;">
+								<div class="progress-bar" style="width: 100%"></div>
+							</div>
+						</div>
+						<div class="panel-body" id="dist_table_panel" >
+							<table id="dist_table" class="table"
+								   data-height="100%"
+								   data-search="true"
+								   data-show-columns="true"
+								   data-pagination="true"
+								   data-show-export="true" >
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-12">
+					<div class="panel-body">
+						<div class="form-group col-lg-offset-9 col-lg-3" style="text-align: right;">
+							<!--<button class="btn btn-success" id="btn_save_job" disabled="">Submit Job</button>-->
+							<button class="btn btn-primary" id="btn_reset" style="margin-left: 20px">Reset</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+        <!-- /#page-wrapper -->
+		<footer>
+			<p class="copyright">© powered by Dhiraj, 2017</p>
+		</footer>
+    </div>
+    <!-- /#wrapper -->
+
+	<!-- Advanced Rule Modal -->
+	<div class="modal fade" id="advancedRulesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog" style="width: 800px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Advanced Rules Mapping</h4>
+				</div>
+
+				<div class="modal-body">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a data-toggle="tab" href="#column_map" aria-expanded="true">Column Map</a>
+						</li>
+						<li>
+							<a data-toggle="tab" href="#transmation" aria-expanded="false">Transformations</a>
+						</li>
+					</ul>
+					<div class="tab-content" style="margin-top: 20px;">
+						<div class="row tab-pane fade active in" id="column_map">
+							<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="colMapHelp()" />
+							<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
+								<div class="panel-heading">
+									<h3 class="panel-title">Data Filter</h3>
+									<span class="arrow-toggle pull-right clickable" data-toggle="collapse" data-target="#collapseThree" id="collapser">
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-chevron-up"></i>
+                                </span>
+								</div>
+								<div id="collapseThree" class="panel-collapse collapse in">
+									<div class="panel-body">
+										<div class="col-md-12" style="margin-bottom: 25px;">
+											<div class="form-group">
+												<label class="col-sm-4">Run on sample of</label>
+												<div class="col-sm-8">
+													<input type="number" placeholder="Insert number..." class="form-control" id="rule_randomsample" min="0">
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group" id="src_filter_sql">
+												<label class="col-sm-4">Src Filter Sql</label>
+												<div class="col-sm-8">
+													<input type="text" placeholder="Insert sql here..." class="form-control">
+												</div>
+												<br><br>
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group" id="dist_filter_sql">
+												<label class="col-sm-4">Dist Filter Sql</label>
+												<div class="col-sm-8">
+													<input type="text" placeholder="Insert sql here..." class="form-control">
+												</div>
+												<br><br>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div>
+								<div class="col-md-12">
+									<h3 class="data-filter-header">Columns Mapping</h3>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group" style="padding-left: 15px; margin-bottom: 0px;">
+										<label class="col-sm-4">Job Name</label>
+										<div class="col-sm-8">
+											<input type="text" id="job_name" placeholder="Name" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<!--<div class="checkbox" style="margin-left:30px;margin-bottom: 30px;display: inline-block">-->
+										<!--<label style="margin-right: 10px"><input type="checkbox" value="" id="auto_mapping">Auto Column Mapping</label>-->
+									<!--</div>-->
+									<div class="checkbox" style="margin-bottom: 30px;display: inline-block;margin-left: 30px;">
+										<label style="margin-right: 10px"><input type="checkbox" value="" id="rule_matchboth" checked>Compare two way</label>
+									</div>
+								</div>
+								<div class="col-md-5">
+									<ul class="list-group connectedSortable1" style="padding-left: 0px;margin-left: 30px" id="src_column">
+										<label style="width: 100%">Source Columns <span style="float:right">Compare Key</span></label>
+									</ul>
+								</div>
+
+								<div class="col-md-2" style="margin-top: 20px;text-align: center;" id="mapper">
+								</div>
+
+								<div class="col-md-5">
+									<ul class="list-group connectedSortable2" style="padding-right: 0px;margin-right: 30px;" id="dist_column">
+										<label>Destination Columns</label>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="row tab-pane fade" id="transmation">
+							<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="transHelp()" />
+							<div class="col-md-6">
+								<label>Source Transformations</label>
+								<div class="form-group row" style="margin-top: 15px;">
+									<label class="col-sm-3">Column</label>
+									<div class="col-sm-9">
+										<div class="src_trans_column">
+											<input type="text" class="form-control">
+										</div>
+									</div>
+									<label class="col-sm-3">Rule</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control src_trans_rule">
+									</div>
+								</div>
+								<div class="form-group row" id="src_trans_next">
+									<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
+										<span class="glyphicon glyphicon-plus"></span>
+									</button>
+									<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+								</div>
+
+							</div>
+
+							<div class="col-md-6">
+								<label>Dist Transformations</label>
+								<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
+									<label class="col-sm-3">Column</label>
+									<div class="col-sm-9">
+										<div class="dist_trans_column">
+											<input type="text" class="form-control" value="">
+										</div>
+									</div>
+									<label class="col-sm-3">Rule</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control dist_trans_rule">
+									</div>
+								</div>
+								<div class="form-group row" id="dist_trans_next">
+									<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
+										<span class="glyphicon glyphicon-plus"></span>
+									</button>
+									<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
+										<span class="glyphicon glyphicon-minus"></span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" id="btn_cancel_rules">Cancel</button>
+					<a class="btn btn-success btn-ok" id="btn_save_job">Submit Job</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-93298501-2', 'auto');
+	ga('send', 'pageview');
+
+</script>
+
+</html>

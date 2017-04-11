@@ -1,0 +1,61 @@
+{
+    "filesCompareList": [
+        {
+            "columnMapping": [
+                {
+                    "distColumn": "phone",
+                    "srcColumn": "phone"
+                },
+                {
+                    "distColumn": "date",
+                    "srcColumn": "date"
+                }
+            ],
+            "matchBoth":true,
+            "compareCommonColumnsOnly": false,
+            "distFile": {
+                "excludeColmns": [],
+                "header": true,
+                "srcDelimiter": ",",
+                "srcFormat": "CSV",
+                "srcPath": "/user/cloudera/input/golden_dist.csv",
+                "transformations": []
+            },
+            "matchBoth": true,
+            "primaryKey": [
+                "name"
+            ],
+            "process": true,
+            "srcFile": {
+                "excludeColmns": [],
+                "header": true,
+                "srcDelimiter": ",",
+                "srcFormat": "CSV",
+                "srcPath": "/user/cloudera/input/golden_src.csv",
+                  "transformations": [
+                    {
+                        "base64": false,
+                        "column": [
+                            "phone",
+                            "email"
+                        ],
+                        "rule": "if(value != null) value.trim else value"
+                    },
+                    {
+                        "base64": true,
+                        "column": [
+                            "phone",
+                            "email"
+                        ],
+                        "rule": "aWYodmFsdWUgIT0gbnVsbCkgdmFsdWUudHJpbSBlbHNlIHZhbHVl"
+                    }
+                ],
+                 "excludeColmns": [
+                    "company"
+                ]  
+            },
+            "validateRowsCount": false
+        }
+    ],
+    "machineConsumable": true
+}
