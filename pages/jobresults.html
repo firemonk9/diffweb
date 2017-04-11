@@ -69,6 +69,29 @@
         #mapper div img{
             cursor: pointer;
         }
+
+        .list-group-item {
+            position: relative;
+            display: block;
+            padding: 10px 15px;
+            margin-bottom: 0px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+        #loadingDiv{
+          position: absolute;
+          z-index: 1;
+          height: 100px;
+          width: 100px;
+          top: 50%;
+          left: 50%;
+          margin-left: -50px;
+          margin-top: -50px;
+          background: url('../dist/img/loading.gif');
+          background-size: 100%;
+      }
+
     </style>
 </head>
 
@@ -583,6 +606,8 @@
         setExcludeListener();
     }
 
+
+
     $(document).ready(function () {
         $.ajax({
             type: "GET",
@@ -590,6 +615,9 @@
             crossDomain: true,
             dataType: 'json',
             data: {},
+            beforeSend: function() {
+              $("#loadingDiv").show();
+            },
             success: function (response) {
                 setCookie("version", response.displayVersion);
                 setCookie("localMode", response.localMode);
@@ -597,6 +625,9 @@
             },
             error: function (response) {
 
+            },
+            complete: function() {
+              $("#loadingDiv").hide();
             }
         });
 
@@ -621,7 +652,14 @@
 
         setListeners();
     });
+
+
+
 </script>
+
+<div id="loadingDiv">
+
+</div>
 
 <div id="wrapper">
 
@@ -863,7 +901,7 @@
                                 </ul>
                             </div>
 
-                            <div class="col-md-2" style="margin-top: 20px;text-align: center;" id="mapper">
+                            <div class="col-md-2" style="margin-top: 25px;text-align: center;" id="mapper">
                             </div>
 
                             <div class="col-md-5">
