@@ -81,6 +81,29 @@
 		#mapper div img{
 			cursor: pointer;
 		}
+
+		.list-group-item {
+			position: relative;
+			display: block;
+			padding: 10px 15px;
+			margin-bottom: 0px;
+			background-color: #fff;
+			border: 1px solid #ddd;
+		}
+
+		#loadingDiv{
+			position: absolute;
+			z-index: 1;
+			height: 100px;
+			width: 100px;
+			top: 50%;
+			left: 50%;
+			margin-left: -50px;
+			margin-top: -50px;
+			background: url('../dist/img/loading.gif');
+			background-size: 100%;
+		}
+
 	</style>
 </head>
 
@@ -735,6 +758,9 @@
 				crossDomain: true,
 				dataType: 'json',
 				data: {},
+                beforeSend: function() {
+                    $("#loadingDiv").show();
+                },
 				success: function (response) {
 					setCookie("version", response.displayVersion);
 					setCookie("localMode", response.localMode);
@@ -742,7 +768,10 @@
 				},
 				error: function (response) {
 
-				}
+                },
+                complete: function() {
+                    $("#loadingDiv").hide();
+                }
 			});
 
 			$( "#src_column" ).sortable({
@@ -760,6 +789,8 @@
 			setListeners();
 		});
 	</script>
+	<div id="loadingDiv">
+	</div>
     <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -794,11 +825,11 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
+                        <!--<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>-->
+                        <!--</li>-->
+                        <!--<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>-->
+                        <!--</li>-->
+                        <!--<li class="divider"></li>-->
                         <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
@@ -1184,7 +1215,7 @@
 								</div>
 								<div class="col-md-12">
 									<!--<div class="checkbox" style="margin-left:30px;margin-bottom: 30px;display: inline-block">-->
-										<!--<label style="margin-right: 10px"><input type="checkbox" value="" id="auto_mapping">Auto Column Mapping</label>-->
+									<!--<label style="margin-right: 10px"><input type="checkbox" value="" id="auto_mapping">Auto Column Mapping</label>-->
 									<!--</div>-->
 									<div class="checkbox" style="margin-bottom: 30px;display: inline-block;margin-left: 30px;">
 										<label style="margin-right: 10px"><input type="checkbox" value="" id="rule_matchboth" checked>Compare two way</label>
@@ -1196,7 +1227,7 @@
 									</ul>
 								</div>
 
-								<div class="col-md-2" style="margin-top: 20px;text-align: center;" id="mapper">
+								<div class="col-md-2" style="margin-top: 25px;text-align: center;" id="mapper">
 								</div>
 
 								<div class="col-md-5">
@@ -1262,7 +1293,7 @@
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" id="btn_cancel_rules">Cancel</button>
-					<a class="btn btn-success btn-ok" id="btn_save_job">Submit Job</a>
+					<a class="btn btn-success btn-ok" id="btn_save_rules">Submit Job</a>
 				</div>
 			</div>
 		</div>
