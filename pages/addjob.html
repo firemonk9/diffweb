@@ -712,6 +712,7 @@
 
 			$('#btn_save_rules').on('click', function(e) {
 				advancedRuleEmpty = false;
+                submitJobJson();
 				$('#advancedRulesModal').modal('hide');
 			});
 
@@ -974,7 +975,7 @@
 									<div class="form-group required" id="src_jdbc_driver">
 										<label class="col-sm-3">Driver Path</label>
 										<div class="col-sm-6">
-											<input type="text" placeholder="Insert sql here..." class="form-control" name="src_driver" id="src_driver">
+											<input type="text" placeholder="JDBC driver path" class="form-control" name="src_driver" id="src_driver">
 										</div>
 										<br>
 									</div>
@@ -1093,7 +1094,7 @@
 									<div class="form-group required " id="dist_jdbc_driver">
 										<label class="col-sm-3">Driver Path</label>
 										<div class="col-sm-6">
-											<input type="text" placeholder="Insert sql here..." class="form-control" name="dist_driver" id="dist_driver">
+											<input type="text" placeholder="JDBC driver path..." class="form-control" name="dist_driver" id="dist_driver">
 										</div>
 										<br>
 									</div>
