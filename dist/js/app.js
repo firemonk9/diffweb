@@ -177,16 +177,16 @@ function makeBadgeType(type) {
             type = 'flt';
             break;
         case 'int':
-            type = 'int';
             break;
         case 'long':
+            type = 'int';
             type = 'lng';
             break;
         case 'short':
             type = 'sht';
             break;
         case 'string':
-            type = 'str';
+            type = 'string';
             break;
         case 'timestamp':
             type = 'ts';
@@ -214,7 +214,7 @@ function insertCheckLi(ul, text, type) {
 
     var textdiv = document.createElement("div");
     textdiv.setAttribute("class", "li-tiff")
-    textdiv.setAttribute("style", "width: 210px;float: left;");
+    textdiv.setAttribute("style", "width: 186px;float: left;");
     textdiv.innerText = text;
     li.appendChild(textdiv);
 
@@ -258,7 +258,7 @@ function insertMapper(mapper, mapped) {
 
     var img = document.createElement("img");
     if (mapped)
-        var imgSrc = "../dist/img/green_arrow.png";
+        var imgSrc = "../dist/img/tick.png";
     else
         var imgSrc = "../dist/img/yellow_arrow.png";
     img.setAttribute("src", imgSrc);
@@ -748,10 +748,12 @@ function setMapperListener() {
     $('#mapper img').each(function(index){
         var img = $(this);
         img.on('click', function(e){
-            if (img[0].src.indexOf("green") > 0) {
-                img[0].src = "../dist/img/yellow_arrow.png";
+			
+            if (img[0].src.indexOf("tick") > 0) {
+	
+                img[0].src = "../dist/img/cross.png";
             } else {
-                img[0].src = "../dist/img/green_arrow.png";
+                img[0].src = "../dist/img/tick.png";
             }
         });
     });

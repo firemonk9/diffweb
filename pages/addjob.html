@@ -897,7 +897,7 @@
 								<div class="col-md-12">
 									<!-- CSV -->
 									<div class="form-group required" id="src_file_path">
-										<label class="col-sm-3">Dataset path</label>
+										<label class="col-sm-3" id="table">Dataset path</label>
 										<div class="col-sm-6">
 											<input type="text" placeholder="Path..." class="form-control" name="src_path" id="src_path"></div>
 									</div>
@@ -1015,7 +1015,7 @@
 								<div class="col-md-12">
 									<!-- CSV -->
 									<div class="form-group required" id="dist_file_path">
-										<label class="col-sm-3">Dataset path</label>
+										<label class="col-sm-3" id="table_dist">Dataset path</label>
 										<div class="col-sm-6">
 											<input type="text" placeholder="Path..." class="form-control" name="dist_path" id="dist_path">
 										</div>
@@ -1030,7 +1030,7 @@
 												<option>JDBC</option>
 												<option>CSV</option>
 												<option>JSON</option>
-												<option>HIVE</option>
+												<option id="change">HIVE</option>
 												<option>AVRO</option>
 											</select>
 										</div>
@@ -1144,161 +1144,212 @@
 
 	<!-- Advanced Rule Modal -->
 	<div class="modal fade" id="advancedRulesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-		<div class="modal-dialog" style="width: 800px;">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">Advanced Rules Mapping</h4>
-				</div>
-
-				<div class="modal-body">
-					<ul class="nav nav-tabs">
-						<li class="active">
-							<a data-toggle="tab" href="#column_map" aria-expanded="true">Column Map</a>
-						</li>
-						<li>
-							<a data-toggle="tab" href="#transmation" aria-expanded="false">Transformations</a>
-						</li>
-					</ul>
-					<div class="tab-content" style="margin-top: 20px;">
-						<div class="row tab-pane fade active in" id="column_map">
-							<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="colMapHelp()" />
-							<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
-								<div class="panel-heading">
-									<h3 class="panel-title">Data Filter</h3>
-									<span class="arrow-toggle pull-right clickable" data-toggle="collapse" data-target="#collapseThree" id="collapser">
-                                    <i class="fa fa-chevron-down"></i>
-                                    <i class="fa fa-chevron-up"></i>
-                                </span>
-								</div>
-								<div id="collapseThree" class="panel-collapse collapse in">
-									<div class="panel-body">
-										<div class="col-md-12" style="margin-bottom: 25px;">
-											<div class="form-group">
-												<label class="col-sm-4">Run on sample of</label>
-												<div class="col-sm-8">
-													<input type="number" placeholder="Insert number..." class="form-control" id="rule_randomsample" min="0">
-												</div>
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group" id="src_filter_sql">
-												<label class="col-sm-4">Src Filter Sql</label>
-												<div class="col-sm-8">
-													<input type="text" placeholder="Insert sql here..." class="form-control">
-												</div>
-												<br><br>
-											</div>
-										</div>
-										<div class="col-md-12">
-											<div class="form-group" id="dist_filter_sql">
-												<label class="col-sm-4">Dist Filter Sql</label>
-												<div class="col-sm-8">
-													<input type="text" placeholder="Insert sql here..." class="form-control">
-												</div>
-												<br><br>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div>
-								<div class="col-md-12">
-									<h3 class="data-filter-header">Columns Mapping</h3>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group" style="padding-left: 15px; margin-bottom: 0px;">
-										<label class="col-sm-4">Job Name</label>
-										<div class="col-sm-8">
-											<input type="text" id="job_name" placeholder="Name" class="form-control">
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<!--<div class="checkbox" style="margin-left:30px;margin-bottom: 30px;display: inline-block">-->
-									<!--<label style="margin-right: 10px"><input type="checkbox" value="" id="auto_mapping">Auto Column Mapping</label>-->
-									<!--</div>-->
-									<div class="checkbox" style="margin-bottom: 30px;display: inline-block;margin-left: 30px;">
-										<label style="margin-right: 10px"><input type="checkbox" value="" id="rule_matchboth" checked>Compare two way</label>
-									</div>
-								</div>
-								<div class="col-md-5">
-									<ul class="list-group connectedSortable1" style="padding-left: 0px;margin-left: 30px" id="src_column">
-										<label style="width: 100%">Source Columns <span style="float:right">Compare Key</span></label>
-									</ul>
-								</div>
-
-								<div class="col-md-2" style="margin-top: 25px;text-align: center;" id="mapper">
-								</div>
-
-								<div class="col-md-5">
-									<ul class="list-group connectedSortable2" style="padding-right: 0px;margin-right: 30px;" id="dist_column">
-										<label>Destination Columns</label>
-									</ul>
+			<div class="modal-dialog" style="width: 800px;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Advanced Rules Mapping</h4>
+					</div>
+					
+					<div class="modal-body">
+						<ul class="nav nav-tabs">
+							<li class="active">
+								<a data-toggle="tab" href="#column_map" aria-expanded="true">Column Map</a>
+							</li>
+							<li>
+								<a data-toggle="tab" href="#transmation" aria-expanded="false">Transformations</a>
+							</li>
+						</ul>
+						<div class="col-md-6" style="margin-left: 20%;">
+							<div class="form-group">
+								<label class="col-sm-4" style="margin-top:13px;">Job Name</label>
+								<div class="col-sm-8">
+									<input type="text" id="job_name" placeholder="Name" class="form-control" style="margin-top:9px;">
 								</div>
 							</div>
 						</div>
-						<div class="row tab-pane fade" id="transmation">
-							<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="transHelp()" />
-							<div class="col-md-6">
-								<label>Source Transformations</label>
-								<div class="form-group row" style="margin-top: 15px;">
-									<label class="col-sm-3">Column</label>
-									<div class="col-sm-9">
-										<div class="src_trans_column">
-											<input type="text" class="form-control">
+						<div class="tab-content" style="margin-top: 40px;">
+							
+							<div class="row tab-pane fade active in" id="column_map">
+								<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="colMapHelp()" />
+								<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
+									
+									<div class="panel-heading">
+										<h3 class="panel-title">Data Filter</h3>
+										<span class="arrow-toggle pull-right clickable" data-toggle="collapse" data-target="#collapseThree" id="collapser">
+											<i class="fa fa-chevron-down"></i>
+											<i class="fa fa-chevron-up"></i>
+										</span>
+									</div>
+									<div id="collapseThree" class="panel-collapse collapse in">
+										<div class="panel-body">
+											<div class="col-md-12" style="margin-bottom: 25px;">
+												<div class="form-group">
+													<label class="col-sm-4">Run on sample of</label>
+													<div class="col-sm-8">
+														<input type="number" placeholder="Insert number..." class="form-control" id="rule_randomsample" min="0">
+													</div>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="form-group" id="src_filter_sql">
+													<label class="col-sm-4">Src Filter Sql</label>
+													<div class="col-sm-8">
+														<input type="text" placeholder="Insert sql here..." class="form-control">
+													</div>
+													<br><br>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="form-group" id="dist_filter_sql">
+													<label class="col-sm-4">Dist Filter Sql</label>
+													<div class="col-sm-8">
+														<input type="text" placeholder="Insert sql here..." class="form-control">
+													</div>
+													<br><br>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<!--<button class="btn btn-danger" data-toggle="modal" data-target="#what" id="btn_delete">What is this</button>-->
+												<a href="" data-toggle="modal" data-target="#what" >What is this</a>
+											</div>
 										</div>
 									</div>
-									<label class="col-sm-3">Rule</label>
-									<div class="col-sm-9">
-										<input type="text" class="form-control src_trans_rule">
+								</div>
+								
+								<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
+									<div class="panel-heading">
+										<h3 class="panel-title">Dataset Comparision Options</h3>
+										<span class="arrow-toggle pull-right clickable" data-toggle="collapse" data-target="#collapseFour" id="collapser">
+											<i class="fa fa-chevron-down"></i>
+											<i class="fa fa-chevron-up"></i>
+										</span>
+									</div>
+									<div id="collapseFour" class="panel-collapse collapse in">
+										<div class="panel-body">
+											<div class="col-md-12">
+												<div class="modal fade" id="what" role="dialog">
+													<div class="modal-dialog">
+														<div class="modal-content">
+															<div class="modal-header">
+															</div>
+															<div class="modal-body">
+																<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
+																
+																<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
+																
+																<p>Src Filter Sql/Dist Filter Sql : To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
+																
+																<p>Note :  You can refer to the dataset as my_data.</p>
+																
+																<p>Ex : select * from my_data where age > 30</p>
+																
+															</div>
+															
+															
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="checkbox" style="margin-bottom: 30px;display: inline-block;margin-left: 30px;">
+													<label style="margin-right: 10px"><input type="checkbox" value="" id="rule_matchboth" checked="">Compare two way</label>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<a href="" data-toggle="modal" data-target="#what">What is this</a>
+											</div>
+										</div>
 									</div>
 								</div>
-								<div class="form-group row" id="src_trans_next">
-									<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
-										<span class="glyphicon glyphicon-plus"></span>
-									</button>
-									<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
-										<span class="glyphicon glyphicon-minus"></span>
-									</button>
+								<div>
+									<div class="col-md-12">
+										<h3 class="data-filter-header">Columns Mapping</h3>
+									</div>
+									
+									<div class="col-md-12">
+										<!--<div class="checkbox" style="margin-left:30px;margin-bottom: 30px;display: inline-block">-->
+										<!--<label style="margin-right: 10px"><input type="checkbox" value="" id="auto_mapping">Auto Column Mapping</label>-->
+										<!--</div>-->
+										
+									</div>
+									<div class="col-md-5">
+										<ul class="list-group connectedSortable1" style="padding-left: 0px;margin-left: 30px" id="src_column">
+											<label style="width: 100%">Source Columns <span style="float:right">Compare Key</span></label>
+										</ul>
+									</div>
+									
+									<div class="col-md-2" style="margin-top: 25px;text-align: center;" id="mapper">
+									</div>
+									
+									<div class="col-md-5">
+										<ul class="list-group connectedSortable2" style="padding-right: 0px;margin-right: 30px;" id="dist_column">
+											<label>Destination Columns</label>
+										</ul>
+									</div>
 								</div>
-
 							</div>
-
-							<div class="col-md-6">
-								<label>Dist Transformations</label>
-								<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
-									<label class="col-sm-3">Column</label>
-									<div class="col-sm-9">
-										<div class="dist_trans_column">
-											<input type="text" class="form-control" value="">
+							<div class="row tab-pane fade" id="transmation">
+								<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="transHelp()" />
+								<div class="col-md-6">
+									<label>Source Transformations</label>
+									<div class="form-group row" style="margin-top: 15px;">
+										<label class="col-sm-3">Column</label>
+										<div class="col-sm-9">
+											<div class="src_trans_column">
+												<input type="text" class="form-control">
+											</div>
+										</div>
+										<label class="col-sm-3">Rule</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control src_trans_rule">
 										</div>
 									</div>
-									<label class="col-sm-3">Rule</label>
-									<div class="col-sm-9">
-										<input type="text" class="form-control dist_trans_rule">
+									<div class="form-group row" id="src_trans_next">
+										<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
+											<span class="glyphicon glyphicon-plus"></span>
+										</button>
+										<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
+											<span class="glyphicon glyphicon-minus"></span>
+										</button>
 									</div>
+									
 								</div>
-								<div class="form-group row" id="dist_trans_next">
-									<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
-										<span class="glyphicon glyphicon-plus"></span>
-									</button>
-									<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
-										<span class="glyphicon glyphicon-minus"></span>
-									</button>
+								
+								<div class="col-md-6">
+									<label>Dist Transformations</label>
+									<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
+										<label class="col-sm-3">Column</label>
+										<div class="col-sm-9">
+											<div class="dist_trans_column">
+												<input type="text" class="form-control" value="">
+											</div>
+										</div>
+										<label class="col-sm-3">Rule</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control dist_trans_rule">
+										</div>
+									</div>
+									<div class="form-group row" id="dist_trans_next">
+										<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
+											<span class="glyphicon glyphicon-plus"></span>
+										</button>
+										<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
+											<span class="glyphicon glyphicon-minus"></span>
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" id="btn_cancel_rules">Cancel</button>
-					<a class="btn btn-success btn-ok" id="btn_save_rules">Submit Job</a>
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" id="btn_cancel_rules">Cancel</button>
+						<a class="btn btn-success btn-ok" id="btn_save_rules">Submit Job</a>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 </body>
 
 <script>
@@ -1309,6 +1360,25 @@
 
 	ga('create', 'UA-93298501-2', 'auto');
 	ga('send', 'pageview');
+	
+	$('select#select_src_type').on('change', function() {
+	
+	
+  if( this.value == 'HIVE' ){
+	  $('#table').text('Table');
+	  }
+	  else{
+		  $('#table').text('Dataset path');
+		  }
+})
+$('select#select_dist_type').on('change', function() {
+	if( this.value == 'HIVE' ){
+	  $('#table_dist').text('Table');
+	  }
+	  else{
+		  $('#table_dist').text('Dataset path');
+		  }
+})
 
 </script>
 
