@@ -306,6 +306,9 @@
 					alert("You should set at least one key.");
 					return;
 				}
+				
+				
+				
 				//data.jobname = info.inputData.name;
 				//data.compareCommonColumnsOnly = info.inputData.compareCommonColumnsOnly;
 				//data.validateRowsCount = info.inputData.validateRowsCount;
@@ -834,9 +837,9 @@
 							<li class="active">
 								<a data-toggle="tab" href="#column_map" aria-expanded="true">Column Map</a>
 							</li>
-							<li>
+							<!--<li>
 								<a data-toggle="tab" href="#transmation" aria-expanded="false">Transformations</a>
-							</li>
+							</li>-->
 						</ul>
 						<div class="col-md-6" style="margin-left: 20%;">
 							<div class="form-group">
@@ -849,7 +852,7 @@
 						<div class="tab-content" style="margin-top: 40px;">
 							
 							<div class="row tab-pane fade active in" id="column_map">
-								<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="colMapHelp()" />
+								<!--<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="colMapHelp()" />-->
 								<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
 									
 									<div class="panel-heading">
@@ -889,7 +892,7 @@
 											</div>
 											<div class="col-md-12">
 												<!--<button class="btn btn-danger" data-toggle="modal" data-target="#what" id="btn_delete">What is this</button>-->
-												<img src="../dist/img/help.png" width="30px" height="30px" data-toggle="modal" data-target="#what" />
+												<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what" />
 											</div>
 										</div>
 									</div>
@@ -937,8 +940,74 @@
 											</div>
 											<div class="col-md-12">
 												
-												<img src="../dist/img/help.png" width="30px" height="30px" data-toggle="modal" data-target="#what" />
+												<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what" />
 											</div>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
+									
+									<div class="panel-heading">
+										<h3 class="panel-title">Data Transformations</h3>
+										<span class="arrow-toggle pull-right clickable" data-toggle="collapse" data-target="#collapseFive" id="collapser">
+											<i class="fa fa-chevron-down"></i>
+											<i class="fa fa-chevron-up"></i>
+										</span>
+									</div>
+									<div id="collapseFive" class="panel-collapse collapse in">
+										<div class="panel-body">
+											
+											<div class="col-md-12">
+												<div class="col-md-6">
+									<label>Source Transformations</label>
+									<div class="form-group row" style="margin-top: 15px;">
+										<label class="col-sm-3">Column</label>
+										<div class="col-sm-9">
+											<div class="src_trans_column">
+												<input type="text" class="form-control">
+											</div>
+										</div>
+										<label class="col-sm-3">Rule</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control src_trans_rule">
+										</div>
+									</div>
+									<div class="form-group row" id="src_trans_next">
+										<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
+											<span class="glyphicon glyphicon-plus"></span>
+										</button>
+										<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
+											<span class="glyphicon glyphicon-minus"></span>
+										</button>
+									</div>
+									
+								</div>
+								
+								<div class="col-md-6">
+									<label>Dist Transformations</label>
+									<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
+										<label class="col-sm-3">Column</label>
+										<div class="col-sm-9">
+											<div class="dist_trans_column">
+												<input type="text" class="form-control" value="">
+											</div>
+										</div>
+										<label class="col-sm-3">Rule</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control dist_trans_rule">
+										</div>
+									</div>
+									<div class="form-group row" id="dist_trans_next">
+										<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
+											<span class="glyphicon glyphicon-plus"></span>
+										</button>
+										<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
+											<span class="glyphicon glyphicon-minus"></span>
+										</button>
+									</div>
+								</div>
+											</div>
+											
 										</div>
 									</div>
 								</div>
@@ -969,7 +1038,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="row tab-pane fade" id="transmation">
+							<!--<div class="row tab-pane fade" id="transmation">
 								<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="transHelp()" />
 								<div class="col-md-6">
 									<label>Source Transformations</label>
@@ -1019,7 +1088,7 @@
 										</button>
 									</div>
 								</div>
-							</div>
+							</div>-->
 						</div>
 					</div>
 					
