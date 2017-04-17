@@ -260,7 +260,7 @@ function insertMapper(mapper, mapped) {
     if (mapped)
         var imgSrc = "../dist/img/tick.png";
     else
-        var imgSrc = "../dist/img/yellow_arrow.png";
+        var imgSrc = "../dist/img/cross54_33.png";
     img.setAttribute("src", imgSrc);
     //img.setAttribute("style", "width: 100px; height:36px; margin-top: 2px;");
 
@@ -751,7 +751,7 @@ function setMapperListener() {
 			
             if (img[0].src.indexOf("tick") > 0) {
 	
-                img[0].src = "../dist/img/cross.png";
+                img[0].src = "../dist/img/cross54_33.png";
             } else {
                 img[0].src = "../dist/img/tick.png";
             }

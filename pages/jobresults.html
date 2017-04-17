@@ -301,13 +301,20 @@
 			}
 			
 			function submitJobJson() {
+				
+				$count = $("#mapper > div img[src='../dist/img/tick.png']").length;
+				
 				var data = getInputData(srcRecordCnt != distRecordCnt);
 				if (data.primaryKey.length <= 0) {
 					alert("You should set at least one key.");
 					return;
 				}
 				
-				
+				if($count <= 0){
+					alert("You should set at least one tick.");
+					return;
+					
+				}
 				
 				//data.jobname = info.inputData.name;
 				//data.compareCommonColumnsOnly = info.inputData.compareCommonColumnsOnly;
@@ -434,6 +441,8 @@
 					}
 					
 					$("#table thead tr").append(tr);
+					
+					
 				});
 				$('#table').bootstrapTable({
 					data: tableData,
@@ -442,7 +451,17 @@
 					}
 				});
 				setMergeCell(0, 10);
+				removeTableColumn();
 			}
+			
+		/* function to delete last column*/
+			function removeTableColumn() {
+
+				//$('#table thead tr th:last-child').remove(); // Deletes the last title
+		   
+			   $("#table  thead tr th:last-child, #table td:last-child").addClass("intro");
+    
+		}
 			
 			// Set mergeCells
 			function setMergeCell(startat, endat) {
@@ -456,6 +475,7 @@
 						});
 					}
 				});
+				removeTableColumn();
 			}
 			
 			// Set Row Color
@@ -586,8 +606,15 @@
 					$('#advancedRulesModal').modal('hide');
 				});
 				
+				/* close the model*/
 				$("button[data-dismiss-modal=modal2]").click(function () {
-				$('#what').modal('hide');
+					$('#what1').modal('hide');
+				});
+				$("button[data-dismiss-modal=modal2]").click(function () {
+					$('#what').modal('hide');
+				});
+				$("button[data-dismiss-modal=modal2]").click(function () {
+					$('#what2').modal('hide');
 				});
 				
 				$('#src_trans_plus').on('click', function(e) {
@@ -641,7 +668,9 @@
 				
 				$( "#src_column" ).sortable({
 					connectWith: ".connectedSortable1",
-					placeholder: "ui-state-highlight"
+					placeholder: "ui-state-highlight",
+					
+					
 				});
 				
 				$( "#dist_column" ).sortable({
@@ -660,6 +689,7 @@
 				
 				setListeners();
 			});
+			
 			
 			
 			
@@ -795,7 +825,7 @@
 							<div class="panel-heading"><h4>Detail Results</h4></div>
 							<!-- /.panel-heading -->
 							<div class="panel-body">
-								<table id="table" class="table fixed"
+								<table id="table" class="table fixed" 
 								data-height="540"
 								data-search="true"
 								data-show-columns="true"
@@ -862,7 +892,7 @@
 											<i class="fa fa-chevron-up"></i>
 										</span>
 									</div>
-									<div id="collapseThree" class="panel-collapse collapse in">
+									<div id="collapseThree" class="panel-collapse collapse">
 										<div class="panel-body">
 											<div class="col-md-12" style="margin-bottom: 25px;">
 												<div class="form-group">
@@ -891,8 +921,35 @@
 												</div>
 											</div>
 											<div class="col-md-12">
+												<div class="modal fade" id="what1" role="dialog">
+													<div class="modal-dialog">
+														<div class="modal-content">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
+															</div>
+															<div class="modal-body">
+																<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
+																
+																<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
+																
+																<p>Src Filter Sql/Dist Filter Sql : To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
+																
+																<p>Note :  You can refer to the dataset as my_data.</p>
+																
+																<p>Ex : select * from my_data where age > 30</p>
+																
+															</div>
+															
+															
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											
+											<div class="col-md-12">
 												<!--<button class="btn btn-danger" data-toggle="modal" data-target="#what" id="btn_delete">What is this</button>-->
-												<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what" />
+												<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what1" />
 											</div>
 										</div>
 									</div>
@@ -906,14 +963,14 @@
 											<i class="fa fa-chevron-up"></i>
 										</span>
 									</div>
-									<div id="collapseFour" class="panel-collapse collapse in">
+									<div id="collapseFour" class="panel-collapse collapse">
 										<div class="panel-body">
 											<div class="col-md-12">
 												<div class="modal fade" id="what" role="dialog">
 													<div class="modal-dialog">
 														<div class="modal-content">
 															<div class="modal-header">
-															  <button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
+																<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 															</div>
 															<div class="modal-body">
 																<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
@@ -954,58 +1011,87 @@
 											<i class="fa fa-chevron-up"></i>
 										</span>
 									</div>
-									<div id="collapseFive" class="panel-collapse collapse in">
+									<div id="collapseFive" class="panel-collapse collapse">
 										<div class="panel-body">
 											
 											<div class="col-md-12">
 												<div class="col-md-6">
-									<label>Source Transformations</label>
-									<div class="form-group row" style="margin-top: 15px;">
-										<label class="col-sm-3">Column</label>
-										<div class="col-sm-9">
-											<div class="src_trans_column">
-												<input type="text" class="form-control">
+													<label>Source Transformations</label>
+													<div class="form-group row" style="margin-top: 15px;">
+														<label class="col-sm-3">Column</label>
+														<div class="col-sm-9">
+															<div class="src_trans_column">
+																<input type="text" class="form-control">
+															</div>
+														</div>
+														<label class="col-sm-3">Rule</label>
+														<div class="col-sm-9">
+															<input type="text" class="form-control src_trans_rule">
+														</div>
+													</div>
+													<div class="form-group row" id="src_trans_next">
+														<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
+															<span class="glyphicon glyphicon-plus"></span>
+														</button>
+														<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
+															<span class="glyphicon glyphicon-minus"></span>
+														</button>
+													</div>
+													
+												</div>
+												
+												<div class="col-md-6">
+													<label>Dist Transformations</label>
+													<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
+														<label class="col-sm-3">Column</label>
+														<div class="col-sm-9">
+															<div class="dist_trans_column">
+																<input type="text" class="form-control" value="">
+															</div>
+														</div>
+														<label class="col-sm-3">Rule</label>
+														<div class="col-sm-9">
+															<input type="text" class="form-control dist_trans_rule">
+														</div>
+													</div>
+													<div class="form-group row" id="dist_trans_next">
+														<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
+															<span class="glyphicon glyphicon-plus"></span>
+														</button>
+														<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
+															<span class="glyphicon glyphicon-minus"></span>
+														</button>
+													</div>
+												</div>
 											</div>
-										</div>
-										<label class="col-sm-3">Rule</label>
-										<div class="col-sm-9">
-											<input type="text" class="form-control src_trans_rule">
-										</div>
-									</div>
-									<div class="form-group row" id="src_trans_next">
-										<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
-											<span class="glyphicon glyphicon-plus"></span>
-										</button>
-										<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
-											<span class="glyphicon glyphicon-minus"></span>
-										</button>
-									</div>
-									
-								</div>
-								
-								<div class="col-md-6">
-									<label>Dist Transformations</label>
-									<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
-										<label class="col-sm-3">Column</label>
-										<div class="col-sm-9">
-											<div class="dist_trans_column">
-												<input type="text" class="form-control" value="">
+											<div class="col-md-12">
+												<div class="modal fade" id="what2" role="dialog">
+													<div class="modal-dialog">
+														<div class="modal-content">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
+															</div>
+															<div class="modal-body">
+																<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
+																
+																<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
+																
+																<p>Src Filter Sql/Dist Filter Sql : To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
+																
+																<p>Note :  You can refer to the dataset as my_data.</p>
+																
+																<p>Ex : select * from my_data where age > 30</p>
+																
+															</div>
+															
+															
+														</div>
+													</div>
+												</div>
 											</div>
-										</div>
-										<label class="col-sm-3">Rule</label>
-										<div class="col-sm-9">
-											<input type="text" class="form-control dist_trans_rule">
-										</div>
-									</div>
-									<div class="form-group row" id="dist_trans_next">
-										<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
-											<span class="glyphicon glyphicon-plus"></span>
-										</button>
-										<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
-											<span class="glyphicon glyphicon-minus"></span>
-										</button>
-									</div>
-								</div>
+											<div class="col-md-12">
+												
+												<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what2" />
 											</div>
 											
 										</div>
@@ -1041,52 +1127,52 @@
 							<!--<div class="row tab-pane fade" id="transmation">
 								<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="transHelp()" />
 								<div class="col-md-6">
-									<label>Source Transformations</label>
-									<div class="form-group row" style="margin-top: 15px;">
-										<label class="col-sm-3">Column</label>
-										<div class="col-sm-9">
-											<div class="src_trans_column">
-												<input type="text" class="form-control">
-											</div>
-										</div>
-										<label class="col-sm-3">Rule</label>
-										<div class="col-sm-9">
-											<input type="text" class="form-control src_trans_rule">
-										</div>
-									</div>
-									<div class="form-group row" id="src_trans_next">
-										<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
-											<span class="glyphicon glyphicon-plus"></span>
-										</button>
-										<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
-											<span class="glyphicon glyphicon-minus"></span>
-										</button>
-									</div>
-									
+								<label>Source Transformations</label>
+								<div class="form-group row" style="margin-top: 15px;">
+								<label class="col-sm-3">Column</label>
+								<div class="col-sm-9">
+								<div class="src_trans_column">
+								<input type="text" class="form-control">
+								</div>
+								</div>
+								<label class="col-sm-3">Rule</label>
+								<div class="col-sm-9">
+								<input type="text" class="form-control src_trans_rule">
+								</div>
+								</div>
+								<div class="form-group row" id="src_trans_next">
+								<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
+								<span class="glyphicon glyphicon-plus"></span>
+								</button>
+								<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
+								<span class="glyphicon glyphicon-minus"></span>
+								</button>
+								</div>
+								
 								</div>
 								
 								<div class="col-md-6">
-									<label>Dist Transformations</label>
-									<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
-										<label class="col-sm-3">Column</label>
-										<div class="col-sm-9">
-											<div class="dist_trans_column">
-												<input type="text" class="form-control" value="">
-											</div>
-										</div>
-										<label class="col-sm-3">Rule</label>
-										<div class="col-sm-9">
-											<input type="text" class="form-control dist_trans_rule">
-										</div>
-									</div>
-									<div class="form-group row" id="dist_trans_next">
-										<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
-											<span class="glyphicon glyphicon-plus"></span>
-										</button>
-										<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
-											<span class="glyphicon glyphicon-minus"></span>
-										</button>
-									</div>
+								<label>Dist Transformations</label>
+								<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
+								<label class="col-sm-3">Column</label>
+								<div class="col-sm-9">
+								<div class="dist_trans_column">
+								<input type="text" class="form-control" value="">
+								</div>
+								</div>
+								<label class="col-sm-3">Rule</label>
+								<div class="col-sm-9">
+								<input type="text" class="form-control dist_trans_rule">
+								</div>
+								</div>
+								<div class="form-group row" id="dist_trans_next">
+								<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
+								<span class="glyphicon glyphicon-plus"></span>
+								</button>
+								<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
+								<span class="glyphicon glyphicon-minus"></span>
+								</button>
+								</div>
 								</div>
 							</div>-->
 						</div>
@@ -1109,16 +1195,24 @@
 		
 		ga('create', 'UA-93298501-2', 'auto');
 		ga('send', 'pageview');
+		
 	</script>
 	<style>
-	table.fixed { table-layout:fixed; width:3000px; word-break:break-all;}
-	#mapper div img {
-    height: 82% !important;
-    width: 52% !important;
-    }
-	.modal { overflow: auto !important; }
-
-	
-</style>
+		table.fixed { table-layout:fixed; width:3000px; word-break:break-all;}
+		#mapper div img {
+		height: 82% !important;
+		width: 52% !important;
+		}
+		.modal { overflow: auto !important; }
+		
+		.ui-state-highlight { background: #A9A9A9 !important; border-color: #A9A9A9 !important }
+		td.intro {
+		display:none !important;
+		}
+		th.intro {
+		display:none !important;
+		}
+		
+	</style>
 	
 </html>
