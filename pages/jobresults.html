@@ -616,6 +616,9 @@
 				$("button[data-dismiss-modal=modal2]").click(function () {
 					$('#what2').modal('hide');
 				});
+				$("button[data-dismiss-modal=modal2]").click(function () {
+					$('#what3').modal('hide');
+				});
 				
 				$('#src_trans_plus').on('click', function(e) {
 					var srcNext = document.getElementById("src_trans_next");
@@ -887,8 +890,8 @@
 									
 									<div class="panel-heading">
 										<h3 class="panel-title">Data Filter</h3>
-										<span class="arrow-toggle pull-right clickable" data-toggle="collapse" data-target="#collapseThree" id="collapser">
-											<i class="fa fa-chevron-down"></i>
+										<span class="pull-right clickable" data-toggle="collapse" data-target="#collapseThree" id="collapser">
+											
 											<i class="fa fa-chevron-up"></i>
 										</span>
 									</div>
@@ -928,15 +931,8 @@
 																<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 															</div>
 															<div class="modal-body">
+																<p> First popup</p>
 																<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
-																
-																<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
-																
-																<p>Src Filter Sql/Dist Filter Sql : To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
-																
-																<p>Note :  You can refer to the dataset as my_data.</p>
-																
-																<p>Ex : select * from my_data where age > 30</p>
 																
 															</div>
 															
@@ -958,8 +954,8 @@
 								<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
 									<div class="panel-heading">
 										<h3 class="panel-title">Dataset Comparision Options</h3>
-										<span class="arrow-toggle pull-right clickable" data-toggle="collapse" data-target="#collapseFour" id="collapser">
-											<i class="fa fa-chevron-down"></i>
+										<span class=" pull-right clickable" data-toggle="collapse" data-target="#collapseFour" id="collapser">
+											
 											<i class="fa fa-chevron-up"></i>
 										</span>
 									</div>
@@ -973,6 +969,8 @@
 																<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 															</div>
 															<div class="modal-body">
+																<p> Second popup</p>
+																
 																<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
 																
 																<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
@@ -1006,8 +1004,8 @@
 									
 									<div class="panel-heading">
 										<h3 class="panel-title">Data Transformations</h3>
-										<span class="arrow-toggle pull-right clickable" data-toggle="collapse" data-target="#collapseFive" id="collapser">
-											<i class="fa fa-chevron-down"></i>
+										<span class=" pull-right clickable" data-toggle="collapse" data-target="#collapseFive" id="collapser">
+											
 											<i class="fa fa-chevron-up"></i>
 										</span>
 									</div>
@@ -1072,6 +1070,37 @@
 																<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 															</div>
 															<div class="modal-body">
+															<p>	Third popup</p>
+																<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
+																
+																
+															</div>
+															
+															
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-12">
+												
+												<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what2" />
+											</div>
+											
+										</div>
+									</div>
+								</div>
+								
+										<div class="panel-body">
+											<div class="col-md-12">
+												<div class="modal fade" id="what3" role="dialog">
+													<div class="modal-dialog">
+														<div class="modal-content">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
+															</div>
+															<div class="modal-body">
+																
+																
 																<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
 																
 																<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
@@ -1089,14 +1118,14 @@
 													</div>
 												</div>
 											</div>
+											
 											<div class="col-md-12">
 												
-												<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what2" />
+												<img src="../dist/img/question.png" width="30px" height="30px" style="float: right" data-toggle="modal" data-target="#what3" />
 											</div>
-											
 										</div>
-									</div>
-								</div>
+									
+								
 								<div>
 									<div class="col-md-12">
 										<h3 class="data-filter-header">Columns Mapping</h3>
