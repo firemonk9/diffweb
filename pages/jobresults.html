@@ -302,19 +302,25 @@
 			
 			function submitJobJson() {
 				
-				$count = $("#mapper > div img[src='../dist/img/tick.png']").length;
-				
 				var data = getInputData(srcRecordCnt != distRecordCnt);
 				if (data.primaryKey.length <= 0) {
 					alert("You should set at least one key.");
 					return;
 				}
+				if (data.jobname == "") {
+					alert("You should input job name.");
+					return;
+				}
 				
+				$count = $("#mapper > div img[src='../dist/img/tick.png']").length;
 				if($count <= 0){
 					alert("You should set at least one tick.");
 					return;
 					
 				}
+				
+				
+				
 				
 				//data.jobname = info.inputData.name;
 				//data.compareCommonColumnsOnly = info.inputData.compareCommonColumnsOnly;
@@ -407,6 +413,7 @@
 			
 			// Show Stats Table
 			function setStatsTable(stats) {
+			//alert(JSON.stringify(stats.columnsNotMatching));
 				/*
 					$('.srcrecordscount').html(stats.srcRecordsCount);
 					$('.distrecordscount').html(stats.distRecordsCount);
@@ -454,14 +461,14 @@
 				removeTableColumn();
 			}
 			
-		/* function to delete last column*/
+			/* function to delete last column*/
 			function removeTableColumn() {
-
+				
 				//$('#table thead tr th:last-child').remove(); // Deletes the last title
-		   
-			   $("#table  thead tr th:last-child, #table td:last-child").addClass("intro");
-    
-		}
+				
+				$("#table  thead tr th:last-child, #table td:last-child").addClass("intro");
+				
+			}
 			
 			// Set mergeCells
 			function setMergeCell(startat, endat) {
@@ -599,7 +606,7 @@
 				$('#btn_save_rules').on('click', function(e){
 					edit = "false";
 					submitJobJson();
-					$('#advancedRulesModal').modal('hide');
+					//$('#advancedRulesModal').modal('hide');
 				});
 				
 				$('#btn_cancel_rules').on('click', function(e) {
@@ -802,6 +809,37 @@
 								<h3 class="panel-title">Summary</h3>
 								<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
 							</div>
+							<div class="col-md-12">
+										<div class="modal fade" id="more" role="dialog">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
+													</div>
+													<div class="modal-body">
+														<table class="table table-striped" id="tblGrid">
+															<thead id="tblHead">
+																<tr>
+																	<th>Name</th>
+																	<th>Value</th>
+																	<th class="text-right">Not matching</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr><td>Long Island, NY, USA</td>
+																	<td>3</td>
+																	<td class="text-right"><img src="../dist/img/cross54_33.png" ></td>
+																</tr>
+																
+															</tbody>
+														</table>
+													</div>
+													
+													
+												</div>
+											</div>
+										</div>
+									</div>
 							<table class="table table-bordered table-striped specialCollapse" id="stats">
 								<tbody>
 									<tr>
@@ -812,9 +850,12 @@
 										<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Records Matching : </small></td>
 										<td class="col-md-9"><small id="dist_percent" style="font-size: 15pt;"></small><small id="dist_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small></td>
 									</tr>
+									
 									<tr>
 										<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Columns Not Matching : </small></td>
-										<td class="col-md-9"><small class="columnsnotmatching"></small></td>
+									<td class="col-md-9"><small class="columnsnotmatching" id="more"></small><!--<button type="button" class="btn btn-default" id="btn_cancel_rules" data-toggle="modal" data-target="#more">More</button></td>-->
+										
+										
 									</tr>
 								</tbody>
 							</table>
@@ -886,245 +927,238 @@
 							
 							<div class="row tab-pane fade active in" id="column_map">
 								<!--<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="colMapHelp()" />-->
-								<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
-									
-									<div class="panel-heading">
-										<h3 class="panel-title">Data Filter</h3>
-										<span class="pull-right clickable" data-toggle="collapse" data-target="#collapseThree" id="collapser">
-											
-											<i class="fa fa-chevron-up"></i>
-										</span>
-									</div>
-									<div id="collapseThree" class="panel-collapse collapse">
-										<div class="panel-body">
-											<div class="col-md-12" style="margin-bottom: 25px;">
-												<div class="form-group">
-													<label class="col-sm-4">Run on sample of</label>
-													<div class="col-sm-8">
-														<input type="number" placeholder="Insert number..." class="form-control" id="rule_randomsample" min="0">
-													</div>
-												</div>
-											</div>
-											<div class="col-md-12">
-												<div class="form-group" id="src_filter_sql">
-													<label class="col-sm-4">Src Filter Sql</label>
-													<div class="col-sm-8">
-														<input type="text" placeholder="Insert sql here..." class="form-control">
-													</div>
-													<br><br>
-												</div>
-											</div>
-											<div class="col-md-12">
-												<div class="form-group" id="dist_filter_sql">
-													<label class="col-sm-4">Dist Filter Sql</label>
-													<div class="col-sm-8">
-														<input type="text" placeholder="Insert sql here..." class="form-control">
-													</div>
-													<br><br>
-												</div>
-											</div>
-											<div class="col-md-12">
-												<div class="modal fade" id="what1" role="dialog">
-													<div class="modal-dialog">
-														<div class="modal-content">
-															<div class="modal-header">
-																<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
-															</div>
-															<div class="modal-body">
-																<p> First popup</p>
-																<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
-																
-															</div>
-															
-															
-														</div>
-													</div>
-												</div>
-											</div>
-											
-											
-											<div class="col-md-12">
-												<!--<button class="btn btn-danger" data-toggle="modal" data-target="#what" id="btn_delete">What is this</button>-->
-												<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what1" />
-											</div>
+								<div class="panel-group" id="accordion">
+									<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
+										
+										
+										<div class="panel-heading" data-toggle="collapse" data-parent="#accordion"data-target="#collapseThree">
+											<h3 class="panel-title accordion-toggle">Data Filter</h3>	
 										</div>
-									</div>
-								</div>
-								
-								<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
-									<div class="panel-heading">
-										<h3 class="panel-title">Dataset Comparision Options</h3>
-										<span class=" pull-right clickable" data-toggle="collapse" data-target="#collapseFour" id="collapser">
-											
-											<i class="fa fa-chevron-up"></i>
-										</span>
-									</div>
-									<div id="collapseFour" class="panel-collapse collapse">
-										<div class="panel-body">
-											<div class="col-md-12">
-												<div class="modal fade" id="what" role="dialog">
-													<div class="modal-dialog">
-														<div class="modal-content">
-															<div class="modal-header">
-																<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
-															</div>
-															<div class="modal-body">
-																<p> Second popup</p>
-																
-																<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
-																
-																<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
-																
-																<p>Src Filter Sql/Dist Filter Sql : To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
-																
-																<p>Note :  You can refer to the dataset as my_data.</p>
-																
-																<p>Ex : select * from my_data where age > 30</p>
-																
-															</div>
-															
-															
+										
+										<div id="collapseThree" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="col-md-12" style="margin-bottom: 25px;">
+													<div class="form-group">
+														<label class="col-sm-4">Run on sample of</label>
+														<div class="col-sm-8">
+															<input type="number" placeholder="Insert number..." class="form-control" id="rule_randomsample" min="0">
 														</div>
 													</div>
 												</div>
-											</div>
-											<div class="col-md-12">
-												<div class="checkbox" style="margin-bottom: 30px;display: inline-block;margin-left: 30px;">
-													<label style="margin-right: 10px"><input type="checkbox" value="" id="rule_matchboth" checked="">Compare two way</label>
+												<div class="col-md-12">
+													<div class="form-group" id="src_filter_sql">
+														<label class="col-sm-4">Src Filter Sql</label>
+														<div class="col-sm-8">
+															<input type="text" placeholder="Insert sql here..." class="form-control">
+														</div>
+														<br><br>
+													</div>
 												</div>
-											</div>
-											<div class="col-md-12">
+												<div class="col-md-12">
+													<div class="form-group" id="dist_filter_sql">
+														<label class="col-sm-4">Dist Filter Sql</label>
+														<div class="col-sm-8">
+															<input type="text" placeholder="Insert sql here..." class="form-control">
+														</div>
+														<br><br>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="modal fade" id="what1" role="dialog">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
+																</div>
+																<div class="modal-body">
+																	<p> First popup</p>
+																	<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
+																	
+																</div>
+																
+																
+															</div>
+														</div>
+													</div>
+												</div>
 												
-												<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what" />
+												
+												<div class="col-md-12">
+													<!--<button class="btn btn-danger" data-toggle="modal" data-target="#what" id="btn_delete">What is this</button>-->
+													<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what1" />
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-								<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
 									
-									<div class="panel-heading">
-										<h3 class="panel-title">Data Transformations</h3>
-										<span class=" pull-right clickable" data-toggle="collapse" data-target="#collapseFive" id="collapser">
-											
-											<i class="fa fa-chevron-up"></i>
-										</span>
-									</div>
-									<div id="collapseFive" class="panel-collapse collapse">
-										<div class="panel-body">
-											
-											<div class="col-md-12">
-												<div class="col-md-6">
-													<label>Source Transformations</label>
-													<div class="form-group row" style="margin-top: 15px;">
-														<label class="col-sm-3">Column</label>
-														<div class="col-sm-9">
-															<div class="src_trans_column">
-																<input type="text" class="form-control">
+									<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
+										
+										<div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFour">
+											<h3 class="panel-title accordion-toggle">Dataset Comparision Options</h3>	
+										</div>
+										<div id="collapseFour" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="col-md-12">
+													<div class="modal fade" id="what" role="dialog">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
+																</div>
+																<div class="modal-body">
+																	<p> Second popup</p>
+																	
+																	<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
+																	
+																	<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
+																	
+																	<p>Src Filter Sql/Dist Filter Sql : To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
+																	
+																	<p>Note :  You can refer to the dataset as my_data.</p>
+																	
+																	<p>Ex : select * from my_data where age > 30</p>
+																	
+																</div>
+																
+																
 															</div>
 														</div>
-														<label class="col-sm-3">Rule</label>
-														<div class="col-sm-9">
-															<input type="text" class="form-control src_trans_rule">
-														</div>
 													</div>
-													<div class="form-group row" id="src_trans_next">
-														<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
-															<span class="glyphicon glyphicon-plus"></span>
-														</button>
-														<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
-															<span class="glyphicon glyphicon-minus"></span>
-														</button>
+												</div>
+												<div class="col-md-12">
+													<div class="checkbox" style="margin-bottom: 30px;display: inline-block;margin-left: 30px;">
+														<label style="margin-right: 10px"><input type="checkbox" value="" id="rule_matchboth" checked="">Compare two way</label>
+													</div>
+												</div>
+												<div class="col-md-12">
+													
+													<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what" />
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
+										
+										<div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFive">
+											<h3 class="panel-title accordion-toggle">Data Transformations</h3>	
+										</div>
+										
+										<div id="collapseFive" class="panel-collapse collapse">
+											<div class="panel-body">
+												
+												<div class="col-md-12">
+													<div class="col-md-6">
+														<label>Source Transformations</label>
+														<div class="form-group row" style="margin-top: 15px;">
+															<label class="col-sm-3">Column</label>
+															<div class="col-sm-9">
+																<div class="src_trans_column">
+																	<input type="text" class="form-control">
+																</div>
+															</div>
+															<label class="col-sm-3">Rule</label>
+															<div class="col-sm-9">
+																<input type="text" class="form-control src_trans_rule">
+															</div>
+														</div>
+														<div class="form-group row" id="src_trans_next">
+															<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
+																<span class="glyphicon glyphicon-plus"></span>
+															</button>
+															<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
+																<span class="glyphicon glyphicon-minus"></span>
+															</button>
+														</div>
+														
 													</div>
 													
-												</div>
-												
-												<div class="col-md-6">
-													<label>Dist Transformations</label>
-													<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
-														<label class="col-sm-3">Column</label>
-														<div class="col-sm-9">
-															<div class="dist_trans_column">
-																<input type="text" class="form-control" value="">
+													<div class="col-md-6">
+														<label>Dist Transformations</label>
+														<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
+															<label class="col-sm-3">Column</label>
+															<div class="col-sm-9">
+																<div class="dist_trans_column">
+																	<input type="text" class="form-control" value="">
+																</div>
+															</div>
+															<label class="col-sm-3">Rule</label>
+															<div class="col-sm-9">
+																<input type="text" class="form-control dist_trans_rule">
 															</div>
 														</div>
-														<label class="col-sm-3">Rule</label>
-														<div class="col-sm-9">
-															<input type="text" class="form-control dist_trans_rule">
+														<div class="form-group row" id="dist_trans_next">
+															<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
+																<span class="glyphicon glyphicon-plus"></span>
+															</button>
+															<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
+																<span class="glyphicon glyphicon-minus"></span>
+															</button>
 														</div>
 													</div>
-													<div class="form-group row" id="dist_trans_next">
-														<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
-															<span class="glyphicon glyphicon-plus"></span>
-														</button>
-														<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
-															<span class="glyphicon glyphicon-minus"></span>
-														</button>
-													</div>
 												</div>
-											</div>
-											<div class="col-md-12">
-												<div class="modal fade" id="what2" role="dialog">
-													<div class="modal-dialog">
-														<div class="modal-content">
-															<div class="modal-header">
-																<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
-															</div>
-															<div class="modal-body">
-															<p>	Third popup</p>
-																<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
+												<div class="col-md-12">
+													<div class="modal fade" id="what2" role="dialog">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
+																</div>
+																<div class="modal-body">
+																	<p>	Third popup</p>
+																	<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
+																	
+																	
+																</div>
 																
 																
 															</div>
-															
-															
 														</div>
 													</div>
 												</div>
-											</div>
-											<div class="col-md-12">
+												<div class="col-md-12">
+													
+													<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what2" />
+												</div>
 												
-												<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what2" />
 											</div>
-											
 										</div>
 									</div>
 								</div>
-								
-										<div class="panel-body">
-											<div class="col-md-12">
-												<div class="modal fade" id="what3" role="dialog">
-													<div class="modal-dialog">
-														<div class="modal-content">
-															<div class="modal-header">
-																<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
-															</div>
-															<div class="modal-body">
-																
-																
-																<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
-																
-																<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
-																
-																<p>Src Filter Sql/Dist Filter Sql : To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
-																
-																<p>Note :  You can refer to the dataset as my_data.</p>
-																
-																<p>Ex : select * from my_data where age > 30</p>
-																
-															</div>
-															
-															
-														</div>
+								<div class="panel-body">
+									<div class="col-md-12">
+										<div class="modal fade" id="what3" role="dialog">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 													</div>
+													<div class="modal-body">
+														
+														
+														<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
+														
+														<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
+														
+														<p>Src Filter Sql/Dist Filter Sql : To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
+														
+														<p>Note :  You can refer to the dataset as my_data.</p>
+														
+														<p>Ex : select * from my_data where age > 30</p>
+														
+													</div>
+													
+													
 												</div>
 											</div>
-											
-											<div class="col-md-12">
-												
-												<img src="../dist/img/question.png" width="30px" height="30px" style="float: right" data-toggle="modal" data-target="#what3" />
-											</div>
 										</div>
+									</div>
 									
+									<div class="col-md-12">
+										
+										<img src="../dist/img/question.png" width="30px" height="30px" style="float: right" data-toggle="modal" data-target="#what3" />
+									</div>
+								</div>
+								
 								
 								<div>
 									<div class="col-md-12">
@@ -1240,6 +1274,19 @@
 		}
 		th.intro {
 		display:none !important;
+		}
+		
+		
+		.accordion-toggle:after {
+		
+		font-family:'FontAwesome';
+		content:"\f077";
+		float: right;
+		color: inherit;
+		}
+		.panel-heading.collapsed .accordion-toggle:after {
+		
+		content:"\f078";
 		}
 		
 	</style>
