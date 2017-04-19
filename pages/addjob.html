@@ -277,6 +277,8 @@
 					type: "POST",
 					url: "/job",
 					crossDomain: true,
+                    username: $.cookie("username"),
+                    password: $.cookie("password"),
 					dataType: 'json',
 					data: jsonStr,
 					contentType: 'application/json',
@@ -306,6 +308,8 @@
 				srcAjax = $.ajax({
 					type: "GET",
 					url: "/job/" + srcJobId,
+                    username: $.cookie("username") ,
+                    password: $.cookie("password"),
 					dataType: "json",
 					data: {},
 					success: function (response) {
@@ -379,6 +383,8 @@
 					type: "GET",
 					url: "/job/" + distJobId,
 					//url: "/job/5831337478162-SAMPLE",
+                    username: $.cookie("username") ,
+                    password: $.cookie("password"),
 					dataType: "json",
 					data: {},
 					success: function (response) {
@@ -544,6 +550,8 @@
 						type: "POST",
 						url: "/sampleData",
 						crossDomain: true,
+                        username: $.cookie("username") ,
+                        password: $.cookie("password"),
 						dataType: 'json',
 						data: jsonStr,
 						contentType: 'application/json',
@@ -596,6 +604,8 @@
 						type: "POST",
 						url: "/sampleData",
 						crossDomain: true,
+                        username: $.cookie("username") ,
+                        password: $.cookie("password"),
 						dataType: 'json',
 						data: jsonStr,
 						contentType: 'application/json',
@@ -767,6 +777,8 @@
 					type: "GET",
 					url: "/startUp",
 					crossDomain: true,
+                    username: $.cookie("username") ,
+                    password: $.cookie("password"),
 					dataType: 'json',
 					data: {},
 					beforeSend: function() {

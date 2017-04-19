@@ -286,6 +286,8 @@
 					type: "GET",
 					url: "/job/" + jobId,
 					dataType: "json",
+                    username: $.cookie("username") ,
+                    password: $.cookie("password"),
 					data: {},
 					success: function (response) {
 						dataDiffer(response);
@@ -357,6 +359,8 @@
 					type: "POST",
 					url: "/job",
 					crossDomain: true,
+                    username: $.cookie("username") ,
+                    password: $.cookie("password"),
 					dataType: 'json',
 					data: jsonStr,
 					contentType: 'application/json',
@@ -385,6 +389,8 @@
 					url : "/fileUpload",
 					type : 'POST',
 					data : formData,
+                    username: $.cookie("username") ,
+                    password: $.cookie("password"),
 					processData: false,
 					contentType: false,
 					success : function(response) {
@@ -403,6 +409,8 @@
 				$.ajax({
 					type: "POST",
 					url: fileName,
+                    username: $.cookie("username") ,
+                    password: $.cookie("password"),
 					dataType: "json",
 					data: {},
 					success: function (response) {
@@ -658,6 +666,8 @@
 					type: "GET",
 					url: "/startUp",
 					crossDomain: true,
+                    username: $.cookie("username") ,
+                    password: $.cookie("password"),
 					dataType: 'json',
 					data: {},
 					beforeSend: function() {
@@ -892,7 +902,7 @@
 			</div>
 			<!-- /#page-wrapper -->
 			<footer>
-				<p class="copyright">© powered by Dhiraj, 2017</p>
+				<p class="copyright">ï¿½ powered by Dhiraj, 2017</p>
 			</footer>
 		</div>
 		<!-- /#wrapper -->
