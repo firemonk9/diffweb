@@ -162,34 +162,34 @@ function addLiCheckClickListener(span) {
 function makeBadgeType(type) {
     switch (type) {
         case 'boolean':
-            type = 'bol'
+            type = 'boolean'
             break;
         case 'byte':
-            type = 'byt';
+            type = 'byte';
             break;
         case 'date':
             type = 'dt';
             break;
         case 'double':
-            type = 'dbl';
+            type = 'double';
             break;
         case 'float':
-            type = 'flt';
+            type = 'float';
             break;
         case 'int':
             break;
         case 'long':
             type = 'int';
-            type = 'lng';
+            type = 'long';
             break;
         case 'short':
-            type = 'sht';
+            type = 'short';
             break;
         case 'string':
             type = 'string';
             break;
         case 'timestamp':
-            type = 'ts';
+            type = 'timestamp';
             break;
     }
 
@@ -214,7 +214,7 @@ function insertCheckLi(ul, text, type) {
 
     var textdiv = document.createElement("div");
     textdiv.setAttribute("class", "li-tiff")
-    textdiv.setAttribute("style", "width: 186px;float: left;");
+    textdiv.setAttribute("style", "width: 163px;float: left;");
     textdiv.innerText = text;
     li.appendChild(textdiv);
 

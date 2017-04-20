@@ -221,7 +221,8 @@ tr {
 }
 
 .table>tbody>tr.orphan>td, .table>tbody>tr.orphan>th, .table>tbody>tr>td.orphan, .table>tbody>tr>th.orphan, .table>tfoot>tr.orphan>td, .table>tfoot>tr.orphan>th, .table>tfoot>tr>td.orphan, .table>tfoot>tr>th.orphan, .table>thead>tr.orphan>td, .table>thead>tr.orphan>th, .table>thead>tr>td.orphan, .table>thead>tr>th.orphan{
-    background:  #d9d9d9;
+   /* background:  #d9d9d9;*/
+	background:  #ADD8E6;
     /*border:0;*/
 }
 
