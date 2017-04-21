@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 	
-	
 	<head>
 		<title>Job Results</title>
 		<meta charset="utf-8">
@@ -37,21 +36,6 @@
 		<script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 		
 		<script src="../dist/js/app.js"></script>
-		
-		<script>
-		$(document).ready(function(){
-		/*
-			$('ul').children('li').hover(function(){
-				//get the nth child of p from parent class 'container'
-				var index = $(this).index();
-				
-			});
-		*/
-		});
-
-
-		</script>
-		
 		
 		<style>
 			.clickable{
@@ -319,7 +303,6 @@
 			function submitJobJson() {
 				
 				var data = getInputData(srcRecordCnt != distRecordCnt);
-				
 				if (data.primaryKey.length <= 0) {
 					alert("You should set at least one key.");
 					return;
@@ -334,7 +317,9 @@
 					alert("You should set at least one tick.");
 					return;
 					
-				}  
+				}
+				
+				
 				
 				
 				//data.jobname = info.inputData.name;
@@ -446,7 +431,7 @@
 				
 				var newjson = JSON.stringify(stats.columnsNotMatching);
 				var newjson = JSON.parse(newjson);
-				
+
 				$.each(newjson, function (k, value) {
 					var tr;
 					tr = $('<tr/>');
@@ -637,7 +622,7 @@
 				$('#btn_save_rules').on('click', function(e){
 					edit = "false";
 					submitJobJson();
-					//$('#advancedRulesModal').modal('hide');
+					$('#advancedRulesModal').modal('hide');
 				});
 				
 				$('#btn_cancel_rules').on('click', function(e) {
@@ -836,31 +821,31 @@
 					<strong>EXCEPTION!</strong> <span id="exception-value"></span>
 				</div>
 				<div class="col-md-12">
-					<div class="modal fade" id="more" role="dialog">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
-								</div>
-								<div class="modal-body">
-									<table class="table table-striped" id="tblGrid">
-										<thead id="tblHead">
-											<tr>
-												<th>Name</th>
-												<th>Value</th>
-											</tr>
-										</thead>
-										<tbody>
-											
-										</tbody>
-									</table>
-								</div>
-								
-								
-							</div>
-						</div>
-					</div>
-				</div>
+										<div class="modal fade" id="more" role="dialog">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
+													</div>
+													<div class="modal-body">
+														<table class="table table-striped" id="tblGrid">
+															<thead id="tblHead">
+																<tr>
+																	<th>Name</th>
+																	<th>Value</th>
+																</tr>
+															</thead>
+															<tbody>
+																
+															</tbody>
+														</table>
+													</div>
+													
+													
+												</div>
+											</div>
+										</div>
+									</div>
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
@@ -922,7 +907,7 @@
 			</div>
 			<!-- /#page-wrapper -->
 			<footer>
-				<p class="copyright">© Powered by Difftool, 2017</p>
+				<p class="copyright">� powered by Dhiraj, 2017</p>
 			</footer>
 		</div>
 		<!-- /#wrapper -->
@@ -1002,14 +987,8 @@
 																		<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 																	</div>
 																	<div class="modal-body">
-																		<p><b>Run on sample of:</b>To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000.</p>
-																		
-																		<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
-																		<p><b>Src Filter Sql/Dist Filter Sql :</b> To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
-																		
-																		<p>Note :  You can refer to the dataset as my_data.</p>
-																		
-																		<p>Ex : select * from my_data where age > 30</p>
+																		<p> First popup</p>
+																		<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
 																		
 																	</div>
 																	
@@ -1043,8 +1022,20 @@
 																		<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 																	</div>
 																	<div class="modal-body">
-																		<p><b>Compare two way : </b>When the checkbox is selected compares both source and destination datasets with each other. When destination dataset is subset of source dataset unselect the check box.</p>	
+																		<p> Second popup</p>
+																		
+																		<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
+																		
+																		<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
+																		
+																		<p>Src Filter Sql/Dist Filter Sql : To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
+																		
+																		<p>Note :  You can refer to the dataset as my_data.</p>
+																		
+																		<p>Ex : select * from my_data where age > 30</p>
+																		
 																	</div>
+																	
 																	
 																</div>
 															</div>
@@ -1129,55 +1120,8 @@
 																		<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 																	</div>
 																	<div class="modal-body">
-																		<p>	<b>Transformations</b> : DiffTool provides ability to transform the columns before comparing. Transformation rule can be applied to one or more columns. Currently, only scala code is accepted to make a  transformation on a column. Below are some scenarios and sample code.</p>
-																		
-																		<table class="table2" style="width:100%">
-																			<th>Example scenario</th>
-																			<th>Rule</th>
-																			
-																			<tr>
-																				<td>Convert to lower case</td>
-																				<td>
-																					if(value != null) value.toLowerCase() else value
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>Convert to upper case</td>
-																				<td>
-																					if(value != null) value.toUpperCase() else value
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>Trim a string (remove spaces)</td>
-																				<td>
-																					if(value != null) value.trim() else value
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>Make a substring of at most 10 charecters</td>
-																				<td>
-																					if(value != null && value.length > 10) value.substring(10) else value
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>Remove charecters after last decimal.</td>
-																				<td>
-																					if(value != null && value.indexOf(“.”)  > -1) value.substring(0,value.lastIndexOf(“.”)) else value
-																				</td>
-																			</tr>
-																			
-																		</table>
-																		
-																		<style>
-																			
-																			table.table2 th{border: 1px solid black;
-																			border-collapse: collapse;padding: 6px;}
-																			
-																			table.table2 td{border: 1px solid black;
-																			border-collapse: collapse;padding: 6px;}
-																			
-																			
-																		</style>
+																		<p>	Third popup</p>
+																		<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
 																		
 																		
 																	</div>
@@ -1208,12 +1152,15 @@
 													<div class="modal-body">
 														
 														
-														<p><b>Source Dataset Columns</b> : Atleast one column needs to be a compare key column to compare datasets. Compare key columns are used to join the datasets in order to compare record by record. Select the check box next to column name to define a column/s as key column/s.  Drag the columns to map them to the corresponding column in the destination dataset.</p>
+														<p>Run on sample of: To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000. </p>
 														
-														<p><b>Destination Dataset Columns</b> :  Column names from the destination dataset. Drag the columns to map them to the corresponding source dataset column.</p>
+														<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
 														
-														<p><b>Exclude Columns</b> : Only columns which have green icon next to them are compared. Click on the green icon( changes to red cross) to exclude the column from comparision.</p>
+														<p>Src Filter Sql/Dist Filter Sql : To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
 														
+														<p>Note :  You can refer to the dataset as my_data.</p>
+														
+														<p>Ex : select * from my_data where age > 30</p>
 														
 													</div>
 													
@@ -1339,7 +1286,7 @@
 				}
 			});
 		});
-		
+	
 	</script>
 	<style>
 		
@@ -1367,10 +1314,9 @@
 		}
 		.panel-heading {
 		cursor: pointer;
-		}
+	}
 		
 		
 	</style>
 	
 </html>
-
