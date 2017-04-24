@@ -329,13 +329,13 @@
 					return;
 				}
 				
+				/*
 				$count = $("#mapper > div img[src='../dist/img/tick.png']").length;
 				if($count <= 0){
 					alert("You should set at least one tick.");
 					return;
-					
 				}  
-				
+				*/
 				
 				//data.jobname = info.inputData.name;
 				//data.compareCommonColumnsOnly = info.inputData.compareCommonColumnsOnly;
@@ -376,7 +376,7 @@
 					data: jsonStr,
 					contentType: 'application/json',
 					success: function (response) {
-						alert(response.jobname);
+						//alert(response.jobname);
 						jobId = response.jobIds[0];
 						getJobResult(jobId);
 						var url = window.location.href;

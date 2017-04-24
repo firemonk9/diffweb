@@ -94,8 +94,6 @@ var Base64 = {
     }
 };
 
-
-
 function setToolDetail() {
     document.getElementById("tool-name").innerHTML = toolname;
     document.getElementById("tool-version").innerHTML = getCookie("version");
@@ -164,41 +162,41 @@ function addLiCheckClickListener(span) {
 function makeBadgeType(type) {
     switch (type) {
         case 'boolean':
-            type = 'boolean'
+            type = 'bol'
             break;
         case 'byte':
-            type = 'byte';
+            type = 'byt';
             break;
         case 'date':
             type = 'dt';
             break;
         case 'double':
-            type = 'double';
+            type = 'dbl';
             break;
         case 'float':
-            type = 'float';
+            type = 'flt';
             break;
         case 'int':
+            type = 'int';
             break;
         case 'long':
-            type = 'int';
-            type = 'long';
+            type = 'lng';
             break;
         case 'short':
-            type = 'short';
+            type = 'sht';
             break;
         case 'string':
-            type = 'string';
+            type = 'str';
             break;
         case 'timestamp':
-            type = 'timestamp';
+            type = 'ts';
             break;
     }
 
     return type;
 }
 
-function insertCheckLi(ul, text, type,i='') {
+function insertCheckLi(ul, text, type) {
     var li = document.createElement("li");
     li.setAttribute("class", "list-group-item");
     /*
@@ -216,13 +214,12 @@ function insertCheckLi(ul, text, type,i='') {
 
     var textdiv = document.createElement("div");
     textdiv.setAttribute("class", "li-tiff")
-    textdiv.setAttribute("style", "width: 163px;float: left;");
+    textdiv.setAttribute("style", "width: 210px;float: left;");
     textdiv.innerText = text;
     li.appendChild(textdiv);
 
     var checkspan = document.createElement("span");
     checkspan.setAttribute("class", "glyphicon glyphicon-unchecked");
-	checkspan.setAttribute("id", i);
     checkspan.setAttribute("style", "float: right;");
 
     addLiCheckClickListener(checkspan);
@@ -256,24 +253,16 @@ function insertLi(ul, text, type) {
     return li;
 }
 
-//Applying class for TICKS.
-function insertMapper(mapper, mapped,i='') {
-	//alert(i);
-	//alert(mapper);
-	
+function insertMapper(mapper, mapped) {
     var div = document.createElement("div");
-	div.setAttribute("class", "list_"+i);
-	
-	
-    var img = document.createElement("img");
-	img.setAttribute("rel", i);
-	img.setAttribute("class", "uncheck");
 
+    var img = document.createElement("img");
     if (mapped)
-        var imgSrc = "../dist/img/tick.png";
+        var imgSrc = "../dist/img/green_arrow.png";
     else
-        var imgSrc = "../dist/img/cross54_33.png";
+        var imgSrc = "../dist/img/yellow_arrow.png";
     img.setAttribute("src", imgSrc);
+    //img.setAttribute("style", "width: 100px; height:36px; margin-top: 2px;");
 
     div.appendChild(img);
     mapper.appendChild(div);
@@ -411,7 +400,6 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
         resetRuleData();
 
         $('#job_name').val(jobname);
-		
 
         /******************************Generate Column Map Tab *******************************************/
         /*************************************************************************************************/
@@ -434,15 +422,12 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
 
         //Write src columns to the list.
         for (var i = 0; i < srcColumns.length; i++){
-			
-			//$('.list img').attr('rel', i);
-			
             //When src column mapped to dist column, extract src column name.
             if (srcColumns[i].name.indexOf('__') > 0) {
                 var vals = srcColumns[i].name.split('__');
-                insertCheckLi(srcUl, vals[0], srcColumns[i].dataType,i);
+                insertCheckLi(srcUl, vals[0], srcColumns[i].dataType);
                 insertLi(distUl, vals[1], srcColumns[i].dataType);
-                insertMapper(mapper, true,i);
+                insertMapper(mapper, true);
                 remainSrcColumns[srcColumns[i].name] = true;
                 remainDistColumns[srcColumns[i].name] = true;
             } else {    // when src column contains excluded column, don't include to src list.
@@ -466,20 +451,20 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                                 }
                                 if (distNotExcluded) {
                                     if (srcColumns[i].name == distColumns[j].name) {
-                                        insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
+                                        insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType);
                                         remainSrcColumns[srcColumns[i].name] = true;
                                         insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
                                         remainDistColumns[distColumns[j].name] = true;
-                                        insertMapper(mapper, true,i);
+                                        insertMapper(mapper, true);
                                         break;
                                     }
                                 }
                             } else if (srcColumns[i].name == distColumns[j].name) {
-                                insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
+                                insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType);
                                 remainSrcColumns[srcColumns[i].name] = true;
                                 insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
                                 remainDistColumns[distColumns[j].name] = true;
-                                insertMapper(mapper, true,i);
+                                insertMapper(mapper, true);
                             }
                         }
                     }
@@ -495,20 +480,20 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                             }
                             if (distNotExcluded) {
                                 if (srcColumns[i].name == distColumns[j].name) {
-                                    li = insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
+                                    li = insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType);
                                     remainSrcColumns[srcColumns[i].name] = true;
                                     insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
                                     remainDistColumns[distColumns[j].name] = true;
-                                    insertMapper(mapper, true,i);
+                                    insertMapper(mapper, true);
                                     break;
                                 }
                             }
                         } else if (srcColumns[i].name == distColumns[j].name) {
-                            li = insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
+                            li = insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType);
                             remainSrcColumns[srcColumns[i].name] = true;
                             insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
                             remainDistColumns[distColumns[j].name] = true;
-                            insertMapper(mapper, true,i);
+                            insertMapper(mapper, true);
                         }
                     }
                 }
@@ -526,7 +511,7 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                         }
                     }
                     if (srcNotExcluded) {
-                        insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
+                        insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType);
                         var map = insertMapper(mapper, false);
                         for (var j = 0; j < columnMaps.length; j++) {
                             if (columnMaps[j].srcColumn == srcColumns[i]) {
@@ -536,7 +521,7 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                         }
                     }
                 }else {
-                    insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
+                    insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType);
                     var map = insertMapper(mapper, false);
                     for (var j = 0; j < columnMaps.length; j++) {
                         if (columnMaps[j].srcColumn == srcColumns[i].name) {
@@ -595,16 +580,6 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                 }
             }
         }
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
         /***********************************End Generating Column Map Tab***************************************/
         /*******************************************************************************************************/
 
@@ -668,9 +643,6 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
         setMapperListener();
     }
 }
-
-
-
 
 function setMoveDownListener() {
     $('.move-down').on('click', function(e) {
@@ -773,49 +745,17 @@ function setExcludeListener() {
 }
 
 function setMapperListener() {
-	
-	$('.uncheck').on('click', function(e){
-		var rel= $(this).attr('rel');
-		var source= $(this).attr('src');
-		
-		var id= '#'+rel;
-		
-		//alert(source);
-		if(source == '../dist/img/cross54_33.png'){
-			//alert('1');
-			//$(id).removeClass();
-			//$(id).addClass('glyphicon glyphicon-check');
-		}else if(source == '../dist/img/tick.png'){
-			//alert('2');
-			$(id).removeClass();
-			$(id).addClass('glyphicon glyphicon-unchecked');
-		}
-		//alert(source);
-	 });
-	
-	
     $('#mapper img').each(function(index){
         var img = $(this);
         img.on('click', function(e){
-			
-            if (img[0].src.indexOf("tick") > 0) {
-	
-                img[0].src = "../dist/img/cross54_33.png";
+            if (img[0].src.indexOf("green") > 0) {
+                img[0].src = "../dist/img/yellow_arrow.png";
             } else {
-                img[0].src = "../dist/img/tick.png";
+                img[0].src = "../dist/img/green_arrow.png";
             }
         });
     });
 }
-
-function uncheckbox(){
-  $('#mapper img.uncheck').on('click', function(e){
-	  var page = $('#mapper img.uncheck').attr('rel');
-			alert(page);
-			
-		 });
-}
-
 
 function getInputData(compareCommon) {
     var result = {};
@@ -1047,4 +987,3 @@ function transHelp() {
     //window.location.href = "https://tobymcdowell.wixsite.com/difftool/documentation";
     window.open("https://tobymcdowell.wixsite.com/difftool/documentation", '_blank', 'location=yes,scrollbars=yes,status=yes');
 }
-
