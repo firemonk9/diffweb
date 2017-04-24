@@ -783,8 +783,8 @@ function setMapperListener() {
 		//alert(source);
 		if(source == '../dist/img/cross54_33.png'){
 			//alert('1');
-			$(id).removeClass();
-			$(id).addClass('glyphicon glyphicon-check');
+			//$(id).removeClass();
+			//$(id).addClass('glyphicon glyphicon-check');
 		}else if(source == '../dist/img/tick.png'){
 			//alert('2');
 			$(id).removeClass();
