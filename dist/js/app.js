@@ -94,6 +94,8 @@ var Base64 = {
     }
 };
 
+
+
 function setToolDetail() {
     document.getElementById("tool-name").innerHTML = toolname;
     document.getElementById("tool-version").innerHTML = getCookie("version");
@@ -265,6 +267,7 @@ function insertMapper(mapper, mapped,i='') {
 	
     var img = document.createElement("img");
 	img.setAttribute("rel", i);
+	img.setAttribute("class", "uncheck");
 
     if (mapped)
         var imgSrc = "../dist/img/tick.png";
@@ -408,6 +411,7 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
         resetRuleData();
 
         $('#job_name').val(jobname);
+		
 
         /******************************Generate Column Map Tab *******************************************/
         /*************************************************************************************************/
@@ -769,6 +773,27 @@ function setExcludeListener() {
 }
 
 function setMapperListener() {
+	
+	$('.uncheck').on('click', function(e){
+		var rel= $(this).attr('rel');
+		var source= $(this).attr('src');
+		
+		var id= '#'+rel;
+		
+		//alert(source);
+		if(source == '../dist/img/cross54_33.png'){
+			//alert('1');
+			$(id).removeClass();
+			$(id).addClass('glyphicon glyphicon-check');
+		}else if(source == '../dist/img/tick.png'){
+			//alert('2');
+			$(id).removeClass();
+			$(id).addClass('glyphicon glyphicon-unchecked');
+		}
+		//alert(source);
+	 });
+	
+	
     $('#mapper img').each(function(index){
         var img = $(this);
         img.on('click', function(e){
@@ -782,6 +807,15 @@ function setMapperListener() {
         });
     });
 }
+
+function uncheckbox(){
+  $('#mapper img.uncheck').on('click', function(e){
+	  var page = $('#mapper img.uncheck').attr('rel');
+			alert(page);
+			
+		 });
+}
+
 
 function getInputData(compareCommon) {
     var result = {};
@@ -1013,3 +1047,4 @@ function transHelp() {
     //window.location.href = "https://tobymcdowell.wixsite.com/difftool/documentation";
     window.open("https://tobymcdowell.wixsite.com/difftool/documentation", '_blank', 'location=yes,scrollbars=yes,status=yes');
 }
+
