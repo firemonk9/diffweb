@@ -970,9 +970,9 @@
 												<div class="panel-body">
 													<div class="col-md-12" style="margin-bottom: 25px;">
 														<div class="form-group">
-															<label class="col-sm-4">Run on sample of</label>
+															<label class="col-sm-4">Compare Random Sample</label>
 															<div class="col-sm-8">
-																<input type="number" placeholder="Insert number..." class="form-control" id="rule_randomsample" min="0">
+																<input type="number" placeholder="Insert number between 1 to 100,000" class="form-control" id="rule_randomsample" min="0">
 															</div>
 														</div>
 													</div>
@@ -1002,13 +1002,14 @@
 																		<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 																	</div>
 																	<div class="modal-body">
-																		<p><b>Run on sample of:</b>To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000.</p>
-																		
-																		<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
-																		<p><b>Src Filter Sql/Dist Filter Sql :</b> To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
-																		
+																		<p>Compare Random Sample: Enter a number between 1 to 100,000 to compare on a random sample instead of the whole dataset. </p>
+
+																		<p>Note : The actual records compared may vary slightly as there could be multiple records for a key)</p>
+
+																		<p>Src Filter Sql/Dist Filter Sql : To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
+
 																		<p>Note :  You can refer to the dataset as my_data.</p>
-																		
+
 																		<p>Ex : select * from my_data where age > 30</p>
 																		
 																	</div>
@@ -1043,7 +1044,7 @@
 																		<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 																	</div>
 																	<div class="modal-body">
-																		<p><b>Compare two way : </b>When the checkbox is selected compares both source and destination datasets with each other. When destination dataset is subset of source dataset unselect the check box.</p>	
+																		<p><b>Compare two way : </b>By default, both source and destination datasets are compared with each other. To compare data one way (source to destination), unselect the check box. One way comparision is handy when source is superset of destination dataset.</p>
 																	</div>
 																	
 																</div>
@@ -1206,15 +1207,15 @@
 														<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 													</div>
 													<div class="modal-body">
-														
-														
-														<p><b>Source Dataset Columns</b> : Atleast one column needs to be a compare key column to compare datasets. Compare key columns are used to join the datasets in order to compare record by record. Select the check box next to column name to define a column/s as key column/s.  Drag the columns to map them to the corresponding column in the destination dataset.</p>
-														
-														<p><b>Destination Dataset Columns</b> :  Column names from the destination dataset. Drag the columns to map them to the corresponding source dataset column.</p>
-														
-														<p><b>Exclude Columns</b> : Only columns which have green icon next to them are compared. Click on the green icon( changes to red cross) to exclude the column from comparision.</p>
-														
-														
+
+														<p><b>Compare Key</b> : Source and Destination datasets are compared by joining on selected columns. Tick the check box next to the column name to select the columns for joining. </p>
+
+														<p>Note : Atleast one column needs to be selected to compare both the datasets.  </p>
+
+														<p><b>Column Mapping</b> : There is a basic algorithm which puts column names with closest match together. The columns which are matched are selected by default for comparision. Users can explicitly map columns by dragging and columns on source or destination datasets.  </p>
+
+														<p><b>Exclude Columns</b> : Only columns which have green icon next to them are compared. Click on the green icon (changes to red cross) to exclude the column from comparision.</p>
+
 													</div>
 													
 													
