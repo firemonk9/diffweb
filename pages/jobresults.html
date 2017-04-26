@@ -113,6 +113,37 @@
 	
 	<body>
 		<script>
+			$(document).ready(function(){
+			
+				$('#logout').on('click', function(e){
+					setCookie("email", "");
+					setCookie("password", "");
+				});
+			
+				$.ajax({
+					type: "GET",
+					url: "/startUp",
+					crossDomain: true,
+					dataType: 'json',
+					data: {},
+					success: function (response) {
+						var email= getCookie("email");
+						if(response.authentication == 'basic' && email != ''){
+							setCookie("version", response.displayVersion);
+							setCookie("localMode", response.localMode);
+							setToolDetail();
+						}else if(response.authentication == 'basic' && email == ''){
+							location.href = "./login.html";
+						}
+					},
+					error: function (response) {
+
+					}
+				});
+			
+			});
+		
+		
 			var mergeArray = [];
 			var changeHeaderArray = [];
 			var diffCellArray = [];
@@ -783,7 +814,7 @@
 							<!--<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>-->
 							<!--</li>-->
 							<!--<li class="divider"></li>-->
-							<li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+							<li><a href="login.html" id="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
 							</li>
 						</ul>
 						<!-- /.dropdown-user -->
@@ -922,7 +953,7 @@
 			</div>
 			<!-- /#page-wrapper -->
 			<footer>
-				<p class="copyright">© DiffTool, 2017</p>
+				<p class="copyright">© Powered by Difftool, 2017</p>
 			</footer>
 		</div>
 		<!-- /#wrapper -->

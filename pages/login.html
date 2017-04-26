@@ -69,27 +69,27 @@
             });
 			
 			//Invoke the OLD code here.
-			    $.ajax({
-                    type: "GET",
-                    url: "/startUp",
-                    crossDomain: true,
-                    dataType: 'json',
-                    data: {},
-                    success: function (response) {
-						if(response.authentication == 'basic'){
-							setCookie("email", "blank");
-							setCookie("password", "blank");
-							setCookie("version", response.displayVersion);
-							setCookie("localMode", response.localMode);
-							//location.href = "./home.html";
-						}else if(response.authentication == 'none'){
-							
-						}
-                    },
-                    error: function (response) {
+			$.ajax({
+				type: "GET",
+				url: "/startUp",
+				crossDomain: true,
+				dataType: 'json',
+				data: {},
+				success: function (response) {
+					if(response.authentication == 'basic'){
+						//setCookie("email", "blank");
+						//setCookie("password", "blank");
+						setCookie("version", response.displayVersion);
+						setCookie("localMode", response.localMode);
+						//location.href = "./home.html";
+					}else if(response.authentication == 'none'){
+						
+					}
+				},
+				error: function (response) {
 
-                    }
-                });
+				}
+			});
 			
         });
     </script>

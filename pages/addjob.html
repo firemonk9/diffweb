@@ -109,6 +109,36 @@
 	
 	<body>
 		<script type="text/javascript">
+			$(document).ready(function () {
+			
+				$('#logout').on('click', function(e){
+					setCookie("email", "");
+					setCookie("password", "");
+				});
+			
+				$.ajax({
+					type: "GET",
+					url: "/startUp",
+					crossDomain: true,
+					dataType: 'json',
+					data: {},
+					success: function (response) {
+						var email= getCookie("email");
+						if(response.authentication == 'basic' && email != ''){
+							setCookie("version", response.displayVersion);
+							setCookie("localMode", response.localMode);
+							setToolDetail();
+						}else if(response.authentication == 'basic' && email == ''){
+							location.href = "./login.html";
+						}
+					},
+					error: function (response) {
+
+					}
+				});
+			});
+			
+			
 			
 			
 			var srcJobId = "", distJobId = "";
@@ -762,43 +792,47 @@
 				setExcludeListener();
 			}
 			
-			$(function () {
-				$.ajax({
-					type: "GET",
-					url: "/startUp",
-					crossDomain: true,
-					dataType: 'json',
-					data: {},
-					beforeSend: function() {
-						$("#loadingDiv").show();
-					},
-					success: function (response) {
-						setCookie("version", response.displayVersion);
-						setCookie("localMode", response.localMode);
-						setToolDetail();
-					},
-					error: function (response) {
-						
-					},
-					complete: function() {
-						$("#loadingDiv").hide();
-					}
+			$(document).ready(function(){
+				//alert('1');
+				$(function () {
+					$.ajax({
+						type: "GET",
+						url: "/startUp",
+						crossDomain: true,
+						dataType: 'json',
+						data: {},
+						beforeSend: function() {
+							$("#loadingDiv").show();
+						},
+						success: function (response) {
+							setCookie("version", response.displayVersion);
+							setCookie("localMode", response.localMode);
+							setToolDetail();
+						},
+						error: function (response) {
+							
+						},
+						complete: function() {
+							$("#loadingDiv").hide();
+						}
+					});
+					
+					$( "#src_column" ).sortable({
+						connectWith: ".connectedSortable1",
+						placeholder: "ui-state-highlight"
+					});
+					
+					$( "#dist_column" ).sortable({
+						connectWith: ".connectedSortable2",
+						placeholder: "ui-state-highlight"
+					});
+					
+					initForm(0);
+					
+					setListeners();
 				});
-				
-				$( "#src_column" ).sortable({
-					connectWith: ".connectedSortable1",
-					placeholder: "ui-state-highlight"
-				});
-				
-				$( "#dist_column" ).sortable({
-					connectWith: ".connectedSortable2",
-					placeholder: "ui-state-highlight"
-				});
-				
-				initForm(0);
-				
-				setListeners();
 			});
+			
 			
 			
 		</script>
@@ -843,7 +877,7 @@
 							<!--<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>-->
 							<!--</li>-->
 							<!--<li class="divider"></li>-->
-							<li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+							<li><a href="login.html" id="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
 							</li>
 						</ul>
 						<!-- /.dropdown-user -->
@@ -1199,7 +1233,7 @@
 			</div>
 			<!-- /#page-wrapper -->
 			<footer>
-				<p class="copyright">© DiffTool, 2017</p>
+				<p class="copyright">© Powered by Difftool, 2017</p>
 			</footer>
 		</div>
 		<!-- /#wrapper -->
@@ -1599,16 +1633,18 @@
 		ga('create', 'UA-93298501-2', 'auto');
 		ga('send', 'pageview');
 		
-		/* to hide hive on localhost*/	
-		if (getCookie("localMode") == "true"){
+		//alert(getCookie("localMode"));
+		/* to hide hive on localhost for SRC*/	
+		if (getCookie("localMode") == "true" || getCookie("localMode") == ''){
 			$('#select_src_type #change').hide();
-			}else{
+		}else{
 			$('#select_src_type #change').show();
 		}
 		
-		if (getCookie("localMode") == "true"){
+		/* to hide hive on localhost for DIST*/	
+		if (getCookie("localMode") == "true" || getCookie("localMode") == ''){
 			$('#select_dist_type #change').hide();
-			}else{
+		}else{
 			$('#select_dist_type #change').show();	
 		}
 		
