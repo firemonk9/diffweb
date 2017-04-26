@@ -175,10 +175,16 @@
                 crossDomain: true,
                 dataType: 'json',
                 data: {},
-                success: function (response) {
-                    setCookie("version", response.displayVersion);
-                    setCookie("localMode", response.localMode);
-                    setToolDetail();
+				success: function (response) {
+					var email= getCookie("email") ;
+					
+					if(response.authentication == 'basic' && email != 'blank'){
+						setCookie("version", response.displayVersion);
+						setCookie("localMode", response.localMode);
+						setToolDetail();
+					}else if(response.authentication == 'none'){
+						location.href = "./login.html";
+					}
                 },
                 error: function (response) {
 

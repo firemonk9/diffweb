@@ -41,22 +41,56 @@
                 var password = $('#password').val();
                 $.ajax({
                     type: "GET",
+                    url: "/test",
+                    crossDomain: true,
+                    dataType: 'json',
+					username: email,
+					password: password,
+                    data: {},
+                    success: function (response) {
+						
+					},
+					statusCode: {
+					  200: function() {
+							setCookie("email", email);
+							setCookie("password", password);
+							//setCookie("version", response.displayVersion);
+							//setCookie("localMode", response.localMode);
+							location.href = "./home.html";
+					  },
+					  401: function() {
+							alert("The supplied authentication is invalid");
+					  }
+                    },
+                    error: function (response) {
+							//alert("The supplied authentication is invalid");
+                    }
+                });
+            });
+			
+			//Invoke the OLD code here.
+			    $.ajax({
+                    type: "GET",
                     url: "/startUp",
                     crossDomain: true,
                     dataType: 'json',
                     data: {},
                     success: function (response) {
-                        setCookie("email", email);
-                        setCookie("password", password);
-                        setCookie("version", response.displayVersion);
-                        setCookie("localMode", response.localMode);
-                        location.href = "./home.html";
+						if(response.authentication == 'basic'){
+							setCookie("email", "blank");
+							setCookie("password", "blank");
+							setCookie("version", response.displayVersion);
+							setCookie("localMode", response.localMode);
+							//location.href = "./home.html";
+						}else if(response.authentication == 'none'){
+							
+						}
                     },
                     error: function (response) {
 
                     }
                 });
-            });
+			
         });
     </script>
 
