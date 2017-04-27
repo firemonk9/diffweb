@@ -59,7 +59,7 @@
 							location.href = "./home.html";
 					  },
 					  401: function() {
-							alert("The supplied authentication is invalid");
+							$("#add_err").html("Wrong username or password");
 					  }
                     },
                     error: function (response) {
@@ -97,11 +97,15 @@
 </head>
 
 <body>
-
+<div id="wrapper">
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
+				<div class="err" id="add_err" style="width: 100%;line-height: 40px;text-align: center;
+				margin-top: 12%;position: absolute;color: red;">
+				</div>
                 <div class="login-panel panel panel-default">
+				
                     <div class="panel-heading">
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
@@ -129,6 +133,11 @@
             </div>
         </div>
     </div>
+	<footer>
+            <p class="copyright">© Powered by Difftool, 2017</p>
+        </footer>
+    </div>
+	
 
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>

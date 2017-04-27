@@ -145,6 +145,7 @@ function addLiClickListener(li) {
             $(this).removeClass('active');
         } else {
             $(this).addClass('active');
+			 $(this).siblings().removeClass('active');
         }
     });
 }

@@ -39,17 +39,17 @@
 		<script src="../dist/js/app.js"></script>
 		
 		<script>
-		$(document).ready(function(){
-		/*
-			$('ul').children('li').hover(function(){
-				//get the nth child of p from parent class 'container'
-				var index = $(this).index();
-				
+			$(document).ready(function(){
+				/*
+					$('ul').children('li').hover(function(){
+					//get the nth child of p from parent class 'container'
+					var index = $(this).index();
+					
+					});
+				*/
 			});
-		*/
-		});
-
-
+			
+			
 		</script>
 		
 		
@@ -114,12 +114,12 @@
 	<body>
 		<script>
 			$(document).ready(function(){
-			
+				
 				$('#logout').on('click', function(e){
 					setCookie("email", "");
 					setCookie("password", "");
 				});
-			
+				
 				$.ajax({
 					type: "GET",
 					url: "/startUp",
@@ -132,18 +132,18 @@
 							setCookie("version", response.displayVersion);
 							setCookie("localMode", response.localMode);
 							setToolDetail();
-						}else if(response.authentication == 'basic' && email == ''){
+							}else if(response.authentication == 'basic' && email == ''){
 							location.href = "./login.html";
 						}
 					},
 					error: function (response) {
-
+						
 					}
 				});
-			
+				
 			});
-		
-		
+			
+			
 			var mergeArray = [];
 			var changeHeaderArray = [];
 			var diffCellArray = [];
@@ -290,10 +290,10 @@
 				// Get HeaderArray
 				if (newData.length > 0) {
 					var headerArray = Object.keys(newData[0]);
+					//alert(headerArray);
 					headerCount = headerArray.length;
 					curColumnIndex = 0;
 					var res = JSON.stringify(newData);
-					
 					setTable(newData, headerArray);
 					document.getElementById("success-msg").innerHTML = "Data differ successfully finished.";
 					$('.alert-success').show();
@@ -361,11 +361,11 @@
 				}
 				
 				/*
-				$count = $("#mapper > div img[src='../dist/img/tick.png']").length;
-				if($count <= 0){
+					$count = $("#mapper > div img[src='../dist/img/tick.png']").length;
+					if($count <= 0){
 					alert("You should set at least one tick.");
 					return;
-				}  
+					}  
 				*/
 				
 				//data.jobname = info.inputData.name;
@@ -503,11 +503,22 @@
 				$("#table thead tr").html('');
 				$.each(headerArray, function (index, value) {
 					var tr = '';
+					//alert(changeHeaderArray);
+					//alert(value);
+					
+	
 					if (contains.call(changeHeaderArray, value)){
 						//tr = $('<th data-field="' + value + '" data-cell-style="cellStyle" data-formatter="stateFormatter">' + value + '<i class="glyphicon glyphicon-star"></i></th>');
-						tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + ' <i class="	glyphicon glyphicon-remove"></i></th>');
-						} else {
-						tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '</th>');
+						
+						tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + ' <i class="glyphicon glyphicon-remove"></i></th>');
+					} 
+					else {
+						if(value == 'key'){
+							tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '<img src="../dist/img/key.jpg" width="20px" height="20px"></th>');
+						}else{
+							tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '</th>');
+						}
+						
 					}
 					
 					$("#table thead tr").append(tr);
@@ -582,6 +593,7 @@
 				result = value;
 				if (diffCellArray[index] ) {
 					var cellarr = diffCellArray[index];
+					
 					$.each(cellarr, function (index, column) {
 						var keyindex = Object.keys(row).indexOf(column);
 						if (keyindex == curColumnIndex && JSON.stringify(row[column]) === JSON.stringify(value)){
@@ -953,7 +965,7 @@
 			</div>
 			<!-- /#page-wrapper -->
 			<footer>
-				<p class="copyright">Â© Powered by Difftool, 2017</p>
+				<p class="copyright">© Powered by Difftool, 2017</p>
 			</footer>
 		</div>
 		<!-- /#wrapper -->
@@ -1193,7 +1205,7 @@
 																			<tr>
 																				<td>Remove charecters after last decimal.</td>
 																				<td>
-																					if(value != null && value.indexOf(â€œ.â€)  > -1) value.substring(0,value.lastIndexOf(â€œ.â€)) else value
+																					if(value != null && value.indexOf(“.”)  > -1) value.substring(0,value.lastIndexOf(“.”)) else value
 																				</td>
 																			</tr>
 																			
@@ -1419,6 +1431,12 @@
 		.panel-heading {
 		cursor: pointer;
 		}
+		
+		
+		.glyphicon.glyphicon-remove {
+		color: red;
+		}
+		
 		
 		
 	</style>

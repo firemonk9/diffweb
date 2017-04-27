@@ -23,6 +23,16 @@ body {
     border-left: 1px solid #e7e7e7;
   }
 }
+
+p.copyright {
+    position: absolute;
+    width: 100%;
+    color: black;
+    line-height: 40px;
+    font-size: 1.0em;
+    text-align: center;
+    bottom: 0;
+}
 .navbar-top-links {
   margin-right: 0;
 }
@@ -433,3 +443,4 @@ table.dataTable thead .sorting:after {
     border-left-width: 0;
   }
 }
+
