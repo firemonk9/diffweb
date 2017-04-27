@@ -306,6 +306,12 @@
 				$('.alert-success').show();
 			}
 			
+			
+			function createAdvancedRulePage_new(response) {
+				//alert(response.inputData.primaryKey);
+				return response.inputData.primaryKey;
+			}
+			
 			function createAdvancedRulePage(response) {
 				//make src and dist transformation column inputs to typeahead
 				if (response.exception != null)
@@ -336,6 +342,7 @@
 					data: {},
 					success: function (response) {
 						dataDiffer(response);
+						//alert(response);
 						if (edit == "true") {
 							info = response;
 							createAdvancedRulePage(response);
@@ -346,6 +353,22 @@
 					}
 				});
 			}
+			
+			//To Apply Check for Primary Key.
+			function getJobResult_new(jobId) {
+				$.ajax({
+					type: "GET",
+					url: "/job/" + jobId,
+					dataType: "json",
+					data: {},
+					success: function (response) {
+						info = response;
+						var n= createAdvancedRulePage_new(response);
+						setCookie("keys", n);
+					}
+				});
+			}
+			
 			
 			function submitJobJson() {
 				
@@ -497,34 +520,48 @@
 				$('#dist_count').html("(" + stats.totalDistRecordsMatching + " / " + stats.distRecordsCount + ")");
 			}
 			
+			//To Fetch URL parameters.
+			function param(name) {
+				return (location.search.split(name + '=')[1] || '').split('&')[0];
+			}
+			
+			//To Set the Cookie.
+			$(document).ready(function(){
+				var currentpara= param('jobId');
+				getJobResult_new(currentpara);
+			});
+			
 			// Show data to Table
 			function setTable(tableData, headerArray) {
+				var keys= getCookie("keys");
+				var result = keys.split(',');
+				var count= result.length;
+
+			
 				$("#table").bootstrapTable('destroy');
 				$("#table thead tr").html('');
 				$.each(headerArray, function (index, value) {
 					var tr = '';
-					//alert(changeHeaderArray);
-					//alert(value);
-					
-	
+
 					if (contains.call(changeHeaderArray, value)){
 						//tr = $('<th data-field="' + value + '" data-cell-style="cellStyle" data-formatter="stateFormatter">' + value + '<i class="glyphicon glyphicon-star"></i></th>');
 						
 						tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + ' <i class="glyphicon glyphicon-remove"></i></th>');
-					} 
-					else {
-						if(value == 'key'){
-							tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '<img src="../dist/img/key.jpg" width="20px" height="20px"></th>');
-						}else{
-							tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '</th>');
+					} else {
+						for(var i=0; i < count; i++){
+							//alert(value);
+							if(value == result[i]){
+								//alert(result[i]);
+								tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '<img src="../dist/img/key.jpg" width="20px" height="20px"></th>');
+								$("#table thead tr").append(tr);
+							}else{
+								tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '</th>');
+								$("#table thead tr").append(tr);
+							}
 						}
-						
 					}
-					
-					$("#table thead tr").append(tr);
-					
-					
 				});
+				
 				$('#table').bootstrapTable({
 					data: tableData,
 					onPageChange: function (number, size) {
@@ -537,9 +574,7 @@
 			
 			/* function to delete last column*/
 			function removeTableColumn() {
-				
 				$("#table  thead tr th:last-child, #table td:last-child").addClass("intro");
-				
 			}
 			
 			// Set mergeCells
@@ -1095,7 +1130,7 @@
 													</div>
 													<div class="col-md-12">
 														<div class="checkbox" style="margin-bottom: 30px;display: inline-block;margin-left: 30px;">
-															<label style="margin-right: 10px"><!--<input type="checkbox" id="rule_matchboth" checked> --><input type="checkbox" name="checkbox" value="" checked>Compare two way</label>
+															<label style="margin-right: 10px"><!--<input type="checkbox" id="rule_matchboth" checked> --><input type="checkbox" name="checkbox" value="" id="rule_matchboth" checked>Compare two way</label>
 														</div>
 													</div>
 													<div class="col-md-12">
