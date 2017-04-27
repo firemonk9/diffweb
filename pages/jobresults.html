@@ -549,17 +549,16 @@
 						tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + ' <i class="glyphicon glyphicon-remove"></i></th>');
 					} else {
 						for(var i=0; i < count; i++){
-							//alert(value);
-							if(value == result[i]){
-								//alert(result[i]);
+							if(value == result[i] || value == name){
+								var name= value;
 								tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '<img src="../dist/img/key.jpg" width="20px" height="20px"></th>');
-								$("#table thead tr").append(tr);
-							}else{
+							} else {
 								tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '</th>');
-								$("#table thead tr").append(tr);
 							}
 						}
 					}
+					
+					$("#table thead tr").append(tr);
 				});
 				
 				$('#table').bootstrapTable({
