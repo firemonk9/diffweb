@@ -48,8 +48,6 @@
 					});
 				*/
 			});
-			
-			
 		</script>
 		
 		
@@ -536,23 +534,24 @@
 				var keys= getCookie("keys");
 				var result = keys.split(',');
 				var count= result.length;
-
-			
+				
+				
 				$("#table").bootstrapTable('destroy');
 				$("#table thead tr").html('');
 				$.each(headerArray, function (index, value) {
 					var tr = '';
-
+					
 					if (contains.call(changeHeaderArray, value)){
 						//tr = $('<th data-field="' + value + '" data-cell-style="cellStyle" data-formatter="stateFormatter">' + value + '<i class="glyphicon glyphicon-star"></i></th>');
 						
 						tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + ' <i class="glyphicon glyphicon-remove"></i></th>');
-					} else {
+						} else {
 						for(var i=0; i < count; i++){
 							if(value == result[i] || value == name){
+								//alert(result[i]);
 								var name= value;
 								tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '<img src="../dist/img/key.jpg" width="20px" height="20px"></th>');
-							} else {
+								} else {
 								tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '</th>');
 							}
 						}
@@ -791,6 +790,27 @@
 					connectWith: ".connectedSortable1",
 					placeholder: "ui-state-highlight",
 					
+					stop: function(event, ui){
+						
+						$("#src_column li").each(function(event, el){
+							//console.log(el);
+							//console.log($(el).index());
+							//$(el).attr('data-id',$(el).index() - 1);
+							//$("li span.glyphicon").attr('data-id',$(el).index() - 1);
+						});
+						
+							var i=0;
+							$("#src_column li").each(function(event, el){
+								var product = $(this);
+								var child= product.children("span.glyphicon").attr('id');
+								var id= "#"+child;
+								$(id).attr('new-div-id',i);
+								i++;
+							})
+						//var n= $(this.index()).attr('data-id');
+						//alert(n);
+						
+					}
 					
 				});
 				
@@ -1239,14 +1259,16 @@
 																			<tr>
 																				<td>Remove charecters after last decimal.</td>
 																				<td>
-																					if(value != null && value.indexOf(�.�)  > -1) value.substring(0,value.lastIndexOf(�.�)) else value
+																					if(value != null && value.indexOf(".")  > -1) value.substring(0,value.lastIndexOf(".")) else value
 																				</td>
 																			</tr>
 																			
 																		</table>
 																		
 																		<style>
-																			
+																			table.table2 tr {
+																			text-transform: none;
+																			}
 																			table.table2 th{border: 1px solid black;
 																			border-collapse: collapse;padding: 6px;}
 																			
@@ -1465,7 +1487,6 @@
 		.panel-heading {
 		cursor: pointer;
 		}
-		
 		
 		.glyphicon.glyphicon-remove {
 		color: red;

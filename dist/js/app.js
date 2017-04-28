@@ -202,6 +202,7 @@ function makeBadgeType(type) {
 function insertCheckLi(ul, text, type,i='') {
     var li = document.createElement("li");
     li.setAttribute("class", "list-group-item");
+	li.setAttribute("data-id", i);
     /*
     var img = document.createElement("img");
     img.setAttribute("src", "../dist/img/" + type + ".png");
@@ -222,8 +223,9 @@ function insertCheckLi(ul, text, type,i='') {
     li.appendChild(textdiv);
 
     var checkspan = document.createElement("span");
-    checkspan.setAttribute("class", "glyphicon glyphicon-unchecked");
+    checkspan.setAttribute("class", "glyphicon glyphicon-unchecked testing");
 	checkspan.setAttribute("id", i);
+	checkspan.setAttribute("new-div-id", i);
     checkspan.setAttribute("style", "float: right;");
 
     addLiCheckClickListener(checkspan);
@@ -612,6 +614,7 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
         /***********************************Generate check boxes ***********************************************/
 
         $('#rule_matchboth').prop( "checked", matchBoth );
+		$('#rule_matchboth').prop('checked', true);
         //$('#rule_compare').prop("checked", compareCommon);
         if (randomSample != false && randomSample != null)
             $('#rule_randomsample').val(randomSample);
@@ -776,9 +779,14 @@ function setExcludeListener() {
 function setMapperListener() {
 	
 	$('.uncheck').on('click', function(e){
-		var rel= $(this).attr('rel');
+		var rel_old= $(this).attr('rel');
+		var new_id= "[new-div-id="+rel_old+"]";
+		//alert(new_id);
+		var rel= $(new_id).attr('id');
 		var source= $(this).attr('src');
 		
+		//alert(rel_old);
+		//alert(rel);
 		var id= '#'+rel;
 		
 		if(source == '../dist/img/cross54_33.png'){
