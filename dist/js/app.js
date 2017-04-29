@@ -267,11 +267,13 @@ function insertMapper(mapper, mapped,i='') {
     var div = document.createElement("div");
 	div.setAttribute("class", "list_"+i);
 	
+	//alert("list_"+i);
 	
     var img = document.createElement("img");
 	img.setAttribute("rel", i);
 	img.setAttribute("class", "uncheck");
 
+	//alert(mapped);
     if (mapped)
         var imgSrc = "../dist/img/tick.png";
     else
@@ -530,7 +532,7 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                     }
                     if (srcNotExcluded) {
                         insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
-                        var map = insertMapper(mapper, false);
+                        var map = insertMapper(mapper, false,i);
                         for (var j = 0; j < columnMaps.length; j++) {
                             if (columnMaps[j].srcColumn == srcColumns[i]) {
                                 map.children[0].setAttribute("src", "../dist/img/green_arrow.png");
@@ -540,7 +542,7 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                     }
                 }else {
                     insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
-                    var map = insertMapper(mapper, false);
+                    var map = insertMapper(mapper, false,i);
                     for (var j = 0; j < columnMaps.length; j++) {
                         if (columnMaps[j].srcColumn == srcColumns[i].name) {
                             map.children[0].setAttribute("src", "../dist/img/green_arrow.png");
@@ -584,8 +586,8 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
         for (var i = 0; i < srcExcluded.length; i++) {
             for (var j = 0; j < srcColumns.length; j++) {
                 if (srcExcluded[i] == srcColumns[j].name) {
-                    insertCheckLi(srcUl, srcColumns[j].name, srcColumns[j].dataType == null ? 'no' : srcColumns[j].dataType);
-                    insertMapper(mapper, false);
+                    insertCheckLi(srcUl, srcColumns[j].name, srcColumns[j].dataType == null ? 'no' : srcColumns[j].dataType,j);
+                    insertMapper(mapper, false,j);
                 }
             }
         }
@@ -805,7 +807,6 @@ function setMapperListener() {
         img.on('click', function(e){
 			
             if (img[0].src.indexOf("tick") > 0) {
-	
                 img[0].src = "../dist/img/cross54_33.png";
             } else {
                 img[0].src = "../dist/img/tick.png";
