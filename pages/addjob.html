@@ -284,7 +284,7 @@
 			
 			function submitJobJson() {
 				var data = getInputData(srcRecordCnt != distRecordCnt);
-				if (data.primaryKey.length <= 0) {
+				if (data.compareKey.length <= 0) {
 					alert("You should set at least one key.");
 					return;
 				}
@@ -302,7 +302,7 @@
 				}
 				var jsonStr = makeInputJson(data.jobname,data.compareCommonColumnsOnly,
 				data.validateRowsCount,data.randomSample,data.matchBoth,true,
-				data.columnMapping,data.srcFile,data.distFile,data.primaryKey);
+				data.columnMapping,data.srcFile,data.distFile,data.compareKey);
 				$.ajax({
 					type: "POST",
 					url: "/job",
@@ -521,7 +521,7 @@
 				advancedRuleEmpty = true;
 				
 				dataResetted = true;
-				primaryKey = [];
+				compareKey = [];
 			}
 			
 			function setListeners() {
@@ -545,14 +545,14 @@
 					
 					var params = {};
 					var format = $('#select_src_type').val();
-					params["srcPath"] = $('#src_path').val();
-					if (params["srcPath"] == '')
+					params["datasetPath"] = $('#src_path').val();
+					if (params["datasetPath"] == '')
 					return;
-					params["srcFormat"] = format;
+					params["datasetFormat"] = format;
 					if (format == "CSV") {
 						params["header"] = $('#src_header').val() == "True" ? true : false;
-						params["srcDelimiter"] = $('#src_delimiter').val();
-						if (params["srcDelimiter"] == '')
+						params["datasetDelimiter"] = $('#src_delimiter').val();
+						if (params["datasetDelimiter"] == '')
 						return;
 						if ($('#src_file_schema').val() == '') {
 							if (params["header"] == false){
@@ -562,7 +562,7 @@
 							params["useOtherSchema"] = false;
 							} else {
 							params["useOtherSchema"] = true;
-							params["columns"] = $('#src_file_schema').val().split(params["srcDelimiter"]);
+							params["columns"] = $('#src_file_schema').val().split(params["datasetDelimiter"]);
 						}
 					}
 					
@@ -597,14 +597,14 @@
 					
 					var params = {};
 					var format = $('#select_dist_type').val();
-					params["srcPath"] = $('#dist_path').val();
-					if (params["srcPath"] == '')
+					params["datasetPath"] = $('#dist_path').val();
+					if (params["datasetPath"] == '')
 					return;
-					params["srcFormat"] = format;
+					params["datasetFormat"] = format;
 					if (format == "CSV") {
 						params["header"] = $('#dist_header').val() == "True" ? true : false;
-						params["srcDelimiter"] = $('#dist_delimiter').val();
-						if (params["srcDelimiter"] == '')
+						params["datasetDelimiter"] = $('#dist_delimiter').val();
+						if (params["datasetDelimiter"] == '')
 						return;
 						if ($('#dist_file_schema').val() == '') {
 							if (params["header"] == false){
@@ -614,7 +614,7 @@
 							params["useOtherSchema"] = false;
 							} else {
 							params["useOtherSchema"] = true;
-							params["columns"] = $('#dist_file_schema').val().split(params["srcDelimiter"]);
+							params["columns"] = $('#dist_file_schema').val().split(params["datasetDelimiter"]);
 						}
 					}
 					

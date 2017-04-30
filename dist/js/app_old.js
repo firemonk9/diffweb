@@ -1,7 +1,7 @@
 var server = "127.0.0.1";
 //var server = "35.187.200.200";
 
-var toolname = "Diff Tool";
+var toolname = "DiffTool";
 
 var Base64 = {
     _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
@@ -807,18 +807,18 @@ function getInputData(compareCommon) {
         srcFile["filterSql"] = $('#src_filter_sql').val();
     }
     srcFile["excludeColmns"] = srcExcludeColmns;
-    srcFile["srcPath"] = $('#src_path').val();
-    srcFile["srcFormat"] = $('#select_src_type').val();
-    if (srcFile["srcFormat"] == "CSV") {
+    srcFile["datasetPath"] = $('#src_path').val();
+    srcFile["datasetFormat"] = $('#select_src_type').val();
+    if (srcFile["datasetFormat"] == "CSV") {
         srcFile["header"] = $('#src_header').val() == "True" ? true : false;
-        srcFile["srcDelimiter"] = $('#src_delimiter').val();
+        srcFile["datasetDelimiter"] = $('#src_delimiter').val();
         if (srcFile["header"])
             srcFile["useOtherSchema"] = true;
         else {
             srcFile["useOtherSchema"] = false;
-            srcFile["columns"] = $('#src_file_schema').val().split(srcFile["srcDelimiter"]);
+            srcFile["columns"] = $('#src_file_schema').val().split(srcFile["datasetDelimiter"]);
         }
-    } else if (srcFile["srcFormat"] == "JDBC") {
+    } else if (srcFile["datasetFormat"] == "JDBC") {
         var jdbcData = {};
         jdbcData["jdbcUrl"] = $('#src_url').val();
         jdbcData["jdbcUser"] = $('#src_user').val();
@@ -855,18 +855,18 @@ function getInputData(compareCommon) {
         distFile["filterSql"] = $('#dist_filter_sql').val();
     }
     distFile["excludeColmns"] = distExcludeColmns;
-    distFile["srcPath"] = $('#dist_path').val();
-    distFile["srcFormat"] = $('#select_dist_type').val();
-    if (distFile["srcFormat"] == "CSV") {
+    distFile["datasetPath"] = $('#dist_path').val();
+    distFile["datasetFormat"] = $('#select_dist_type').val();
+    if (distFile["datasetFormat"] == "CSV") {
         distFile["header"] = $('#dist_header').val() == "True" ? true : false;
-        distFile["srcDelimiter"] = $('#dist_delimiter').val();
+        distFile["datasetDelimiter"] = $('#dist_delimiter').val();
         if (distFile["header"])
             distFile["useOtherSchema"] = true;
         else {
             distFile["useOtherSchema"] = false;
-            distFile["columns"] = $('#dist_file_schema').val().split(distFile["srcDelimiter"]);
+            distFile["columns"] = $('#dist_file_schema').val().split(distFile["datasetDelimiter"]);
         }
-    } else if (distFile["srcFormat"] == "JDBC") {
+    } else if (distFile["datasetFormat"] == "JDBC") {
         var jdbcData = {};
         jdbcData["jdbcUrl"] = $('#dist_url').val();
         jdbcData["jdbcUser"] = $('#dist_user').val();
@@ -892,16 +892,16 @@ function getInputData(compareCommon) {
     result["distFile"] = distFile;
     /*******************************End dist Input*********************************/
 
-    var primaryKey = new Array;
+    var compareKey = new Array;
     for (var i = 0; i < $('ul#src_column li span.glyphicon-check').length; i++) {
-        primaryKey.push($('ul#src_column li span.glyphicon-check')[i].previousSibling.innerText);
+        compareKey.push($('ul#src_column li span.glyphicon-check')[i].previousSibling.innerText);
     }
-    result["primaryKey"] = primaryKey;
+    result["compareKey"] = compareKey;
     return result;
 }
 
 function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, randomSample, matchBoth, process,
-                       columnMapping, srcInput, distInput, primaryKey ) {
+                       columnMapping, srcInput, distInput, compareKey ) {
 
     var jsonTree = {};
     var filesCompareList = new Array;
@@ -924,16 +924,16 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
     var distFile = {};
     distFile["filterSql"] = distInput.filterSql;
     distFile["excludeColmns"] = distInput.excludeColmns;
-    distFile["srcPath"] = distInput.srcPath;
-    distFile["srcFormat"] = distInput.srcFormat;
-    if (distFile["srcFormat"] == "CSV") {
+    distFile["datasetPath"] = distInput.datasetPath;
+    distFile["datasetFormat"] = distInput.datasetFormat;
+    if (distFile["datasetFormat"] == "CSV") {
         distFile["header"] = distInput.header;
-        distFile["srcDelimiter"] = distInput.srcDelimiter;
+        distFile["datasetDelimiter"] = distInput.datasetDelimiter;
         distFile["useOtherSchema"] = false;
         if (!distFile["header"]) {
             distFile["columns"] = distInput.columns;
         }
-    } else if (distFile["srcFormat"] == "JSON") {
+    } else if (distFile["datasetFormat"] == "JSON") {
         var jdbcData = {};
         jdbcData["jdbcUrl"] = distInput.jdbcUrl;
         jdbcData["jdbcUser"] = distInput.jdbcUser;
@@ -949,22 +949,22 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
 
     filesCompareData["randomSample"] = randomSample;
 
-    filesCompareData["primaryKey"] = primaryKey;
+    filesCompareData["compareKey"] = compareKey;
 
     filesCompareData["process"] = true;
     var srcFile = {};
     srcFile["filterSql"] = srcInput.filterSql;
     srcFile["excludeColmns"] = srcInput.excludeColmns;
-    srcFile["srcPath"] = srcInput.srcPath;
-    srcFile["srcFormat"] = srcInput.srcFormat;
-    if (srcFile["srcFormat"] == "CSV") {
+    srcFile["datasetPath"] = srcInput.datasetPath;
+    srcFile["datasetFormat"] = srcInput.datasetFormat;
+    if (srcFile["datasetFormat"] == "CSV") {
         srcFile["header"] = srcInput.header;
-        srcFile["srcDelimiter"] = srcInput.srcDelimiter;
+        srcFile["datasetDelimiter"] = srcInput.datasetDelimiter;
         srcFile["useOtherSchema"] = false;
         if (!srcFile["header"]) {
             srcFile["columns"] = srcInput.columns;
         }
-    } else if (srcFile["srcFormat"] == "JSON") {
+    } else if (srcFile["datasetFormat"] == "JSON") {
         var jdbcData = {};
         jdbcData["jdbcUrl"] = srcInput.jdbcUrl;
         jdbcData["jdbcUser"] = srcInput.jdbcUser;

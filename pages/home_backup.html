@@ -205,7 +205,7 @@
             for(var i =0;i<d.length;i++)
             {
                 var $tr=$("<tr/>").addClass('odd gradeX');
-                var tdData=new Job("Test",d[i].input.srcFile.srcPath,d[i].input.distFile.srcPath,d[i].submittedTime,d[i].beginTime,d[i].endTime,"OK",d[i].result);
+                var tdData=new Job("Test",d[i].input.srcFile.datasetPath,d[i].input.distFile.datasetPath,d[i].submittedTime,d[i].beginTime,d[i].endTime,"OK",d[i].result);
                 for(var j in tdData){
                     var $td=$("<td/>").text(tdData[j]).attr('align','center');
                     $tr.append($td);

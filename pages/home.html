@@ -131,7 +131,7 @@
                         tmp.beginTime = bTime.toLocaleString('en-GB');
                         var eTime = new Date(tmp.endTime);
                         tmp.endTime = eTime.toLocaleString('en-GB');
-                        var tdData=new Job(tmp.input.name == null ? "No name" : tmp.input.name,tmp.input.srcFile.srcPath, tmp.input.distFile.srcPath, tmp.submittedTime, tmp.beginTime, tmp.endTime,tmp.status == "" ? "RUNNING" : tmp.status, tmp.dataMatch, tmp.jobId, tmp.input, tmp.srcColumns, tmp.distColumns);
+                        var tdData=new Job(tmp.input.name == null ? "No name" : tmp.input.name,tmp.input.srcFile.datasetPath, tmp.input.distFile.datasetPath, tmp.submittedTime, tmp.beginTime, tmp.endTime,tmp.status == "" ? "RUNNING" : tmp.status, tmp.dataMatch, tmp.jobId, tmp.input, tmp.srcColumns, tmp.distColumns);
                         tableData.push(tdData);
                     }
                     setTable(tableData);

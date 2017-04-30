@@ -271,7 +271,7 @@
 				
 				prepareAdvancedRule(true, response.inputData.name, response.srcSchema, response.inputData.srcFile.excludeColmns,
                 response.distSchema, response.inputData.distFile.excludeColmns,
-                response.inputData.primaryKey,
+                response.inputData.compareKey,
                 response.inputData.srcFile.transformations, response.inputData.distFile.transformations,
                 response.inputData.srcFile.filterSql, response.inputData.distFile.filterSql,
                 response.inputData.matchBoth, response.srcRowCount != response.distRowCount, response.inputData.randomSample
@@ -303,7 +303,7 @@
 			function submitJobJson() {
 				
 				var data = getInputData(srcRecordCnt != distRecordCnt);
-				if (data.primaryKey.length <= 0) {
+				if (data.compareKey.length <= 0) {
 					alert("You should set at least one key.");
 					return;
 				}
@@ -328,11 +328,11 @@
 				//data.randomSample = info.inputData.randomSample;
 				
 				data.srcFile.filterSql = info.inputData.srcFile.filterSql;
-				data.srcFile.srcPath = info.inputData.srcFile.srcPath;
-				data.srcFile.srcFormat = info.inputData.srcFile.srcFormat;
-				if (data.srcFile.srcFormat == "CSV") {
+				data.srcFile.datasetPath = info.inputData.srcFile.datasetPath;
+				data.srcFile.datasetFormat = info.inputData.srcFile.datasetFormat;
+				if (data.srcFile.datasetFormat == "CSV") {
 					data.srcFile.header = info.inputData.srcFile.header;
-					data.srcFile.srcDelimiter = info.inputData.srcFile.srcDelimiter;
+					data.srcFile.datasetDelimiter = info.inputData.srcFile.datasetDelimiter;
 					data.srcFile.useOtherSchema = info.inputData.srcFile.useOtherSchema;
 					if (!data.srcFile.useOtherSchema) {
 						data.srcFile.columns = info.inputData.srcFile.columns;
@@ -340,11 +340,11 @@
 				}
 				
 				data.distFile.filterSql = info.inputData.distFile.filterSql;
-				data.distFile.srcPath = info.inputData.distFile.srcPath;
-				data.distFile.srcFormat = info.inputData.distFile.srcFormat;
-				if (data.distFile.srcFormat == "CSV") {
+				data.distFile.datasetPath = info.inputData.distFile.datasetPath;
+				data.distFile.datasetFormat = info.inputData.distFile.datasetFormat;
+				if (data.distFile.datasetFormat == "CSV") {
 					data.distFile.header = info.inputData.distFile.header;
-					data.distFile.srcDelimiter = info.inputData.distFile.srcDelimiter;
+					data.distFile.datasetDelimiter = info.inputData.distFile.datasetDelimiter;
 					data.distFile.useOtherSchema = info.inputData.distFile.useOtherSchema;
 					if (!data.distFile.useOtherSchema) {
 						data.distFile.columns = info.inputData.distFile.columns;
@@ -352,7 +352,7 @@
 				}
 				var jsonStr = makeInputJson(data.jobname,data.compareCommonColumnsOnly,
                 data.validateRowsCount,data.randomSample,data.matchBoth,true,
-                data.columnMapping,data.srcFile,data.distFile,data.primaryKey);
+                data.columnMapping,data.srcFile,data.distFile,data.compareKey);
 				$.ajax({
 					type: "POST",
 					url: "/job",
