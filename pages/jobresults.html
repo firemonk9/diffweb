@@ -40,6 +40,9 @@
 		
 		<script>
 			$(document).ready(function(){
+			$('#btn_edit').on('click', function (e) {
+               $('#advancedRulesModal').modal();
+            });
 				/*
 					$('ul').children('li').hover(function(){
 					//get the nth child of p from parent class 'container'
@@ -1036,6 +1039,12 @@
 									</thead>
 								</table>
 							</div>
+							
+							 <div class="panel-footer">
+							<div style="width: 485px;display: block;margin: 0 auto;text-align: center;">
+                                <button class='btn btn-info' id="btn_edit">Edit Job</button>
+							</div>
+						</div>
 						</div>
 					</div>
 				</div>
