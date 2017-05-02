@@ -407,7 +407,7 @@
 				//data.validateRowsCount = info.inputData.validateRowsCount;
 				//data.randomSample = info.inputData.randomSample;
 				
-				data.srcFile.filterSql = info.inputData.srcFile.filterSql;
+				//data.srcFile.filterSql = info.inputData.srcFile.filterSql;
 				data.srcFile.datasetPath = info.inputData.srcFile.datasetPath;
 				data.srcFile.datasetFormat = info.inputData.srcFile.datasetFormat;
 				if (data.srcFile.datasetFormat == "CSV") {
@@ -419,7 +419,7 @@
 					}
 				}
 				
-				data.distFile.filterSql = info.inputData.distFile.filterSql;
+				//data.distFile.filterSql = info.inputData.distFile.filterSql;
 				data.distFile.datasetPath = info.inputData.distFile.datasetPath;
 				data.distFile.datasetFormat = info.inputData.distFile.datasetFormat;
 				if (data.distFile.datasetFormat == "CSV") {
@@ -1124,19 +1124,19 @@
 														</div>
 													</div>
 													<div class="col-md-12">
-														<div class="form-group" id="src_filter_sql">
+														<div class="form-group" >
 															<label class="col-sm-4">Src Filter Sql</label>
 															<div class="col-sm-8">
-																<input type="text" placeholder="Insert sql here..." class="form-control">
+																<input type="text" placeholder="Insert sql here..." class="form-control" id="src_filter_sql">
 															</div>
 															<br><br>
 														</div>
 													</div>
 													<div class="col-md-12">
-														<div class="form-group" id="dist_filter_sql">
+														<div class="form-group" >
 															<label class="col-sm-4">Dist Filter Sql</label>
 															<div class="col-sm-8">
-																<input type="text" placeholder="Insert sql here..." class="form-control">
+																<input type="text" placeholder="Insert sql here..." class="form-control" id="dist_filter_sql">
 															</div>
 															<br><br>
 														</div>
