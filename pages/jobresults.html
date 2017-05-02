@@ -40,17 +40,23 @@
 		
 		<script>
 			$(document).ready(function(){
-			$('#btn_edit').on('click', function (e) {
-               $('#advancedRulesModal').modal();
-            });
-				/*
-					$('ul').children('li').hover(function(){
-					//get the nth child of p from parent class 'container'
-					var index = $(this).index();
-					
-					});
-				*/
-			});
+				url = window.location.href;
+			if( url.match(edit=true) ) {
+				$( '#btn_edit_job' ).addClass( "a" );
+				}else{
+				$( '#btn_edit_job' ).removeClass( "a" );
+				}
+				
+				$("#btn_edit_job").click(function() {
+				var uri = window.location.href;
+				var add = "&edit=true";
+				window.location.href = uri + add;
+				$('#advancedRulesModal').modal();
+				});
+				
+				
+		});
+	
 		</script>
 		
 		
@@ -107,6 +113,10 @@
 			margin-top: -50px;
 			background: url('../dist/img/loading.gif');
 			background-size: 100%;
+			}
+			
+			.a{
+			display:none;
 			}
 			
 		</style>
@@ -857,6 +867,13 @@
 				setListeners();
 			});
 			
+			function addURL()
+			{
+				var data=window.location+"&edit=true";
+				//alert(data);
+				$('#advancedRulesModal').modal();
+				
+			}
 			
 			
 			
@@ -1042,7 +1059,8 @@
 							
 							 <div class="panel-footer">
 							<div style="width: 485px;display: block;margin: 0 auto;text-align: center;">
-                                <button class='btn btn-info' id="btn_edit">Edit Job</button>
+                                
+								 <button class='btn btn-info' id="btn_edit_job">Edit Job</button>
 							</div>
 						</div>
 						</div>
