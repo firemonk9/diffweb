@@ -38,13 +38,16 @@
 		
 		<script src="../dist/js/app.js"></script>
 		
+		
 		<script>
 			$(document).ready(function(){
 				url = window.location.href;
 			if( url.match(edit=true) ) {
 				$( '#btn_edit_job' ).addClass( "a" );
+				$( '#btn_edit' ).removeClass( "job" );
 				}else{
 				$( '#btn_edit_job' ).removeClass( "a" );
+				$( '#btn_edit' ).addClass( "job" );
 				}
 				
 				$("#btn_edit_job").click(function() {
@@ -52,9 +55,11 @@
 				var add = "&edit=true";
 				window.location.href = uri + add;
 				$('#advancedRulesModal').modal();
-				});
+				});	
 				
-				
+				$("#btn_edit").click(function() {
+				$('#advancedRulesModal').modal();
+				});	
 		});
 	
 		</script>
@@ -1061,12 +1066,13 @@
 							<div style="width: 485px;display: block;margin: 0 auto;text-align: center;">
                                 
 								 <button class='btn btn-info' id="btn_edit_job">Edit Job</button>
+								 <button class='btn btn-info' id="btn_edit">Edit Job</button>
 							</div>
 						</div>
 						</div>
 					</div>
 				</div>
-			</div>
+				</div>
 			<!-- /#page-wrapper -->
 			<footer>
 				<p class="copyright">© DiffTool, 2017</p>

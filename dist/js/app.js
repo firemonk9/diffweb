@@ -414,10 +414,15 @@ function concatExclude(srcColumns, srcExcluded) {
 function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColumns, distExcluded, primaryKeys, srcTransformations, distTransformations, srcFiterSql, distFilterSql, matchBoth, columnMaps, randomSample) {
     if (reload == true) {   //determine to create or show
         resetRuleData();
+		
+        var n= $('#job_name').val(jobname);
 
-        $('#job_name').val(jobname);
+	
+		//alert(result[4]);
+		
 		
 
+		
         /******************************Generate Column Map Tab *******************************************/
         /*************************************************************************************************/
         var srcUl = document.getElementById("src_column");
@@ -601,14 +606,6 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
             }
         }
 		
-		
-		
-		
-		
-		
-		
-		
-		
 
         /***********************************End Generating Column Map Tab***************************************/
         /*******************************************************************************************************/
@@ -616,7 +613,23 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
         /***********************************Generate check boxes ***********************************************/
 
         $('#rule_matchboth').prop( "checked", matchBoth );
-		$('#rule_matchboth').prop('checked', true);
+		//$('#rule_matchboth').prop('checked', true);
+		if(matchBoth == false){
+			var url = window.location.href;
+			var result = url.split('/');
+			var length= result.length - 1;
+			//alert(result[length]);
+			if(result[length] == 'addjob.html'){
+				$('#rule_matchboth').prop("checked", true);
+			}else{
+				$('#rule_matchboth').prop("checked", false);
+			}
+		}else if(matchBoth == true){
+			$('#rule_matchboth').prop("checked", true);
+		}
+		
+		
+		
         //$('#rule_compare').prop("checked", compareCommon);
         if (randomSample != false && randomSample != null)
             $('#rule_randomsample').val(randomSample);
