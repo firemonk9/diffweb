@@ -677,11 +677,13 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
         /***********************************End Generating Transformations Tab***********************************/
         /********************************************************************************************************/
 
+
+
         if (srcFiterSql != null) {
-            $('#src_filter_sql input').val(srcFiterSql);
+            $('#src_filter_sql').val(srcFiterSql);
         }
         if (distFilterSql != null) {
-            $('#dist_filter_sql input').val(distFilterSql);
+            $('#dist_filter_sql').val(distFilterSql);
         }
 
         setMapperListener();
