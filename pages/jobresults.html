@@ -539,6 +539,14 @@
 				var dist_percent = (stats.totalDistRecordsMatching / stats.distRecordsCount) * 100;
 				$('#dist_percent').html(parseInt(dist_percent) + "%");
 				$('#dist_count').html("(" + stats.totalDistRecordsMatching + " / " + stats.distRecordsCount + ")");
+
+				var src_key_percent = (stats.srcKeyMatchBrodcast / stats.srcKeyCount) * 100;
+				$('#src_key_percent').html(parseInt(src_key_percent) + "%");
+				$('#src_key_count').html("(" + stats.srcKeyMatchBrodcast + " / " + stats.srcKeyCount + ")");
+
+				var dist_key_percent = (stats.distKeyMatchBrodcast / stats.distKeyCount) * 100;
+				$('#dist_key_percent').html(parseInt(dist_key_percent) + "%");
+				$('#dist_key_count').html("(" + stats.distKeyMatchBrodcast + " / " + stats.distKeyCount + ")");
 			}
 			
 			//To Fetch URL parameters.
@@ -1023,7 +1031,14 @@
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Records Matching : </small></td>
 											<td class="col-md-9"><small id="dist_percent" style="font-size: 15pt;"></small><small id="dist_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small></td>
 										</tr>
-										
+										<tr>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Keys Matching : </small></td>
+											<td class="col-md-9"><small id="src_key_percent" style="font-size: 15pt;"></small><small id="src_key_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small></td>
+										</tr>
+										<tr>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Keys Matching : </small></td>
+											<td class="col-md-9"><small id="dist_key_percent" style="font-size: 15pt;"></small><small id="dist_key_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small></td>
+										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Columns Not Matching : </small></td>
 											<td class="col-md-9"><small class="columnsnotmatching" id="more"></small><button type="button"  data-toggle="modal" data-target="#more">Click Here!</button></td>
