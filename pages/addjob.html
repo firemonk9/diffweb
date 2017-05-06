@@ -548,14 +548,19 @@
 					var params = {};
 					var format = $('#select_src_type').val();
 					params["datasetPath"] = $('#src_path').val();
-					if (params["datasetPath"] == '')
-					return;
+
 					params["datasetFormat"] = format;
 					if (format == "CSV") {
 						params["header"] = $('#src_header').val() == "True" ? true : false;
 						params["datasetDelimiter"] = $('#src_delimiter').val();
-						if (params["datasetDelimiter"] == '')
-						return;
+						if (params["datasetPath"] == '') {
+							swal("Validation Error", "You should input data path.", "error");
+							return;
+						}
+						if (params["datasetDelimiter"] == '') {
+							swal("Validation Error", "You should input delimiter.", "error");
+							return;
+						}
 						if ($('#src_file_schema').val() == '') {
 							if (params["header"] == false){
 								swal("Validation Error", "You should input schema.", "error");
@@ -565,6 +570,25 @@
 							} else {
 							params["useOtherSchema"] = true;
 							params["columns"] = $('#src_file_schema').val().split(params["datasetDelimiter"]);
+						}
+					} else if (format == "JDBC") {
+						if ($("#src_url").val() == '') {
+							swal("Validation Error", "You should input url.", "error");
+							return;
+						} else if ($("#src_user").val() == '') {
+							swal("Validation Error", "You should input user.", "error");
+							return;
+						} else if($("#src_pass").val() == '') {
+							swal("Validation Error", "You should input password.", "error");
+							return;
+						} else if($('#src_jtable').val() == '') {
+							swal("Validation Error", "You should input table.", "error");
+							return;
+						}
+					} else {
+						if (params["datasetPath"] == '') {
+							swal("Validation Error", "You should input data path.", "error");
+							return;
 						}
 					}
 					
@@ -600,14 +624,19 @@
 					var params = {};
 					var format = $('#select_dist_type').val();
 					params["datasetPath"] = $('#dist_path').val();
-					if (params["datasetPath"] == '')
-					return;
+
 					params["datasetFormat"] = format;
 					if (format == "CSV") {
 						params["header"] = $('#dist_header').val() == "True" ? true : false;
 						params["datasetDelimiter"] = $('#dist_delimiter').val();
-						if (params["datasetDelimiter"] == '')
-						return;
+						if (params["datasetPath"] == '') {
+							swal("Validation Error", "You should input data path.", "error");
+							return;
+						}
+						if (params["datasetDelimiter"] == '') {
+							swal("Validation Error", "You should input delimiter.", "error");
+							return;
+						}
 						if ($('#dist_file_schema').val() == '') {
 							if (params["header"] == false){
 								swal("Validation Error", "You should input schema.", "error");
@@ -617,6 +646,25 @@
 							} else {
 							params["useOtherSchema"] = true;
 							params["columns"] = $('#dist_file_schema').val().split(params["datasetDelimiter"]);
+						}
+					} else if (format == "JDBC") {
+						if ($("#dist_url").val() == '') {
+							swal("Validation Error", "You should input url.", "error");
+							return;
+						} else if ($("#dist_user").val() == '') {
+							swal("Validation Error", "You should input user.", "error");
+							return;
+						} else if($("#dist_pass").val() == '') {
+							swal("Validation Error", "You should input password.", "error");
+							return;
+						} else if($('#dist_jtable').val() == '') {
+							swal("Validation Error", "You should input table.", "error");
+							return;
+						}
+					} else {
+						if (params["datasetPath"] == '') {
+							swal("Validation Error", "You should input data path.", "error");
+							return;
 						}
 					}
 					
@@ -1092,7 +1140,7 @@
 										<div class="form-group required" id="src_jdbc_table">
 											<label class="col-sm-3">Table</label>
 											<div class="col-sm-6">
-												<input type="text" placeholder="Table..." class="form-control" name="src_table">
+												<input type="text" placeholder="Table..." class="form-control" name="src_table" id="src_jtable">
 											</div>
 											<br><br>
 										</div>
@@ -1215,7 +1263,7 @@
 										<div class="form-group required "  id="dist_jdbc_table">
 											<label class="col-sm-3">Table</label>
 											<div class="col-sm-6">
-												<input type="text" placeholder="Table..." class="form-control" name="dist_table">
+												<input type="text" placeholder="Table..." class="form-control" name="dist_table" id="dist_jtable">
 											</div>
 											<br><br>
 										</div>
