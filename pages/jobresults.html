@@ -15,6 +15,7 @@
 		<link rel="stylesheet" href="../dist/css/sb-admin-2.css">
 		<link rel="stylesheet" href="../dist/css/bootstrap-tagsinput.css">
 		<link rel="stylesheet" href="../dist/css/custom.css">
+		<link rel="stylesheet" href="../dist/css/sweetalert.css">
 		<link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -35,7 +36,8 @@
 		
 		<script src="../dist/js/bootstrap-table-export.js"></script>
 		<script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
-		
+
+		<script src="../dist/js/sweetalert-dev.js"></script>
 		<script src="../dist/js/app.js"></script>
 		
 		
@@ -394,11 +396,11 @@
 				var data = getInputData(srcRecordCnt != distRecordCnt);
 				
 				if (data.compareKey.length <= 0) {
-					alert("You should set at least one key.");
+					swal("Validation Error", "You should set at least one key.", "error");
 					return;
 				}
 				if (data.jobname == "") {
-					alert("You should input job name.");
+					swal("Validation Error", "You should input job name.", "error");
 					return;
 				}
 				
@@ -998,13 +1000,8 @@
 												<th>Value</th>
 											</tr>
 										</thead>
-										<tbody>
-											
-										</tbody>
 									</table>
 								</div>
-								
-								
 							</div>
 						</div>
 					</div>

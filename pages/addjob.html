@@ -19,6 +19,7 @@
 		<link rel="stylesheet" href="../dist/css/sb-admin-2.css">
 		<link rel="stylesheet" href="../dist/css/bootstrap-tagsinput.css">
 		<link rel="stylesheet" href="../dist/css/custom.css">
+		<link rel="stylesheet" href="../dist/css/sweetalert.css">
 		<link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -39,7 +40,8 @@
 		
 		<script src="../dist/js/bootstrap-table-export.js"></script>
 		<script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
-		
+
+		<script src="../dist/js/sweetalert-dev.js"></script>
 		<script src="../dist/js/app.js"></script>
 		
 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -285,18 +287,18 @@
 			function submitJobJson() {
 				var data = getInputData(srcRecordCnt != distRecordCnt);
 				if (data.compareKey.length <= 0) {
-					alert("You should set at least one key.");
+					swal("Validation Error", "You should set at least one key.", "error");
 					return;
 				}
 				
 				if (data.jobname == "") {
-					alert("You should input job name.");
+					swal("Validation Error", "You should input job name.", "error");
 					return;
 				}
 				
 				$count = $("#mapper > div img[src='../dist/img/tick.png']").length;
 				if($count <= 0){
-					alert("You should set at least one tick.");
+					swal("Validation Error", "You should set at least one tick.", "error");
 					return;
 					
 				}
@@ -556,8 +558,8 @@
 						return;
 						if ($('#src_file_schema').val() == '') {
 							if (params["header"] == false){
+								swal("Validation Error", "You should input schema.", "error");
 								return;
-								alert("You should input schema.");
 							}
 							params["useOtherSchema"] = false;
 							} else {
@@ -608,8 +610,8 @@
 						return;
 						if ($('#dist_file_schema').val() == '') {
 							if (params["header"] == false){
+								swal("Validation Error", "You should input schema.", "error");
 								return;
-								alert("You should input schema.");
 							}
 							params["useOtherSchema"] = false;
 							} else {
@@ -1023,11 +1025,11 @@
 											<div class="col-sm-6">
 												<select class="form-control" id="select_src_type">
 													<option>PARQUET</option>
-													<option id="change">ORC</option>
+													<option id="src_orc">ORC</option>
 													<option>JDBC</option>
 													<option>CSV</option>
 													<option>JSON</option>
-													<option id="change">HIVE</option>
+													<option id="src_hive">HIVE</option>
 													<option>AVRO</option>
 												</select>
 											</div>
@@ -1148,11 +1150,11 @@
 											<div class="col-sm-6">
 												<select class="form-control" id="select_dist_type">
 													<option>PARQUET</option>
-													<option id="change">ORC</option>
+													<option id="dist_orc">ORC</option>
 													<option>JDBC</option>
 													<option>CSV</option>
 													<option>JSON</option>
-													<option id="change">HIVE</option>
+													<option id="dist_hive">HIVE</option>
 													<option>AVRO</option>
 												</select>
 											</div>
@@ -1675,16 +1677,20 @@
 		//alert(getCookie("localMode"));
 		/* to hide hive on localhost for SRC*/	
 		if (getCookie("localMode") == "true" || getCookie("localMode") == ''){
-			$('#select_src_type #change').hide();
+			$('#select_src_type #src_orc').hide();
+			$('#select_src_type #src_hive').hide();
 		}else{
-			$('#select_src_type #change').show();
+			$('#select_src_type #src_orc').show();
+			$('#select_src_type #src_hive').show();
 		}
 		
 		/* to hide hive on localhost for DIST*/	
 		if (getCookie("localMode") == "true" || getCookie("localMode") == ''){
-			$('#select_dist_type #change').hide();
+			$('#select_dist_type #dist_orc').hide();
+			$('#select_dist_type #dist_hive').hide();
 		}else{
-			$('#select_dist_type #change').show();	
+			$('#select_dist_type #dist_orc').show();
+			$('#select_dist_type #dist_hive').show();
 		}
 		
 		/* to change text hive selected*/	
@@ -1735,10 +1741,6 @@
 				}
 			});
 		});
-		
-	
-	</script>
-	
 </script>
 <style>
 	#mapper div img {

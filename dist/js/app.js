@@ -199,7 +199,7 @@ function makeBadgeType(type) {
     return type;
 }
 
-function insertCheckLi(ul, text, type,i='') {
+function insertCheckLi(ul, text, type, i = '') {
     var li = document.createElement("li");
     li.setAttribute("class", "list-group-item");
 	li.setAttribute("data-id", i);
@@ -260,7 +260,7 @@ function insertLi(ul, text, type) {
 }
 
 //Applying class for TICKS.
-function insertMapper(mapper, mapped,i='') {
+function insertMapper(mapper, mapped,i = '') {
 	//alert(i);
 	//alert(mapper);
 	
@@ -452,7 +452,7 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                 var vals = srcColumns[i].name.split('__');
                 insertCheckLi(srcUl, vals[0], srcColumns[i].dataType,i);
                 insertLi(distUl, vals[1], srcColumns[i].dataType);
-                insertMapper(mapper, true,i);
+                insertMapper(mapper, true, i);
                 remainSrcColumns[srcColumns[i].name] = true;
                 remainDistColumns[srcColumns[i].name] = true;
             } else {    // when src column contains excluded column, don't include to src list.
