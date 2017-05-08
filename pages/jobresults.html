@@ -134,6 +134,7 @@
 	
 	<body>
 		<script>
+			var tblData;
 			$(document).ready(function(){
 				
 				$('#logout').on('click', function(e){
@@ -589,7 +590,9 @@
 					
 					$("#table thead tr").append(tr);
 				});
-				
+
+				tblData = tableData;
+
 				$('#table').bootstrapTable({
 					data: tableData,
 					onPageChange: function (number, size) {
@@ -599,7 +602,7 @@
 				setMergeCell(0, 10);
 				removeTableColumn();
 			}
-			
+
 			/* function to delete last column*/
 			function removeTableColumn() {
 				$("#table  thead tr th:last-child, #table td:last-child").addClass("intro");
@@ -654,8 +657,6 @@
 			function stateFormatter(value, row, index) {
 				var result = '';
 				result = value;
-
-
 
 				if (diffCellArray[index] ) {
 					var cellarr = diffCellArray[index];
@@ -741,9 +742,8 @@
 				
 				$('#table').on('search.bs.table', function (e, text) {
 					//merge cells again
-					var tblData = $('#table').bootstrapTable('getData');
-					var header = Object.keys(tblData[0]);
-					//setTable(tblData, header);
+					var data = $('#table').bootstrapTable('getData');
+					var header = Object.keys(data[0]);
 				});
 				
 				$('#btn_save_rules').on('click', function(e){
