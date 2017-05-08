@@ -565,8 +565,7 @@
 				var keys= getCookie("keys");
 				var result = keys.split(',');
 				var count= result.length;
-				
-				
+
 				$("#table").bootstrapTable('destroy');
 				$("#table thead tr").html('');
 				$.each(headerArray, function (index, value) {
@@ -666,7 +665,7 @@
                             '</div>';
 						}
 					});
-					} else if (diffCellArray[index - 1]){
+				} else if (diffCellArray[index - 1]){
 					var cellarr = diffCellArray[index - 1];
 					$.each(cellarr, function (index, column) {
 						var keyindex = Object.keys(row).indexOf(column);
@@ -739,6 +738,9 @@
 				
 				$('#table').on('search.bs.table', function (e, text) {
 					//merge cells again
+					var tblData = $('#table').bootstrapTable('getData');
+					var header = Object.keys(tblData[0]);
+					//setTable(tblData, header);
 				});
 				
 				$('#btn_save_rules').on('click', function(e){
