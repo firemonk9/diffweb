@@ -217,7 +217,7 @@ function insertCheckLi(ul, text, type, i = '') {
     li.appendChild(badgespan);
 
     var textdiv = document.createElement("div");
-    textdiv.setAttribute("class", "li-tiff")
+    textdiv.setAttribute("class", "li-tiff");
     textdiv.setAttribute("style", "width: 163px;float: left;");
     textdiv.innerText = text;
     li.appendChild(textdiv);
