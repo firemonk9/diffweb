@@ -348,7 +348,7 @@
                 response.inputData.compareKey,
                 response.inputData.srcFile.transformations, response.inputData.distFile.transformations,
                 response.inputData.srcFile.filterSql, response.inputData.distFile.filterSql,
-                response.inputData.matchBoth, response.srcRowCount != response.distRowCount, response.inputData.randomSample
+                response.inputData.matchBoth, response.srcRowCount != response.distRowCount, response.inputData.randomSample, response.inputData.columnMapping
 				);
 				$('#advancedRulesModal').modal();
 				
@@ -575,7 +575,7 @@
 						//tr = $('<th data-field="' + value + '" data-cell-style="cellStyle" data-formatter="stateFormatter">' + value + '<i class="glyphicon glyphicon-star"></i></th>');
 						
 						tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + ' <i class="glyphicon glyphicon-remove"></i></th>');
-						} else {
+					} else {
 						for(var i=0; i < count; i++){
 							if(value == result[i] || value == name){
 								//alert(result[i]);
@@ -654,6 +654,9 @@
 			function stateFormatter(value, row, index) {
 				var result = '';
 				result = value;
+
+
+
 				if (diffCellArray[index] ) {
 					var cellarr = diffCellArray[index];
 					
