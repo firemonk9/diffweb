@@ -546,18 +546,22 @@
 				var src_percent = (stats.totalSrcRecordsMatching / stats.srcRecordsCount) * 100;
 				$('#src_percent').html(parseInt(src_percent) + "%");
 				$('#src_count').html("(" + stats.totalSrcRecordsMatching + " / " + stats.srcRecordsCount + ")");
-				
+				$('#funding1').css("width", parseInt(src_percent) + "%");
+
 				var dist_percent = (stats.totalDistRecordsMatching / stats.distRecordsCount) * 100;
 				$('#dist_percent').html(parseInt(dist_percent) + "%");
 				$('#dist_count').html("(" + stats.totalDistRecordsMatching + " / " + stats.distRecordsCount + ")");
+				$('#funding2').css("width", parseInt(dist_percent) + "%");
 
 				var src_key_percent = (stats.srcKeyMatchBrodcast / stats.srcKeyCount) * 100;
 				$('#src_key_percent').html(parseInt(src_key_percent) + "%");
 				$('#src_key_count').html("(" + stats.srcKeyMatchBrodcast + " / " + stats.srcKeyCount + ")");
+				$('#funding3').css("width", parseInt(src_key_percent) + "%");
 
 				var dist_key_percent = (stats.distKeyMatchBrodcast / stats.distKeyCount) * 100;
 				$('#dist_key_percent').html(parseInt(dist_key_percent) + "%");
 				$('#dist_key_count').html("(" + stats.distKeyMatchBrodcast + " / " + stats.distKeyCount + ")");
+				$('#funding4').css("width", parseInt(dist_key_percent) + "%");
 			}
 			
 			//To Fetch URL parameters.
@@ -1079,34 +1083,69 @@
 									<tbody>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Records Matching : </small></td>
-											<td class="col-md-9">
-												<small id="src_percent" style="font-size: 15pt;"></small><small id="src_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small>
-												<div class = "progress active" style="background-color: #d32f2f">
-													<div class = "progress-bar progress-bar-success" role = "progressbar" id="funding"
-														 aria-valuenow = "0" aria-valuemin = "0" aria-valuemax = "100" style = "width: 30%;">
+											<td class="col-md-9 row">
+												<div class="col-md-2">
+													<small id="src_percent" style="font-size: 15pt;">0%</small><small id="src_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
+												</div>
+												<div class = "col-md-10 progress active" style="background-color: #d32f2f;padding: 0;margin-bottom: 0px;position: relative;top: 3px;width: 70%;">
+													<div class = "progress-bar progress-bar-success" role = "progressbar" id="funding1"
+														 aria-valuenow = "0" aria-valuemin = "0" aria-valuemax = "100" style = "width: 0%;">
 													</div>
 												</div>
 											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Records Matching : </small></td>
-											<td class="col-md-9"><small id="dist_percent" style="font-size: 15pt;"></small><small id="dist_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small></td>
+											<td class="col-md-9" row>
+												<div class="col-md-2">
+													<small id="dist_percent" style="font-size: 15pt;">0%</small><small id="dist_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
+												</div>
+												<div class = "col-md-10 progress active" style="background-color: #d32f2f;padding: 0;margin-bottom: 0px;position: relative;top: 3px;width: 70%;">
+													<div class = "progress-bar progress-bar-success" role = "progressbar" id="funding2"
+														 aria-valuenow = "0" aria-valuemin = "0" aria-valuemax = "100" style = "width: 0%;">
+													</div>
+												</div>
+											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Keys Matching : </small></td>
-											<td class="col-md-9"><small id="src_key_percent" style="font-size: 15pt;"></small><small id="src_key_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small></td>
+											<td class="col-md-9" row>
+												<div class="col-md-2">
+													<small id="src_key_percent" style="font-size: 15pt;">0%</small><small id="src_key_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
+												</div>
+												<div class = "col-md-10 progress active" style="background-color: #d32f2f;padding: 0;margin-bottom: 0px;position: relative;top: 3px;width: 70%;">
+													<div class = "progress-bar progress-bar-success" role = "progressbar" id="funding3"
+														 aria-valuenow = "0" aria-valuemin = "0" aria-valuemax = "100" style = "width: 0%;">
+													</div>
+												</div>
+											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Keys Matching : </small></td>
-											<td class="col-md-9"><small id="dist_key_percent" style="font-size: 15pt;"></small><small id="dist_key_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small></td>
+											<td class="col-md-9" row>
+												<div class="col-md-2">
+													<small id="dist_key_percent" style="font-size: 15pt;">0%</small><small id="dist_key_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
+												</div>
+												<div class = "col-md-10 progress active" style="background-color: #d32f2f;padding: 0;margin-bottom: 0px;position: relative;top: 3px;width: 70%;">
+													<div class = "progress-bar progress-bar-success" role = "progressbar" id="funding4"
+														 aria-valuenow = "0" aria-valuemin = "0" aria-valuemax = "100" style = "width: 0%;">
+													</div>
+												</div>
+											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Columns Not Matching : </small></td>
-											<td class="col-md-9"><small class="columnsnotmatching"></small><button type="button"  data-toggle="modal" data-target="#more">Click Here!</button></td>
+											<td class="col-md-9" row>
+												<small class="columnsnotmatching"></small>
+												<button type="button"  data-toggle="modal" data-target="#more">Click Here!</button>
+											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Columns Not Matching In Records: </small></td>
-											<td class="col-md-9"><small class="columnsnotmatchingmap"></small><button type="button"  data-toggle="modal" data-target="#more2">Click Here!</button></td>
+											<td class="col-md-9">
+												<small class="columnsnotmatchingmap"></small>
+												<button type="button"  data-toggle="modal" data-target="#more2">Click Here!</button>
+											</td>
 										</tr>
 									</tbody>
 								</table>
