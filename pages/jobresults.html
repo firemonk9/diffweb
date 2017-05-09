@@ -593,7 +593,7 @@
 						}
 					}
 					if (contains.call(changeHeaderArray, value)){
-						tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + ' <i class="glyphicon glyphicon-remove"></i></th>');
+						tr += '<i class="glyphicon glyphicon-remove"></i>';
 					}
 					tr += '</th>';
 					/*
@@ -613,7 +613,8 @@
 						}
 					}
 					*/
-					$("#table thead tr").append(tr);
+					var t = $(tr);
+					$("#table thead tr").append(t);
 				});
 
 				tblData = tableData;
@@ -769,7 +770,7 @@
 					//merge cells again
 					var data = $('#table').bootstrapTable('getData');
 					var header = Object.keys(data[0]);
-
+					setTable(data, header);
 				});
 				
 				$('#btn_save_rules').on('click', function(e){
@@ -913,8 +914,11 @@
 				
 				setListeners();
 
+				/*
+				$('#more').draggable();
 				$('#more2').draggable();
-				$('#more1').draggable();
+				*/
+				$('#drag1').draggable();
 			});
 			
 			function addURL() {
@@ -1021,7 +1025,7 @@
 					</button>
 					<strong>EXCEPTION!</strong> <span id="exception-value"></span>
 				</div>
-				<div class="col-md-12">
+				<div id="drag1">
 					<div class="modal fade" id="more" role="dialog">
 						<div class="modal-dialog">
 							<div class="modal-content">
