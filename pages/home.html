@@ -90,7 +90,62 @@
         function setTable(tableData) {
             $('#table').bootstrapTable("destroy");
             $('#table').bootstrapTable({
-                data: tableData
+                data: tableData,
+                columns: [
+                    {
+                        field: 'name',
+                        title: 'Name',
+                        sortable: true,
+                        width: "10%"
+                    },
+                    {
+                        field: 'src',
+                        title: 'Job path Source',
+                        sortable: true,
+                        width: "15%"
+                    },
+                    {
+                        field: 'dest',
+                        title: 'Job path Dest',
+                        sortable: true,
+                        width: "15%"
+                    },
+                    {
+                        field: 'submitTime',
+                        title: 'Submitted Time',
+                        sortable: true,
+                        width: "12%"
+                    },
+                    {
+                        field: 'BeginTime',
+                        title: 'Begin Time',
+                        sortable: true,
+                        width: "11%"
+                    },
+                    {
+                        field: 'EndTime',
+                        title: 'End Time',
+                        sortable: true,
+                        width: "11%"
+                    },
+                    {
+                        field: 'Status',
+                        title: 'Status',
+                        sortable: true,
+                        width: "9%"
+                    },
+                    {
+                        field: 'Result',
+                        title: 'Result',
+                        sortable: true,
+                        width: "10%"
+                    },
+                    {
+                        field: 'state',
+                        checkbox: true,
+                        width: "7%"
+                    }
+                ]
             });
             $('#table').bootstrapTable('refresh');
         }
@@ -597,8 +652,7 @@
 
 </script>
 <style>
-	table.fixed { table-layout:fixed; width:1400px; word-break:break-all;}
-	
+	table.fixed { table-layout:fixed; word-break:break-all;}
 </style>
 
 </html>
