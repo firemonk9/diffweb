@@ -515,7 +515,7 @@
 					$('.totaldistrecordsnotmatching').html(stats.totalDistRecordsNotMatching);
 					$('.columnsnotmatching').html(JSON.stringify(stats.columnsNotMatching));
 					$('.columnsnotmatchingmap').html(JSON.stringify(stats.columnsNotMatchingMap));
-				*/
+				 */
 				
 				//alert(JSON.stringify(stats.columnsNotMatching));
 				//var newjson = {"Dest":185,"Origin":689,"DepTime":15,"DayOfWeek":15,"TailNum":394,"Distance":268,"DepDelay":689};
@@ -530,7 +530,17 @@
 					tr.append("<td>" + value + "</td>");	
 					$('#tblGrid').append(tr);
 				});
-				
+
+				var json = JSON.stringify(stats.columnsNotMatchingMap);
+				json = JSON.parse(json);
+
+				$.each(json, function (k, value) {
+					var tr;
+					tr = $('<tr/>');
+					tr.append("<td>" + k + "</td>");
+					tr.append("<td>" + value + "</td>");
+					$('#tblGrid2').append(tr);
+				});
 				//$('.columnsnotmatching').html('click here->');
 				
 				var src_percent = (stats.totalSrcRecordsMatching / stats.srcRecordsCount) * 100;
@@ -570,8 +580,23 @@
 				$("#table").bootstrapTable('destroy');
 				$("#table thead tr").html('');
 				$.each(headerArray, function (index, value) {
-					var tr = '';
-					
+					var tr = '<th data-field="' + value + '" data-cell-style="cellStyle" data-formatter="stateFormatter">' + value;
+
+					for (var i = 0; i < count; i++) {
+						var arr = value.split("__");
+						if (arr[0] == result[i]) {
+							tr += '<img src="../dist/img/key.jpg" width="20px" height="20px"></th>';
+						} else {
+							if (arr.length > 1 && arr[1] == result[i]) {
+								tr += '<img src="../dist/img/key.jpg" width="20px" height="20px"></th>';
+							}
+						}
+					}
+					if (contains.call(changeHeaderArray, value)){
+						tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + ' <i class="glyphicon glyphicon-remove"></i></th>');
+					}
+					tr += '</th>';
+					/*
 					if (contains.call(changeHeaderArray, value)){
 						//tr = $('<th data-field="' + value + '" data-cell-style="cellStyle" data-formatter="stateFormatter">' + value + '<i class="glyphicon glyphicon-star"></i></th>');
 						
@@ -587,7 +612,7 @@
 							}
 						}
 					}
-					
+					*/
 					$("#table thead tr").append(tr);
 				});
 
@@ -771,6 +796,9 @@
 				});
 				$("button[data-dismiss-modal=modal2]").click(function () {
 					$('#more').modal('hide');
+				});
+				$("button[data-dismiss-modal=modal2]").click(function () {
+					$('#more2').modal('hide');
 				});
 				
 				$('#src_trans_plus').on('click', function(e) {
@@ -1019,6 +1047,27 @@
 						</div>
 					</div>
 				</div>
+				<div class="col-md-12">
+					<div class="modal fade" id="more2" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<table class="table table-striped" id="tblGrid2">
+										<thead>
+										<tr>
+											<th>Name</th>
+											<th>Value</th>
+										</tr>
+										</thead>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
@@ -1030,7 +1079,14 @@
 									<tbody>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Records Matching : </small></td>
-											<td class="col-md-9"><small id="src_percent" style="font-size: 15pt;"></small><small id="src_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small></td>
+											<td class="col-md-9">
+												<small id="src_percent" style="font-size: 15pt;"></small><small id="src_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small>
+												<div class = "progress active" style="background-color: #d32f2f">
+													<div class = "progress-bar progress-bar-success" role = "progressbar" id="funding"
+														 aria-valuenow = "0" aria-valuemin = "0" aria-valuemax = "100" style = "width: 30%;">
+													</div>
+												</div>
+											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Records Matching : </small></td>
@@ -1046,7 +1102,11 @@
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Columns Not Matching : </small></td>
-											<td class="col-md-9"><small class="columnsnotmatching" id="more"></small><button type="button"  data-toggle="modal" data-target="#more">Click Here!</button></td>
+											<td class="col-md-9"><small class="columnsnotmatching"></small><button type="button"  data-toggle="modal" data-target="#more">Click Here!</button></td>
+										</tr>
+										<tr>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Columns Not Matching In Records: </small></td>
+											<td class="col-md-9"><small class="columnsnotmatchingmap"></small><button type="button"  data-toggle="modal" data-target="#more2">Click Here!</button></td>
 										</tr>
 									</tbody>
 								</table>
