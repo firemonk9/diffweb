@@ -165,7 +165,6 @@
 				
 			});
 			
-			
 			var mergeArray = [];
 			var changeHeaderArray = [];
 			var diffCellArray = [];
@@ -328,7 +327,6 @@
 				$('.alert-success').show();
 			}
 			
-			
 			function createAdvancedRulePage_new(response) {
 				//alert(response.inputData.compareKey);
 				return response.inputData.compareKey;
@@ -390,7 +388,6 @@
 					}
 				});
 			}
-			
 			
 			function submitJobJson() {
 				
@@ -829,8 +826,6 @@
 				setExcludeListener();
 			}
 			
-			
-			
 			$(document).ready(function () {
 				$.ajax({
 					type: "GET",
@@ -853,25 +848,22 @@
 						$("#loadingDiv").hide();
 					}
 				});
-				
-				$(document).ready(function(){
-					$("#src_column li").each(function(event, el){
-						var product = $(this);
-						var child= product.children("span.glyphicon").attr('id');
-						var id= "#"+child;
-						var i= $(el).index();
-						$(id).attr('new-div-id',i);
-					})
-					
-					$("#mapper div").each(function(event, el){
-						var product = $(this);
-						var child_new= product.children("img").attr('rel');
-						var class_new= ".list_"+child_new+" img";
-						var i= $(el).index();
-						$(class_new).attr('rel',i);
-					});
+
+				$("#src_column li").each(function(event, el){
+					var product = $(this);
+					var child= product.children("span.glyphicon").attr('id');
+					var id= "#"+child;
+					var i= $(el).index();
+					$(id).attr('new-div-id',i);
 				})
-				
+
+				$("#mapper div").each(function(event, el){
+					var product = $(this);
+					var child_new= product.children("img").attr('rel');
+					var class_new= ".list_"+child_new+" img";
+					var i= $(el).index();
+					$(class_new).attr('rel',i);
+				});
 				
 				$( "#src_column" ).sortable({
 					connectWith: ".connectedSortable1",
@@ -920,18 +912,17 @@
 				mergeArray = [];
 				
 				setListeners();
+
+				$('#more2').draggable();
+				$('#more1').draggable();
 			});
 			
-			function addURL()
-			{
+			function addURL() {
 				var data=window.location+"&edit=true";
 				//alert(data);
 				$('#advancedRulesModal').modal();
 				
 			}
-			
-			
-			
 		</script>
 		
 		<div id="loadingDiv">
