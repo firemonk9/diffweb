@@ -109,39 +109,13 @@
 		</style>
 	</head>
 	
-	<body>
-		<script type="text/javascript">
-			$(document).ready(function () {
-			
-				$('#logout').on('click', function(e){
-					setCookie("email", "");
-					setCookie("password", "");
-				});
-			
-				$.ajax({
-					type: "GET",
-					url: "/startUp",
-					crossDomain: true,
-					dataType: 'json',
-					data: {},
-					success: function (response) {
-						var email= getCookie("email");
-						if(response.authentication == 'basic' && email != ''){
-							setCookie("version", response.displayVersion);
-							setCookie("localMode", response.localMode);
-							setToolDetail();
-						}else if(response.authentication == 'basic' && email == ''){
-							location.href = "./login.html";
-						}
-					},
-					error: function (response) {
-
-					}
-				});
+<body>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#logout').on('click', function(e){
+				setCookie("email", "");
+				setCookie("password", "");
 			});
-			
-			
-			
 			
 			var srcJobId = "", distJobId = "";
 			
@@ -867,8 +841,7 @@
 						}
 					});
 					
-					
-				
+
 					
 				$( "#src_column" ).sortable({
 					connectWith: ".connectedSortable1",

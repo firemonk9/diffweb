@@ -140,28 +140,6 @@
 					setCookie("email", "");
 					setCookie("password", "");
 				});
-				
-				$.ajax({
-					type: "GET",
-					url: "/startUp",
-					crossDomain: true,
-					dataType: 'json',
-					data: {},
-					success: function (response) {
-						var email= getCookie("email");
-						if(response.authentication == 'basic' && email != ''){
-							setCookie("version", response.displayVersion);
-							setCookie("localMode", response.localMode);
-							setToolDetail();
-							}else if(response.authentication == 'basic' && email == ''){
-							location.href = "./login.html";
-						}
-					},
-					error: function (response) {
-						
-					}
-				});
-				
 			});
 			
 			var mergeArray = [];
@@ -914,11 +892,11 @@
 				
 				setListeners();
 
-				/*
+
 				$('#more').draggable();
 				$('#more2').draggable();
-				*/
-				$('#drag1').draggable();
+
+				//$('#drag1').draggable();
 			});
 			
 			function addURL() {
@@ -1025,7 +1003,7 @@
 					</button>
 					<strong>EXCEPTION!</strong> <span id="exception-value"></span>
 				</div>
-				<div id="drag1">
+				<div id="col-md-12">
 					<div class="modal fade" id="more" role="dialog">
 						<div class="modal-dialog">
 							<div class="modal-content">
