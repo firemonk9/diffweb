@@ -580,7 +580,7 @@
 				$("#table").bootstrapTable('destroy');
 				$("#table thead tr").html('');
 				$.each(headerArray, function (index, value) {
-					var tr = '<th data-field="' + value + '" data-cell-style="cellStyle" data-formatter="stateFormatter">' + value;
+					var tr = '<th data-field="' + value + '" data-formatter="stateFormatter">' + value;
 
 					for (var i = 0; i < count; i++) {
 						var arr = value.split("__");
