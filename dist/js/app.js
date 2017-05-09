@@ -442,13 +442,35 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
             //$('.list img').attr('rel', i);
 
             //When src column mapped to dist column, extract src column name.
-            for (var t = 0; t < columnMapping.length; t++) {
+            /*for (var t = 0; t < columnMapping.length; t++) {
                 if (columnMapping[t].srcColumn == srcColumns[i].name) {
                     insertCheckLi(srcUl, columnMapping[t].srcColumn, srcColumns[i].dataType, i);
                     insertLi(distUl, columnMapping[t].distColumn, srcColumns[i].dataType);
                     insertMapper(mapper, true, i);
                     remainSrcColumns[columnMapping[t].srcColumn] = true;
                     remainDistColumns[columnMapping[t].distColumn] = true;
+                }*/
+                var flag = false;
+                for (var t = 0; t < columnMapping.length; t++) {
+                    if (columnMapping[t].srcColumn == srcColumns[i].name) {
+                        insertCheckLi(srcUl, columnMapping[t].srcColumn, srcColumns[i].dataType, i);
+                        insertLi(distUl, columnMapping[t].distColumn, srcColumns[i].dataType);
+                        insertMapper(mapper, true, i);
+                        remainSrcColumns[columnMapping[t].srcColumn] = true;
+                        remainDistColumns[columnMapping[t].distColumn] = true;
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag == true)
+                    continue;
+                if (srcColumns[i].name.indexOf('__') > 0) {
+                    var vals = srcColumns[i].name.split('__');
+                    insertCheckLi(srcUl, vals[0], srcColumns[i].dataType,i);
+                    insertLi(distUl, vals[1], srcColumns[i].dataType);
+                    insertMapper(mapper, true, i);
+                    remainSrcColumns[srcColumns[i].name] = true;
+                    remainDistColumns[srcColumns[i].name] = true;
                 } else {    // when src column contains excluded column, don't include to src list.
                     if (srcExcluded.length > 0) {
                         var srcNotExcluded = true;
@@ -517,7 +539,7 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                         }
                     }
                 }
-            }
+            //}
         }
     }
 
