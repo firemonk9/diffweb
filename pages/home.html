@@ -197,11 +197,14 @@
                             setTimeout(getJobs, 5000);
 
                         var sTime = new Date(tmp.submittedTime);
-                        tmp.submittedTime = sTime.toLocaleString('en-GB');
+                        //tmp.submittedTime = sTime.toLocaleString('en-GB');
+                        tmp.submittedTime = sTime.getFullYear() + "/" + ("0" + (sTime.getMonth() + 1)).slice(-2) + "/" + ("0" + sTime.getDate()).slice(-2) + " " + ("0" + sTime.getHours()).slice(-2) + ":" + ("0" + sTime.getMinutes()).slice(-2) + ":" + ("0" + sTime.getSeconds()).slice(-2);
                         var bTime = new Date(tmp.beginTime);
-                        tmp.beginTime = bTime.toLocaleString('en-GB');
+                        //tmp.beginTime = bTime.toLocaleString('en-GB');
+                        tmp.beginTime = bTime.getFullYear() + "/" + ("0" + (bTime.getMonth() + 1)).slice(-2) + "/" + ("0" + bTime.getDate()).slice(-2) + " " + ("0" + bTime.getHours()).slice(-2) + ":" + ("0" + bTime.getMinutes()).slice(-2) + ":" + ("0" + bTime.getSeconds()).slice(-2);
                         var eTime = new Date(tmp.endTime);
-                        tmp.endTime = eTime.toLocaleString('en-GB');
+                        //tmp.endTime = eTime.toLocaleString('en-GB');
+                        tmp.endTime = eTime.getFullYear() + "/" + ("0" + (eTime.getMonth() + 1)).slice(-2) + "/" + ("0" + eTime.getDate()).slice(-2) + " " + ("0" + eTime.getHours()).slice(-2) + ":" + ("0" + eTime.getMinutes()).slice(-2) + ":" + ("0" + eTime.getSeconds()).slice(-2);
                         var tdData=new Job(tmp.input.name == null ? "No name" : tmp.input.name,tmp.input.srcFile.datasetPath, tmp.input.distFile.datasetPath, tmp.submittedTime, tmp.beginTime, tmp.endTime,tmp.status == "" ? "RUNNING" : tmp.status, tmp.dataMatch, tmp.jobId, tmp.input, tmp.srcColumns, tmp.distColumns);
                         tableData.push(tdData);
                     }

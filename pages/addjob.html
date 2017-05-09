@@ -1,114 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 	
-	<head>
-		
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		
-		<title>Add Job</title>
-		<link rel="shortcut icon" href="https://static.wixstatic.com/media/9815c9_642c9beb50dd45339ddfa02bba2a1182%7Emv2.png/v1/fill/w_32%2Ch_32%2Clg_1%2Cusm_0.66_1.00_0.01/9815c9_642c9beb50dd45339ddfa02bba2a1182%7Emv2.png" type="image/png">
+<head>
 
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
-		
-		<link rel="stylesheet" href="../dist/css/sb-admin-2.css">
-		<link rel="stylesheet" href="../dist/css/bootstrap-tagsinput.css">
-		<link rel="stylesheet" href="../dist/css/custom.css">
-		<link rel="stylesheet" href="../dist/css/sweetalert.css">
-		<link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-		
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-		
-		<script src="https://johnny.github.io/jquery-sortable/js/jquery-sortable.js"></script>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-		
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
-		
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
-		<script src="../dist/js/bootstrap-tagsinput.min.js"></script>
-		<script src="../dist/js/bootstrap-tagsinput-angular.min.js"></script>
-		
-		<!-- Select JavaScript -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
-		
-		<script src="../dist/js/bootstrap-table-export.js"></script>
-		<script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-		<script src="../dist/js/sweetalert-dev.js"></script>
-		<script src="../dist/js/app.js"></script>
-		
-		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-		<!--[if lt IE 9]>
-			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-		<![endif]-->
-		
-		<style>
-			.clickable{
-			cursor: pointer;
-			}
-			.panel-heading span {
-			margin-top: -20px;
-			font-size: 15px;
-			}
-			
-			#stats th, #stats td {
-			border: 1px !important;
-			}
-			
-			.data-filter-header{
-			border-bottom: 1px solid #f7f7f7;
-			margin-left: 15px;
-			padding-bottom: 15px;
-			margin-bottom: 30px;
-			margin-top: 15px;
-			}
-			
-			#src_column .glyphicon{
-			//top: -15px;
-			}
-			
-			.badge{
-			margin-right: 4px;
-			}
-			
-			#mapper div img{
-			cursor: pointer;
-			}
-			
-			.list-group-item {
-			position: relative;
-			display: block;
-			padding: 10px 15px;
-			margin-bottom: 0px;
-			background-color: #fff;
-			border: 1px solid #ddd;
-			}
-			
-			#loadingDiv{
-			position: absolute;
-			z-index: 1;
-			height: 100px;
-			width: 100px;
-			top: 50%;
-			left: 50%;
-			margin-left: -50px;
-			margin-top: -50px;
-			background: url('../dist/img/loading.gif');
-			background-size: 100%;
-			}
-			
-		</style>
-	</head>
+	<title>Add Job</title>
+	<link rel="shortcut icon" href="https://static.wixstatic.com/media/9815c9_642c9beb50dd45339ddfa02bba2a1182%7Emv2.png/v1/fill/w_32%2Ch_32%2Clg_1%2Cusm_0.66_1.00_0.01/9815c9_642c9beb50dd45339ddfa02bba2a1182%7Emv2.png" type="image/png">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+	<link rel="stylesheet" href="../dist/css/sb-admin-2.css">
+	<link rel="stylesheet" href="../dist/css/bootstrap-tagsinput.css">
+	<link rel="stylesheet" href="../dist/css/custom.css">
+	<link rel="stylesheet" href="../dist/css/sweetalert.css">
+	<link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+	<script src="https://johnny.github.io/jquery-sortable/js/jquery-sortable.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+	<script src="../dist/js/bootstrap-tagsinput.min.js"></script>
+	<script src="../dist/js/bootstrap-tagsinput-angular.min.js"></script>
+
+	<!-- Select JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+	<script src="../dist/js/bootstrap-table-export.js"></script>
+	<script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+	<script src="../dist/js/sweetalert-dev.js"></script>
+	<script src="../dist/js/app.js"></script>
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+	<style>
+		.clickable{
+		cursor: pointer;
+		}
+		.panel-heading span {
+		margin-top: -20px;
+		font-size: 15px;
+		}
+
+		#stats th, #stats td {
+		border: 1px !important;
+		}
+
+		.data-filter-header{
+		border-bottom: 1px solid #f7f7f7;
+		margin-left: 15px;
+		padding-bottom: 15px;
+		margin-bottom: 30px;
+		margin-top: 15px;
+		}
+
+		#src_column .glyphicon{
+		//top: -15px;
+		}
+
+		.badge{
+		margin-right: 4px;
+		}
+
+		#mapper div img{
+		cursor: pointer;
+		}
+
+		.list-group-item {
+		position: relative;
+		display: block;
+		padding: 10px 15px;
+		margin-bottom: 0px;
+		background-color: #fff;
+		border: 1px solid #ddd;
+		}
+
+		#loadingDiv{
+		position: absolute;
+		z-index: 1;
+		height: 100px;
+		width: 100px;
+		top: 50%;
+		left: 50%;
+		margin-left: -50px;
+		margin-top: -50px;
+		background: url('../dist/img/loading.gif');
+		background-size: 100%;
+		}
+
+	</style>
+</head>
 	
 <body>
 	<script type="text/javascript">
