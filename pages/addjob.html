@@ -568,6 +568,8 @@
 							return;
 						} else
 							jdbcData["jdbcDriverPath"] = $('#src_driver').val();
+					} else {
+						jdbcData["jdbcDriverPath"] = "";
 					}
 					jdbcData["jdbcUrl"] = $('#src_url').val();
 					jdbcData["jdbcUser"] = $('#src_user').val();
@@ -658,6 +660,8 @@
 							return;
 						} else
 							jdbcData["jdbcDriverPath"] = $('#dist_driver').val();
+					} else {
+						jdbcData["jdbcDriverPath"] = "";
 					}
 					jdbcData["jdbcUrl"] = $('#dist_url').val();
 					jdbcData["jdbcUser"] = $('#dist_user').val();
