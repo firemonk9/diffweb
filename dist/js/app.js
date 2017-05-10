@@ -1034,7 +1034,10 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         jdbcData["jdbcUrl"] = distInput.jdbcUrl;
         jdbcData["jdbcUser"] = distInput.jdbcUser;
         jdbcData["jdbcPassword"] = distInput.jdbcPassword;
-        jdbcData["jdbcDriverPath"] = distInput.jdbcDriverPath;
+        if (getCookie("localMode") == "true")
+            jdbcData["jdbcDriverPath"] = "";
+        else
+            jdbcData["jdbcDriverPath"] = distInput.jdbcDriverPath;
         distFile["jdbcData"] = jdbcData;
     }
 
@@ -1065,7 +1068,10 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         jdbcData["jdbcUrl"] = srcInput.jdbcUrl;
         jdbcData["jdbcUser"] = srcInput.jdbcUser;
         jdbcData["jdbcPassword"] = srcInput.jdbcPassword;
-        jdbcData["jdbcDriverPath"] = srcInput.jdbcDriverPath;
+        if (getCookie("localMode") == "true")
+            jdbcData["jdbcDriverPath"] = "";
+        else
+            jdbcData["jdbcDriverPath"] = srcInput.jdbcDriverPath;
         srcFile["jdbcData"] = jdbcData;
     }
 
