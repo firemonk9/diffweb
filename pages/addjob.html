@@ -523,10 +523,10 @@
 
 				var params = {};
 				var format = $('#select_src_type').val();
-				params["datasetPath"] = $('#src_path').val();
 
 				params["datasetFormat"] = format;
 				if (format == "CSV") {
+					params["datasetPath"] = $('#src_path').val();
 					params["header"] = $('#src_header').val() == "True" ? true : false;
 					params["datasetDelimiter"] = $('#src_delimiter').val();
 					if (params["datasetPath"] == '') {
@@ -561,7 +561,21 @@
 						swal("Validation Error", "You should input table.", "error");
 						return;
 					}
+					var jdbcData = {};
+					if (getCookie("localMode") != "true") {
+						if ($('#src_driver').val() == '') {
+							swal("Validation Error", "You should input driver path.", "error");
+							return;
+						} else
+							jdbcData["jdbcDriverPath"] = $('#src_driver').val();
+					}
+					jdbcData["jdbcUrl"] = $('#src_url').val();
+					jdbcData["jdbcUser"] = $('#src_user').val();
+					jdbcData["jdbcPassword"] = $('#src_pass').val();
+					params["jdbcData"] = jdbcData;
+					params["datasetPath"] = $('#src_jtable').val();
 				} else {
+					params["datasetPath"] = $('#src_path').val();
 					if (params["datasetPath"] == '') {
 						swal("Validation Error", "You should input data path.", "error");
 						return;
@@ -599,10 +613,10 @@
 
 				var params = {};
 				var format = $('#select_dist_type').val();
-				params["datasetPath"] = $('#dist_path').val();
 
 				params["datasetFormat"] = format;
 				if (format == "CSV") {
+					params["datasetPath"] = $('#dist_path').val();
 					params["header"] = $('#dist_header').val() == "True" ? true : false;
 					params["datasetDelimiter"] = $('#dist_delimiter').val();
 					if (params["datasetPath"] == '') {
@@ -637,7 +651,21 @@
 						swal("Validation Error", "You should input table.", "error");
 						return;
 					}
+					var jdbcData = {};
+					if (getCookie("localMode") != "true") {
+						if ($('#dist_driver').val() == '') {
+							swal("Validation Error", "You should input driver path.", "error");
+							return;
+						} else
+							jdbcData["jdbcDriverPath"] = $('#dist_driver').val();
+					}
+					jdbcData["jdbcUrl"] = $('#dist_url').val();
+					jdbcData["jdbcUser"] = $('#dist_user').val();
+					jdbcData["jdbcPassword"] = $('#dist_pass').val();
+					params["jdbcData"] = jdbcData;
+					params["datasetPath"] = $('#dist_jtable').val();
 				} else {
+					params["datasetPath"] = $('#dist_path').val();
 					if (params["datasetPath"] == '') {
 						swal("Validation Error", "You should input data path.", "error");
 						return;
