@@ -642,7 +642,7 @@
 				Highcharts.chart('dist_total', {
 					chart: {
 						type: 'bar',
-						height: 60,
+						height: 100,
 						width: 910,
 						marginLeft: 20,
 						backgroundColor: '#FFFFFF'
@@ -686,17 +686,17 @@
 					},
 					series: [{
 						maxPointWidth: 20,
-						showInLegend: false,
+						//showInLegend: false,
 						name: 'Matched',
 						data: [stats.distKeyMatchBrodcast]
 					}, {
 						maxPointWidth: 20,
-						showInLegend: false,
+						//showInLegend: false,
 						name: 'Partial Matched',
 						data: [stats.distKeyMatchPartial]
 					}, {
 						maxPointWidth: 20,
-						showInLegend: false,
+						//showInLegend: false,
 						name: 'No Matched',
 						data: [stats.distKeyNoMatch]
 					}]
