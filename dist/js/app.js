@@ -915,12 +915,18 @@ function getInputData(compareCommon) {
             srcFile["columns"] = $('#src_file_schema').val().split(srcFile["datasetDelimiter"]);
         }
     } else if (srcFile["datasetFormat"] == "JDBC") {
+        /*
         var jdbcData = {};
         jdbcData["jdbcUrl"] = $('#src_url').val();
         jdbcData["jdbcUser"] = $('#src_user').val();
         jdbcData["jdbcPassword"] = $('#src_pass').val();
         jdbcData["jdbcDriverPath"] = $('#src_driver').val();
         srcFile["jdbcData"] = jdbcData;
+        */
+        srcFile["jdbcUrl"] = $('#src_url').val();
+        srcFile["jdbcUser"] = $('#src_user').val();
+        srcFile["jdbcPassword"] = $('#src_pass').val();
+        srcFile["jdbcDriverPath"] = $('#src_driver').val();
         srcFile["datasetPath"] = $('#src_jtable').val();
     }
     var transformations = new Array;
@@ -964,12 +970,18 @@ function getInputData(compareCommon) {
             distFile["columns"] = $('#dist_file_schema').val().split(distFile["datasetDelimiter"]);
         }
     } else if (distFile["datasetFormat"] == "JDBC") {
+        /*
         var jdbcData = {};
         jdbcData["jdbcUrl"] = $('#dist_url').val();
         jdbcData["jdbcUser"] = $('#dist_user').val();
         jdbcData["jdbcPassword"] = $('#dist_pass').val();
         jdbcData["jdbcDriverPath"] = $('#dist_driver').val();
         distFile["jdbcData"] = jdbcData;
+        */
+        distFile["jdbcUrl"] = $('#dist_url').val();
+        distFile["jdbcUser"] = $('#dist_user').val();
+        distFile["jdbcPassword"] = $('#dist_pass').val();
+        distFile["jdbcDriverPath"] = $('#dist_driver').val();
         distFile["datasetPath"] = $('#dist_jtable').val();
     }
     transformations = [];
