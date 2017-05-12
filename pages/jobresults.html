@@ -536,8 +536,32 @@
 					tr = $('<tr/>');
 					tr.on('click', function(e) {
 						var index = e.currentTarget.rowIndex;
-						var key = Object.keys(columnNotMatching)[index - 1];
-						alert(index);
+						var keys = Object.keys(columnNotMatchingMap)[index - 1];
+						var keyarr = keys.split(", ");
+						for (var i = 0; i < diffCellArray.length; i++) {
+							var check = true;
+							if (diffCellArray[i] != null && diffCellArray[i].length > 0) {
+								for (var j = 0; j < keyarr.length; j++) {
+									if (diffCellArray[i].indexOf(keyarr[j]) < 0) {
+										check = false;
+										break;
+									}
+								}
+							} else {
+								check = false;
+							}
+
+							if (check == true && diffCellArray[i].length == keyarr.length) {
+								var top = 0;
+								$('#table').find('tbody tr').each(function (ind) {
+									if (ind < i) {
+										top += $(this).height();
+									}
+								});
+								$('#table').bootstrapTable('scrollTo', top);
+								break;
+							}
+						}
 					});
 					tr.append("<td>" + k + "</td>");
 					tr.append("<td>" + value + "</td>");
