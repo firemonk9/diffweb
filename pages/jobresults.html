@@ -142,7 +142,9 @@
 					setCookie("password", "");
 				});
 			});
-			
+
+			var columnNotMatching = []; var columnNotMatchingMap = [];
+
 			var mergeArray = [];
 			var changeHeaderArray = [];
 			var diffCellArray = [];
@@ -496,23 +498,47 @@
 				//alert(JSON.stringify(stats.columnsNotMatching));
 				//var newjson = {"Dest":185,"Origin":689,"DepTime":15,"DayOfWeek":15,"TailNum":394,"Distance":268,"DepDelay":689};
 				
-				var newjson = JSON.stringify(stats.columnsNotMatching);
-				var newjson = JSON.parse(newjson);
-				
-				$.each(newjson, function (k, value) {
+				//var newjson = JSON.stringify(stats.columnsNotMatching);
+				//columnNotMatching = JSON.parse(newjson);
+				columnNotMatching = stats.columnsNotMatching;
+
+				$.each(columnNotMatching, function (k, value) {
 					var tr;
 					tr = $('<tr/>');
+					tr.on('click', function(e) {
+						var index = e.currentTarget.rowIndex;
+						var key = Object.keys(columnNotMatching)[index - 1];
+						for (var i = 0; i < diffCellArray.length; i++) {
+							if (diffCellArray[i] != null && diffCellArray[i].indexOf(key) >= 0) {
+								break;
+							}
+						}
+						var top = 0;
+						$('#table').find('tbody tr').each(function (ind) {
+							if (ind < i) {
+								top += $(this).height();
+							}
+						});
+						$('#table').bootstrapTable('scrollTo', top);
+
+					});
 					tr.append("<td>" + k + "</td>");
 					tr.append("<td>" + value + "</td>");	
 					$('#tblGrid').append(tr);
 				});
 
-				var json = JSON.stringify(stats.columnsNotMatchingMap);
-				json = JSON.parse(json);
+				//var json = JSON.stringify(stats.columnsNotMatchingMap);
+				//columnNotMatchingMap = JSON.parse(json);
+				columnNotMatchingMap = stats.columnsNotMatchingMap;
 
-				$.each(json, function (k, value) {
+				$.each(columnNotMatchingMap, function (k, value) {
 					var tr;
 					tr = $('<tr/>');
+					tr.on('click', function(e) {
+						var index = e.currentTarget.rowIndex;
+						var key = Object.keys(columnNotMatching)[index - 1];
+						alert(index);
+					});
 					tr.append("<td>" + k + "</td>");
 					tr.append("<td>" + value + "</td>");
 					$('#tblGrid2').append(tr);
@@ -554,7 +580,7 @@
 				Highcharts.chart('src_total', {
 					chart: {
 						type: 'bar',
-						height: 60,
+						height: 100,
 						width: 910,
 						marginLeft: 20,
 						backgroundColor: '#F9F9F9'
@@ -598,17 +624,17 @@
 					},
 					series: [{
 						maxPointWidth: 20,
-						showInLegend: false,
+						//showInLegend: false,
 						name: 'Matched',
 						data: [stats.srcKeyMatchBrodcast]
 					}, {
 						maxPointWidth: 20,
-						showInLegend: false,
+						//showInLegend: false,
 						name: 'Partial Matched',
 						data: [stats.srcKeyMatchPartial]
 					}, {
 						maxPointWidth: 20,
-						showInLegend: false,
+						//showInLegend: false,
 						name: 'No Matched',
 						data: [stats.srcKeyNoMatch]
 					}]
@@ -1292,7 +1318,7 @@
 								data-height="540"
 								data-search="true"
 								data-show-columns="true"
-								data-pagination="true"
+								data-pagination="false"
 								data-show-export="true"
 								data-row-style="rowStyle">
 									<thead>
