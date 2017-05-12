@@ -554,6 +554,9 @@
 				Highcharts.chart('src_total', {
 					chart: {
 						type: 'bar',
+						height: 60,
+						width: 910,
+						marginLeft: 20,
 						backgroundColor: '#F9F9F9'
 					},
 					credits: {
@@ -563,7 +566,7 @@
 						text: ''
 					},
 					xAxis: {
-						categories: ['Total Keys'],
+						categories: ['Source Total Keys'],
 						lineWidth: 0,
 						minorGridLineWidth: 0,
 						lineColor: 'transparent',
@@ -592,24 +595,84 @@
 						series: {
 							stacking: 'normal'
 						},
-						column: {
-							pointPadding: 0.2,
-							borderWidth: 0,
-							pointWidth: 30
-						}
 					},
 					series: [{
 						maxPointWidth: 20,
+						showInLegend: false,
 						name: 'Matched',
-						data: [5]
+						data: [stats.srcKeyMatchBrodcast]
 					}, {
 						maxPointWidth: 20,
+						showInLegend: false,
 						name: 'Partial Matched',
-						data: [2]
+						data: [stats.srcKeyMatchPartial]
 					}, {
 						maxPointWidth: 20,
+						showInLegend: false,
 						name: 'No Matched',
-						data: [3]
+						data: [stats.srcKeyNoMatch]
+					}]
+				});
+				Highcharts.chart('dist_total', {
+					chart: {
+						type: 'bar',
+						height: 60,
+						width: 910,
+						marginLeft: 20,
+						backgroundColor: '#FFFFFF'
+					},
+					credits: {
+						enabled: false
+					},
+					title: {
+						text: ''
+					},
+					xAxis: {
+						categories: ['Destination Total Keys'],
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						minorTickLength: 0,
+						tickLength: 0
+					},
+					yAxis: {
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						gridLineColor: 'transparent',
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						minorTickLength: 0,
+						tickLength: 0,
+						visible: false
+					},
+					legend: {
+						reversed: false
+					},
+					plotOptions: {
+						series: {
+							stacking: 'normal'
+						},
+					},
+					series: [{
+						maxPointWidth: 20,
+						showInLegend: false,
+						name: 'Matched',
+						data: [stats.distKeyMatchBrodcast]
+					}, {
+						maxPointWidth: 20,
+						showInLegend: false,
+						name: 'Partial Matched',
+						data: [stats.distKeyMatchPartial]
+					}, {
+						maxPointWidth: 20,
+						showInLegend: false,
+						name: 'No Matched',
+						data: [stats.distKeyNoMatch]
 					}]
 				});
 			}
@@ -1156,6 +1219,7 @@
 												</div>
 											</td>
 										</tr>
+										<!--
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Keys Distribution : </small></td>
 											<td class="col-md-9" row>
@@ -1169,6 +1233,8 @@
 												</div>
 											</td>
 										</tr>
+										-->
+										<!--
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Keys Distribution : </small></td>
 											<td class="col-md-9" row>
@@ -1182,32 +1248,17 @@
 												</div>
 											</td>
 										</tr>
+										-->
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Total Keys:</small></td>
-											<td class="col-md-9" row >
-												<!--
-												<div class="col-md-12" style="font-size: 15pt;">
-													<small id="src_total_count" style="font-size: 15pt;">0</small> =
-													<small id="src_match_count">0</small> +
-													<small id="src_partial_count">0</small> +
-													<small id="src_nomatch_count">0</small>
-												</div>
-												-->
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Keys Distribution:</small></td>
+											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
 												<div id="src_total"></div>
 											</td>
 										</tr>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Total Keys:</small></td>
-											<td class="col-md-9" row >
-												<div class="col-md-12" style="font-size: 15pt;">
-													<!--
-													<small id="dist_total_count" style="font-size: 15pt;">0</small> =
-													<small id="dist_match_count">0</small> +
-													<small id="dist_partial_count">0</small> +
-													<small id="dist_nomatch_count">0</small>
-													-->
-													<div id="dist_total"></div>
-												</div>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Keys Distribution:</small></td>
+											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
+												<div id="dist_total"></div>
 											</td>
 										</tr>
 										<tr>
