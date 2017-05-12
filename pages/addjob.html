@@ -487,6 +487,36 @@
 			initForm(0);
 		}
 
+		function resetSrcFormData() {
+			$('#src_file_path input').val("");
+			$("#select_src_type").prop("selectedIndex", 0);
+			$('#src_file_delimiter input').val("");
+			$('#src_header').prop("selectedIndex", 0);
+			$('#src_custom_schema input').val("");
+			$('#src_jdbc_url input').val("");
+			$('#src_jdbc_user input').val("");
+			$('#src_jdbc_pass input').val("");
+			$('#src_jdbc_table input').val("");
+			$('#src_jdbc_driver input').val("");
+
+			initForm(1);
+		}
+
+		function resetDistFormData() {
+			$('#dist_file_path input').val("");
+			$("#select_dist_type").prop("selectedIndex", 0);
+			$('#dist_file_delimiter input').val("");
+			$('#dist_header').prop("selectedIndex", 0);
+			$('#dist_custom_schema input').val("");
+			$('#dist_jdbc_url input').val("");
+			$('#dist_jdbc_user input').val("");
+			$('#dist_jdbc_pass input').val("");
+			$('#dist_jdbc_table input').val("");
+			$('#dist_jdbc_driver input').val("");
+
+			initForm(2);
+		}
+
 		function resetData() {
 			if (srcAjax != null)
 				srcAjax.abort();
@@ -495,6 +525,32 @@
 
 			resetFormData();
 			resetRuleData();
+
+			advancedRuleEmpty = true;
+
+			dataResetted = true;
+			compareKey = [];
+		}
+
+		function resetSrcData() {
+			if (srcAjax != null)
+				srcAjax.abort();
+
+			resetSrcFormData();
+			resetSrcRuleData();
+
+			advancedRuleEmpty = true;
+
+			dataResetted = true;
+			compareKey = [];
+		}
+
+		function resetDistData() {
+			if (distAjax != null)
+				distAjax.abort();
+
+			resetDistFormData();
+			resetDistRuleData();
 
 			advancedRuleEmpty = true;
 
@@ -705,6 +761,10 @@
 
 			$('#btn_reset').on('click', function (e) {
 				resetData();
+			});
+
+			$('#btn_src_reset').on('click', function (e) {
+				resetSrcData();
 			});
 
 			$("#btn_save_job").on('click', function (e) {
@@ -1304,9 +1364,11 @@
 				</div>
 				<div class="col-lg-12">
 					<div class="panel-body">
-						<div class="form-group col-lg-offset-9 col-lg-3" style="text-align: right;">
-							<!--<button class="btn btn-success" id="btn_save_job" disabled="">Submit Job</button>-->
-							<button class="btn btn-primary" id="btn_reset" style="margin-left: 20px">Reset</button>
+						<div class="form-group col-lg-3" style="text-align: left;">
+							<button class="btn btn-primary" id="btn_src_reset">Reset</button>
+						</div>
+						<div class="form-group col-lg-offset-6 col-lg-3" style="text-align: right;">
+							<button class="btn btn-primary" id="btn_dist_reset">Reset</button>
 						</div>
 					</div>
 				</div>
@@ -1394,23 +1456,15 @@
 															</div>
 															<div class="modal-body">
 																<p><b>Run on sample of:</b>To run the data comparision on random sample of compare keys Instead of whole data. Accepts a number between 1 to 100,000.</p>
-
 																<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
 																<p><b>Src Filter Sql/Dist Filter Sql :</b> To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
-
 																<p>Note :  You can refer to the dataset as my_data.</p>
-
 																<p>Ex : select * from my_data where age > 30</p>
-
 															</div>
-
-
 														</div>
 													</div>
 												</div>
 											</div>
-
-
 											<div class="col-md-12">
 												<!--<button class="btn btn-danger" data-toggle="modal" data-target="#what" id="btn_delete">What is this</button>-->
 												<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what1" />
@@ -1435,10 +1489,7 @@
 															</div>
 															<div class="modal-body">
 																<p><b>Compare two way : </b>When the checkbox is selected compares both source and destination datasets with each other. When destination dataset is subset of source dataset unselect the check box.</p>
-
 															</div>
-
-
 														</div>
 													</div>
 												</div>
@@ -1456,14 +1507,11 @@
 									</div>
 								</div>
 								<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
-
 									<div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFive">
 										<h3 class="panel-title accordion-toggle">Data Transformations</h3>
 									</div>
-
 									<div id="collapseFive" class="panel-collapse collapse">
 										<div class="panel-body">
-
 											<div class="col-md-12">
 												<div class="col-md-6">
 													<label>Source Dataset</label>
@@ -1487,9 +1535,7 @@
 															<span class="glyphicon glyphicon-minus"></span>
 														</button>
 													</div>
-
 												</div>
-
 												<div class="col-md-6">
 													<label>Destination Dataset</label>
 													<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">

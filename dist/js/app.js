@@ -325,6 +325,30 @@ function resetRuleData() {
     $('.dist_trans_rule').val('');
 }
 
+function resetSrcRuleData() {
+    $('ul#src_column li').remove();
+    $('ul#src_excluded li').remove();
+
+    while ($('.src-rule-extra').length > 0) {
+        $('.src-rule-extra')[0].remove();
+    }
+
+    $('.src_trans_column').tagsinput('removeAll');
+    $('.src_trans_rule').val('');
+}
+
+function resetDistRuleData() {
+    $('ul#dist_column li').remove();
+    $('ul#dist_excluded li').remove();
+
+    while ($('.dist-rule-extra').length > 0) {
+        $('.dist-rule-extra')[0].remove();
+    }
+    $('.dist_trans_column').tagsinput('removeAll');
+    $('.dist_trans_rule').val('');
+}
+
+
 function insertRule(nextEl, tag) {
     var group = document.createElement("div");
     group.setAttribute("class", "form-group row " + tag + "-rule-extra");
