@@ -553,7 +553,11 @@
 				*/
 				Highcharts.chart('src_total', {
 					chart: {
-						type: 'bar'
+						type: 'bar',
+						backgroundColor: '#F9F9F9'
+					},
+					credits: {
+						enabled: false
 					},
 					title: {
 						text: ''
@@ -572,28 +576,38 @@
 					yAxis: {
 						lineWidth: 0,
 						minorGridLineWidth: 0,
+						gridLineColor: 'transparent',
 						lineColor: 'transparent',
 						labels: {
 							enabled: false
 						},
 						minorTickLength: 0,
-						tickLength: 0
+						tickLength: 0,
+						visible: false
 					},
 					legend: {
-						reversed: true
+						reversed: false
 					},
 					plotOptions: {
 						series: {
 							stacking: 'normal'
+						},
+						column: {
+							pointPadding: 0.2,
+							borderWidth: 0,
+							pointWidth: 30
 						}
 					},
 					series: [{
+						maxPointWidth: 20,
 						name: 'Matched',
 						data: [5]
 					}, {
+						maxPointWidth: 20,
 						name: 'Partial Matched',
 						data: [2]
 					}, {
+						maxPointWidth: 20,
 						name: 'No Matched',
 						data: [3]
 					}]

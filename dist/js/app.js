@@ -1031,7 +1031,7 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         if (!distFile["header"]) {
             distFile["columns"] = distInput.columns;
         }
-    } else if (distFile["datasetFormat"] == "JSON") {
+    } else if (distFile["datasetFormat"] == "JDBC") {
         var jdbcData = {};
         jdbcData["jdbcUrl"] = distInput.jdbcUrl;
         jdbcData["jdbcUser"] = distInput.jdbcUser;
@@ -1065,7 +1065,7 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         if (!srcFile["header"]) {
             srcFile["columns"] = srcInput.columns;
         }
-    } else if (srcFile["datasetFormat"] == "JSON") {
+    } else if (srcFile["datasetFormat"] == "JDBC") {
         var jdbcData = {};
         jdbcData["jdbcUrl"] = srcInput.jdbcUrl;
         jdbcData["jdbcUser"] = srcInput.jdbcUser;
