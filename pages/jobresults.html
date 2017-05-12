@@ -38,6 +38,7 @@
 		<script src="../dist/js/bootstrap-table-export.js"></script>
 		<script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 
+		<script src="https://code.highcharts.com/highcharts.js"></script>
 		<script src="../dist/js/sweetalert-dev.js"></script>
 		<script src="../dist/js/app.js"></script>
 		
@@ -194,7 +195,7 @@
 						getJobResult(jobId);
 					}, 5000);
 					return;
-					} else if (response.status == "Invalid Job id") {
+				} else if (response.status == "Invalid Job id") {
 					document.getElementById("danger-msg").innerHTML = "Invalid job id.";
 					$('.alert-danger').show();
 					return;
@@ -205,7 +206,7 @@
 					except.innerHTML = response.exception;
 					$('.alert-warning').show();
 					return;
-					} else if (response.differencessForKey == null) {
+				} else if (response.differencessForKey == null) {
 					document.getElementById("danger-msg").innerHTML = "Json is not correct.";
 					$('.alert-danger').show();
 					return;
@@ -539,6 +540,7 @@
 				$('#funding4').css("width", parseInt(dist_key_percent) + "%");
 
 				//$('#total_count').html(stats.srcKeyMatchBrodcast + " + " + stats.srcKeyMatchPartial + " + " +stats.srcKeyNoMatch + " = " + (stats.srcKeyMatchBrodcast + stats.srcKeyMatchPartial + stats.srcKeyNoMatch));
+				/*
 				$('#src_total_count').html(stats.srcKeyMatchBrodcast + stats.srcKeyMatchPartial + stats.srcKeyNoMatch);
 				$('#src_match_count').html(stats.srcKeyMatchBrodcast);
 				$('#src_partial_count').html(stats.srcKeyMatchPartial);
@@ -548,6 +550,54 @@
 				$('#dist_match_count').html(stats.distKeyMatchBrodcast);
 				$('#dist_partial_count').html(stats.distKeyMatchPartial);
 				$('#dist_nomatch_count').html(stats.distKeyNoMatch);
+				*/
+				Highcharts.chart('src_total', {
+					chart: {
+						type: 'bar'
+					},
+					title: {
+						text: 'Stacked bar chart'
+					},
+					xAxis: {
+						categories: ['Total Keys'],
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						minorTickLength: 0,
+						tickLength: 0
+					},
+					yAxis: {
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						minorTickLength: 0,
+						tickLength: 0
+					},
+					legend: {
+						reversed: true
+					},
+					plotOptions: {
+						series: {
+							stacking: 'normal'
+						}
+					},
+					series: [{
+						name: 'Matched',
+						data: [5]
+					}, {
+						name: 'Partial Matched',
+						data: [2]
+					}, {
+						name: 'No Matched',
+						data: [3]
+					}]
+				});
 			}
 			
 			//To Fetch URL parameters.
@@ -1093,7 +1143,7 @@
 											</td>
 										</tr>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Keys Matching : </small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Keys Distribution : </small></td>
 											<td class="col-md-9" row>
 												<div class="col-md-2">
 													<small id="src_key_percent" style="font-size: 15pt;">0%</small><small id="src_key_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
@@ -1106,7 +1156,7 @@
 											</td>
 										</tr>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Keys Matching : </small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Keys Distribution : </small></td>
 											<td class="col-md-9" row>
 												<div class="col-md-2">
 													<small id="dist_key_percent" style="font-size: 15pt;">0%</small><small id="dist_key_count" style="position: relative;bottom: 2px;margin-left: 10px;"> (0 / 0) </small>
@@ -1121,22 +1171,28 @@
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Total Keys:</small></td>
 											<td class="col-md-9" row >
+												<!--
 												<div class="col-md-12" style="font-size: 15pt;">
 													<small id="src_total_count" style="font-size: 15pt;">0</small> =
 													<small id="src_match_count">0</small> +
 													<small id="src_partial_count">0</small> +
 													<small id="src_nomatch_count">0</small>
 												</div>
+												-->
+												<div id="src_total"></div>
 											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Total Keys:</small></td>
 											<td class="col-md-9" row >
 												<div class="col-md-12" style="font-size: 15pt;">
+													<!--
 													<small id="dist_total_count" style="font-size: 15pt;">0</small> =
 													<small id="dist_match_count">0</small> +
 													<small id="dist_partial_count">0</small> +
 													<small id="dist_nomatch_count">0</small>
+													-->
+													<div id="dist_total"></div>
 												</div>
 											</td>
 										</tr>

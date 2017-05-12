@@ -921,6 +921,7 @@ function getInputData(compareCommon) {
         jdbcData["jdbcPassword"] = $('#src_pass').val();
         jdbcData["jdbcDriverPath"] = $('#src_driver').val();
         srcFile["jdbcData"] = jdbcData;
+        srcFile["datasetPath"] = $('#src_jtable').val();
     }
     var transformations = new Array;
     if ($('.src_trans_column').tagsinput('items').length > 0) {
@@ -969,6 +970,7 @@ function getInputData(compareCommon) {
         jdbcData["jdbcPassword"] = $('#dist_pass').val();
         jdbcData["jdbcDriverPath"] = $('#dist_driver').val();
         distFile["jdbcData"] = jdbcData;
+        distFile["datasetPath"] = $('#dist_jtable').val();
     }
     transformations = [];
     if ($('.dist_trans_column').tagsinput('items').length > 0) {
