@@ -537,6 +537,17 @@
 				$('#dist_key_percent').html(parseInt(dist_key_percent) + "%");
 				$('#dist_key_count').html("(" + stats.distKeyMatchBrodcast + " / " + stats.distKeyCount + ")");
 				$('#funding4').css("width", parseInt(dist_key_percent) + "%");
+
+				//$('#total_count').html(stats.srcKeyMatchBrodcast + " + " + stats.srcKeyMatchPartial + " + " +stats.srcKeyNoMatch + " = " + (stats.srcKeyMatchBrodcast + stats.srcKeyMatchPartial + stats.srcKeyNoMatch));
+				$('#src_total_count').html(stats.srcKeyMatchBrodcast + stats.srcKeyMatchPartial + stats.srcKeyNoMatch);
+				$('#src_match_count').html(stats.srcKeyMatchBrodcast);
+				$('#src_partial_count').html(stats.srcKeyMatchPartial);
+				$('#src_nomatch_count').html(stats.srcKeyNoMatch);
+
+				$('#dist_total_count').html(stats.distKeyMatchBrodcast + stats.distKeyMatchPartial + stats.distKeyNoMatch);
+				$('#dist_match_count').html(stats.distKeyMatchBrodcast);
+				$('#dist_partial_count').html(stats.distKeyMatchPartial);
+				$('#dist_nomatch_count').html(stats.distKeyNoMatch);
 			}
 			
 			//To Fetch URL parameters.
@@ -1098,12 +1109,34 @@
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Keys Matching : </small></td>
 											<td class="col-md-9" row>
 												<div class="col-md-2">
-													<small id="dist_key_percent" style="font-size: 15pt;">0%</small><small id="dist_key_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
+													<small id="dist_key_percent" style="font-size: 15pt;">0%</small><small id="dist_key_count" style="position: relative;bottom: 2px;margin-left: 10px;"> (0 / 0) </small>
 												</div>
 												<div class = "col-md-10 progress active" style="background-color: #D9534F;padding: 0;margin-bottom: 0px;position: relative;top: 3px;width: 70%;">
 													<div class = "progress-bar progress-bar-success" role = "progressbar" id="funding4"
 														 aria-valuenow = "0" aria-valuemin = "0" aria-valuemax = "100" style = "width: 0%;">
 													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Total Keys:</small></td>
+											<td class="col-md-9" row >
+												<div class="col-md-12" style="font-size: 15pt;">
+													<small id="src_total_count" style="font-size: 15pt;">0</small> =
+													<small id="src_match_count">0</small> +
+													<small id="src_partial_count">0</small> +
+													<small id="src_nomatch_count">0</small>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Total Keys:</small></td>
+											<td class="col-md-9" row >
+												<div class="col-md-12" style="font-size: 15pt;">
+													<small id="dist_total_count" style="font-size: 15pt;">0</small> =
+													<small id="dist_match_count">0</small> +
+													<small id="dist_partial_count">0</small> +
+													<small id="dist_nomatch_count">0</small>
 												</div>
 											</td>
 										</tr>
@@ -1124,9 +1157,6 @@
 									</tbody>
 								</table>
 							</div>
-							
-							
-							
 						</div>
 					</div>
 				</div>
