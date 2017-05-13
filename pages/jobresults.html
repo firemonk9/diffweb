@@ -315,6 +315,16 @@
 				//alert(response.inputData.compareKey);
 				return response.inputData.compareKey;
 			}
+
+			function openDialog1() {
+				$('#more2').hide();
+				$('#more').show();
+			}
+
+			function openDialog2() {
+				$('#more').hide();
+				$('#more2').show();
+			}
 			
 			function createAdvancedRulePage(response) {
 				//make src and dist transformation column inputs to typeahead
@@ -1081,8 +1091,16 @@
 				$('#dist_trans_minus').on('click', function(e) {
 					removeRule($('.dist-rule-extra'));
 				});
+
+				$('#close1').on('click', function(e) {
+					$('#more').hide();
+				});
+
+				$('#close2').on('click', function(e) {
+					$('#more2').hide();
+				});
 				
-				setIncludeListener();
+ 				setIncludeListener();
 				setExcludeListener();
 			}
 			
@@ -1282,48 +1300,6 @@
 					</button>
 					<strong>EXCEPTION!</strong> <span id="exception-value"></span>
 				</div>
-				<div id="col-md-12">
-					<div class="modal fade" id="more" role="dialog">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
-								</div>
-								<div class="modal-body">
-									<table class="table table-striped" id="tblGrid">
-										<thead id="tblHead">
-											<tr>
-												<th>Name</th>
-												<th>Value</th>
-											</tr>
-										</thead>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-12">
-					<div class="modal fade" id="more2" role="dialog">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
-								</div>
-								<div class="modal-body">
-									<table class="table table-striped" id="tblGrid2">
-										<thead>
-										<tr>
-											<th>Name</th>
-											<th>Value</th>
-										</tr>
-										</thead>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
@@ -1400,13 +1376,13 @@
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Columns Not Matching : </small></td>
 											<td class="col-md-9" row>
-												<button type="button"  data-toggle="modal" data-target="#more" style="margin-left: 15px;">Click Here!</button>
+												<button type="button" style="margin-left: 15px;" onclick="openDialog1()">Click Here!</button>
 											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Columns Not Matching In Records: </small></td>
 											<td class="col-md-9">
-												<button type="button"  data-toggle="modal" data-target="#more2" style="margin-left: 15px;">Click Here!</button>
+												<button type="button" style="margin-left: 15px;" onclick="openDialog2()">Click Here!</button>
 											</td>
 										</tr>
 									</tbody>
@@ -1789,6 +1765,41 @@
 						<button type="button" class="btn btn-default" id="btn_cancel_rules">Cancel</button>
 						<a class="btn btn-success btn-ok" id="btn_save_rules">Submit Job</a>
 					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="ui-dialog" id="more" style="z-index:9999;display: none;width: 50%;position: absolute;top: 50%;left: 25%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" id="close1" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<table class="table table-striped" id="tblGrid">
+						<thead id="tblHead">
+						<tr>
+							<th>Name</th>
+							<th>Value</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="ui-dialog" id="more2" style="z-index:9999;display: none;width: 50%;position: absolute;top: 50%;left: 25%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" aria-hidden="true" id="close2">&times;</button>
+				</div>
+				<div class="modal-body">
+					<table class="table table-striped" id="tblGrid2">
+						<thead>
+						<tr>
+							<th>Name</th>
+							<th>Value</th>
+						</tr>
+						</thead>
+					</table>
 				</div>
 			</div>
 		</div>
