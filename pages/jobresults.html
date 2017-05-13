@@ -294,7 +294,7 @@
 				if (newData.length > 0) {
 					var headerArray = Object.keys(newData[0]);
 					var index = headerArray.indexOf("matching");
-					//headerArray.splice(index, 1);
+					headerArray.splice(index, 1);
 					headerCount = headerArray.length;
 					curColumnIndex = 0;
 					var res = JSON.stringify(newData);
@@ -510,7 +510,7 @@
 
 				$.each(columnNotMatching, function (k, value) {
 					var tr;
-					tr = $('<tr/>');
+					tr = $('<tr style="cursor: pointer;"></tr>');
 					tr.on('click', function(e) {
 						var index = e.currentTarget.rowIndex;
 						var key = Object.keys(columnNotMatching)[index - 1];
@@ -539,7 +539,7 @@
 
 				$.each(columnNotMatchingMap, function (k, value) {
 					var tr;
-					tr = $('<tr/>');
+					tr = $('<tr style="cursor: pointer;"></tr>');
 					tr.on('click', function(e) {
 						var index = e.currentTarget.rowIndex;
 						var keys = Object.keys(columnNotMatchingMap)[index - 1];
