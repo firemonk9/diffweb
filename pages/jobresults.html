@@ -486,23 +486,6 @@
 			
 			// Show Stats Table
 			function setStatsTable(stats, srcPath, distPath) {
-				//alert(JSON.stringify(stats.columnsNotMatching));
-				/*
-					$('.srcrecordscount').html(stats.srcRecordsCount);
-					$('.distrecordscount').html(stats.distRecordsCount);
-					$('.totalsrcrecordsmatching').html(stats.totalSrcRecordsMatching);
-					$('.totalsrcrecordsnotmatching').html(stats.totalSrcRecordsNotMatching);
-					$('.totaldistrecordsmatching').html(stats.totalDistRecordsMatching);
-					$('.totaldistrecordsnotmatching').html(stats.totalDistRecordsNotMatching);
-					$('.columnsnotmatching').html(JSON.stringify(stats.columnsNotMatching));
-					$('.columnsnotmatchingmap').html(JSON.stringify(stats.columnsNotMatchingMap));
-				 */
-				
-				//alert(JSON.stringify(stats.columnsNotMatching));
-				//var newjson = {"Dest":185,"Origin":689,"DepTime":15,"DayOfWeek":15,"TailNum":394,"Distance":268,"DepDelay":689};
-				
-				//var newjson = JSON.stringify(stats.columnsNotMatching);
-				//columnNotMatching = JSON.parse(newjson);
 				$('#src_path').html(srcPath);
 				$('#dist_path').html(distPath);
 
@@ -578,12 +561,122 @@
 				var src_percent = (stats.totalSrcRecordsMatching / stats.srcRecordsCount) * 100;
 				$('#src_percent').html(parseInt(src_percent) + "%");
 				$('#src_count').html("(" + stats.totalSrcRecordsMatching + " / " + stats.srcRecordsCount + ")");
-				$('#funding1').css("width", parseInt(src_percent) + "%");
+				Highcharts.chart('src_record', {
+					chart: {
+						type: 'bar',
+						height: 60,
+						width: 750,
+						backgroundColor: '#F9F9F9'
+					},
+					credits: {
+						enabled: false
+					},
+					title: {
+						text: ''
+					},
+					xAxis: {
+						categories: ['Source Record Matching'],
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						minorTickLength: 0,
+						tickLength: 0
+					},
+					yAxis: {
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						gridLineColor: 'transparent',
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						minorTickLength: 0,
+						tickLength: 0,
+						visible: false
+					},
+					legend: {
+						reversed: false
+					},
+					plotOptions: {
+						series: {
+							stacking: 'normal'
+						},
+					},
+					series: [{
+						maxPointWidth: 20,
+						showInLegend: false,
+						name: 'Source Record Matching',
+						data: [stats.totalSrcRecordsMatching]
+					}, {
+						maxPointWidth: 20,
+						showInLegend: false,
+						name: 'Source Total Records',
+						data: [stats.srcRecordsCount]
+					}]
+				});
 
 				var dist_percent = (stats.totalDistRecordsMatching / stats.distRecordsCount) * 100;
 				$('#dist_percent').html(parseInt(dist_percent) + "%");
 				$('#dist_count').html("(" + stats.totalDistRecordsMatching + " / " + stats.distRecordsCount + ")");
-				$('#funding2').css("width", parseInt(dist_percent) + "%");
+				Highcharts.chart('dist_record', {
+					chart: {
+						type: 'bar',
+						height: 60,
+						width: 750,
+						backgroundColor: '#FFFFFF'
+					},
+					credits: {
+						enabled: false
+					},
+					title: {
+						text: ''
+					},
+					xAxis: {
+						categories: ['Destination Record Matching'],
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						minorTickLength: 0,
+						tickLength: 0
+					},
+					yAxis: {
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						gridLineColor: 'transparent',
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						minorTickLength: 0,
+						tickLength: 0,
+						visible: false
+					},
+					legend: {
+						reversed: false
+					},
+					plotOptions: {
+						series: {
+							stacking: 'normal'
+						},
+					},
+					series: [{
+						maxPointWidth: 20,
+						showInLegend: false,
+						name: 'Destination Record Matching',
+						data: [stats.totalDistRecordsMatching]
+					}, {
+						maxPointWidth: 20,
+						showInLegend: false,
+						name: 'Source Total Records',
+						data: [stats.distRecordsCount]
+					}]
+				});
 
 				var src_key_percent = (stats.srcKeyMatchBrodcast / stats.srcKeyCount) * 100;
 				$('#src_key_percent').html(parseInt(src_key_percent) + "%");
@@ -595,24 +688,14 @@
 				$('#dist_key_count').html("(" + stats.distKeyMatchBrodcast + " / " + stats.distKeyCount + ")");
 				$('#funding4').css("width", parseInt(dist_key_percent) + "%");
 
-				//$('#total_count').html(stats.srcKeyMatchBrodcast + " + " + stats.srcKeyMatchPartial + " + " +stats.srcKeyNoMatch + " = " + (stats.srcKeyMatchBrodcast + stats.srcKeyMatchPartial + stats.srcKeyNoMatch));
-				/*
-				$('#src_total_count').html(stats.srcKeyMatchBrodcast + stats.srcKeyMatchPartial + stats.srcKeyNoMatch);
-				$('#src_match_count').html(stats.srcKeyMatchBrodcast);
-				$('#src_partial_count').html(stats.srcKeyMatchPartial);
-				$('#src_nomatch_count').html(stats.srcKeyNoMatch);
-
-				$('#dist_total_count').html(stats.distKeyMatchBrodcast + stats.distKeyMatchPartial + stats.distKeyNoMatch);
-				$('#dist_match_count').html(stats.distKeyMatchBrodcast);
-				$('#dist_partial_count').html(stats.distKeyMatchPartial);
-				$('#dist_nomatch_count').html(stats.distKeyNoMatch);
-				*/
+				$('#src_matched').html(stats.srcKeyMatchBrodcast);
+				$('#src_partial').html(stats.srcKeyMatchPartial);
+				$('#src_not').html(stats.srcKeyNoMatch);
 				Highcharts.chart('src_total', {
 					chart: {
 						type: 'bar',
 						height: 100,
-						width: 910,
-						marginLeft: 20,
+						width: 750,
 						backgroundColor: '#F9F9F9'
 					},
 					credits: {
@@ -669,12 +752,15 @@
 						data: [stats.srcKeyNoMatch]
 					}]
 				});
+
+				$('#dist_matched').html(stats.distKeyMatchBrodcast);
+				$('#dist_partial').html(stats.distKeyMatchPartial);
+				$('#dist_not').html(stats.distKeyNoMatch);
 				Highcharts.chart('dist_total', {
 					chart: {
 						type: 'bar',
 						height: 100,
-						width: 910,
-						marginLeft: 20,
+						width: 750,
 						backgroundColor: '#FFFFFF'
 					},
 					credits: {
@@ -1264,39 +1350,53 @@
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Records Matching : </small></td>
 											<td class="col-md-9 row">
-												<div class="col-md-2">
+												<div class="col-md-2" style="top: 15px;">
 													<small id="src_percent" style="font-size: 15pt;">0%</small><small id="src_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
 												</div>
-												<div class = "col-md-10 progress active" style="background-color: #D9534F;padding: 0;margin-bottom: 0px;position: relative;top: 3px;width: 70%;">
-													<div class = "progress-bar progress-bar-success" role = "progressbar" id="funding1"
-														 aria-valuenow = "0" aria-valuemin = "0" aria-valuemax = "100" style = "width: 0%;">
-													</div>
-												</div>
+												<div class="col-md-10" id="src_record" style="padding-left:0px;padding-right:0px;"></div>
 											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Records Matching : </small></td>
 											<td class="col-md-9" row>
-												<div class="col-md-2">
+												<div class="col-md-2" style="top: 15px;">
 													<small id="dist_percent" style="font-size: 15pt;">0%</small><small id="dist_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
 												</div>
-												<div class = "col-md-10 progress active" style="background-color: #D9534F;padding: 0;margin-bottom: 0px;position: relative;top: 3px;width: 70%;">
-													<div class = "progress-bar progress-bar-success" role = "progressbar" id="funding2"
-														 aria-valuenow = "0" aria-valuemin = "0" aria-valuemax = "100" style = "width: 0%;">
-													</div>
-												</div>
+												<div class="col-md-10" id="dist_record" style="padding-left:0px;padding-right:0px;"></div>
 											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Keys Distribution:</small></td>
 											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
-												<div id="src_total"></div>
+												<div class="col-md-2" style="top: 20px;">
+													<div>
+														<span>Matched : </span><span id="src_matched">0</span>
+													</div>
+													<div>
+														<span>Partial Matched: </span><span id="src_partial">0</span>
+													</div>
+													<div>
+														<span>Not Matched: </span><span id="src_not">0</span>
+													</div>
+												</div>
+												<div class="col-md-10" id="src_total" style="padding-left:0px;padding-right:0px;"></div>
 											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Keys Distribution:</small></td>
 											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
-												<div id="dist_total"></div>
+												<div class="col-md-2" style="top: 20px;">
+													<div>
+														<span>Matched : </span><span id="dist_matched">0</span>
+													</div>
+													<div>
+														<span>Partial Matched: </span><span id="dist_partial">0</span>
+													</div>
+													<div>
+														<span>Not Matched: </span><span id="dist_not">0</span>
+													</div>
+												</div>
+												<div class="col-md-10" id="dist_total" style="padding-left:0px;padding-right:0px;"></div>
 											</td>
 										</tr>
 										<tr>
@@ -1443,10 +1543,7 @@
 																		<p>Note :  You can refer to the dataset as my_data.</p>
 																		
 																		<p>Ex : select * from my_data where age > 30</p>
-																		
 																	</div>
-																	
-																	
 																</div>
 															</div>
 														</div>
@@ -1567,7 +1664,6 @@
 																		<table class="table2" style="width:100%">
 																			<th>Example scenario</th>
 																			<th>Rule</th>
-																			
 																			<tr>
 																				<td>Convert to lower case</td>
 																				<td>
@@ -1598,7 +1694,6 @@
 																					if(value != null && value.indexOf(".")  > -1) value.substring(0,value.lastIndexOf(".")) else value
 																				</td>
 																			</tr>
-																			
 																		</table>
 																		
 																		<style>
@@ -1610,23 +1705,15 @@
 																			
 																			table.table2 td{border: 1px solid black;
 																			border-collapse: collapse;padding: 6px;}
-																			
-																			
 																		</style>
-																		
-																		
 																	</div>
-																	
-																	
 																</div>
 															</div>
 														</div>
 													</div>
 													<div class="col-md-12">
-														
 														<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what2" />
 													</div>
-													
 												</div>
 											</div>
 										</div>
@@ -1697,57 +1784,6 @@
 									</div>
 								</div>
 							</div>
-							<!--<div class="row tab-pane fade" id="transmation">
-								<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="transHelp()" />
-								<div class="col-md-6">
-								<label>Source Dataset</label>
-								<div class="form-group row" style="margin-top: 15px;">
-								<label class="col-sm-3">Column</label>
-								<div class="col-sm-9">
-								<div class="src_trans_column">
-								<input type="text" class="form-control">
-								</div>
-								</div>
-								<label class="col-sm-3">Rule</label>
-								<div class="col-sm-9">
-								<input type="text" class="form-control src_trans_rule">
-								</div>
-								</div>
-								<div class="form-group row" id="src_trans_next">
-								<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
-								<span class="glyphicon glyphicon-plus"></span>
-								</button>
-								<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
-								<span class="glyphicon glyphicon-minus"></span>
-								</button>
-								</div>
-								
-								</div>
-								
-								<div class="col-md-6">
-								<label>Destination Dataset</label>
-								<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
-								<label class="col-sm-3">Column</label>
-								<div class="col-sm-9">
-								<div class="dist_trans_column">
-								<input type="text" class="form-control" value="">
-								</div>
-								</div>
-								<label class="col-sm-3">Rule</label>
-								<div class="col-sm-9">
-								<input type="text" class="form-control dist_trans_rule">
-								</div>
-								</div>
-								<div class="form-group row" id="dist_trans_next">
-								<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
-								<span class="glyphicon glyphicon-plus"></span>
-								</button>
-								<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
-								<span class="glyphicon glyphicon-minus"></span>
-								</button>
-								</div>
-								</div>
-							</div>-->
 						</div>
 					</div>
 					
