@@ -532,8 +532,6 @@
 					$('#tblGrid').append(tr);
 				});
 
-				//var json = JSON.stringify(stats.columnsNotMatchingMap);
-				//columnNotMatchingMap = JSON.parse(json);
 				columnNotMatchingMap = stats.columnsNotMatchingMap;
 
 				$.each(columnNotMatchingMap, function (k, value) {
@@ -572,7 +570,6 @@
 					tr.append("<td>" + value + "</td>");
 					$('#tblGrid2').append(tr);
 				});
-				//$('.columnsnotmatching').html('click here->');
 				
 				var src_percent = (stats.totalSrcRecordsMatching / stats.srcRecordsCount) * 100;
 				$('#src_percent').html(parseInt(src_percent) + "%");
@@ -582,6 +579,7 @@
 						type: 'bar',
 						height: 60,
 						width: 750,
+						margin: 0,
 						backgroundColor: '#F9F9F9'
 					},
 					credits: {
@@ -606,8 +604,11 @@
 						minorGridLineWidth: 0,
 						gridLineColor: 'transparent',
 						lineColor: 'transparent',
+						tickInterval: 1,
 						labels: {
-							enabled: false
+							formatter: function() {
+								return this.value / 100 * max;
+							}
 						},
 						minorTickLength: 0,
 						tickLength: 0,
@@ -642,6 +643,7 @@
 						type: 'bar',
 						height: 60,
 						width: 750,
+						margin: 0,
 						backgroundColor: '#FFFFFF'
 					},
 					credits: {
@@ -669,6 +671,7 @@
 						labels: {
 							enabled: false
 						},
+						tickInterval: 1,
 						minorTickLength: 0,
 						tickLength: 0,
 						visible: false
@@ -694,16 +697,6 @@
 					}]
 				});
 
-				var src_key_percent = (stats.srcKeyMatchBrodcast / stats.srcKeyCount) * 100;
-				$('#src_key_percent').html(parseInt(src_key_percent) + "%");
-				$('#src_key_count').html("(" + stats.srcKeyMatchBrodcast + " / " + stats.srcKeyCount + ")");
-				$('#funding3').css("width", parseInt(src_key_percent) + "%");
-
-				var dist_key_percent = (stats.distKeyMatchBrodcast / stats.distKeyCount) * 100;
-				$('#dist_key_percent').html(parseInt(dist_key_percent) + "%");
-				$('#dist_key_count').html("(" + stats.distKeyMatchBrodcast + " / " + stats.distKeyCount + ")");
-				$('#funding4').css("width", parseInt(dist_key_percent) + "%");
-
 				$('#src_matched').html(stats.srcKeyMatchBrodcast);
 				$('#src_partial').html(stats.srcKeyMatchPartial);
 				$('#src_not').html(stats.srcKeyNoMatch);
@@ -712,6 +705,7 @@
 						type: 'bar',
 						height: 100,
 						width: 750,
+						margin: 0,
 						backgroundColor: '#F9F9F9'
 					},
 					credits: {
@@ -739,6 +733,7 @@
 						labels: {
 							enabled: false
 						},
+						tickInterval: 1,
 						minorTickLength: 0,
 						tickLength: 0,
 						visible: false
@@ -777,6 +772,7 @@
 						type: 'bar',
 						height: 100,
 						width: 750,
+						margin: 0,
 						backgroundColor: '#FFFFFF'
 					},
 					credits: {
@@ -804,6 +800,7 @@
 						labels: {
 							enabled: false
 						},
+						tickInterval: 1,
 						minorTickLength: 0,
 						tickLength: 0,
 						visible: false
