@@ -288,7 +288,7 @@
 					mergeArray.push(mergeVal);
 				}
 				
-				setStatsTable(response.stats, response.inputData.srcFile.datasetPath, response.inputData.distFile.datasetPath);
+				setStatsTable(response.stats, response.inputData.srcFile, response.inputData.distFile);
 				
 				// Get HeaderArray
 				if (newData.length > 0) {
@@ -502,8 +502,8 @@
 			
 			// Show Stats Table
 			function setStatsTable(stats, srcPath, distPath) {
-				$('#src_path').html(srcPath);
-				$('#dist_path').html(distPath);
+				$('#src_path').html(srcPath.datasetPath + "  ("+srcPath.datasetFormat+")");
+				$('#dist_path').html(distPath.datasetPath + "  ("+distPath.datasetFormat+")");
 
 				columnNotMatching = stats.columnsNotMatching;
 
