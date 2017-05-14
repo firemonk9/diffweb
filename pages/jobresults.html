@@ -618,15 +618,18 @@
 						},
 					},
 					series: [{
+                        maxPointWidth: 20,
+                        showInLegend: false,
+                        color:'#d9534f',
+                        name: 'Source Total Records',
+                        data: [stats.srcRecordsCount]
+                    },
+						{
 						maxPointWidth: 20,
 						showInLegend: false,
+                        color:'#5cb85c',
 						name: 'Source Record Matching',
 						data: [stats.totalSrcRecordsMatching]
-					}, {
-						maxPointWidth: 20,
-						showInLegend: false,
-						name: 'Source Total Records',
-						data: [stats.srcRecordsCount]
 					}]
 				});
 
@@ -682,14 +685,17 @@
 					series: [{
 						maxPointWidth: 20,
 						showInLegend: false,
-						name: 'Destination Record Matching',
-						data: [stats.totalDistRecordsMatching]
-					}, {
-						maxPointWidth: 20,
-						showInLegend: false,
+                        color:'#d9534f',
 						name: 'Source Total Records',
 						data: [stats.distRecordsCount]
-					}]
+					},
+						{
+                        maxPointWidth: 20,
+                        showInLegend: false,
+                        name: 'Destination Record Matching',
+                        color:'#5cb85c',
+                        data: [stats.totalDistRecordsMatching]
+                    }]
 				});
 
 				$('#src_matched').html(stats.srcKeyMatchBrodcast);
@@ -744,18 +750,21 @@
 					series: [{
 						maxPointWidth: 20,
 						//showInLegend: false,
-						name: 'Matched',
-						data: [stats.srcKeyMatchBrodcast]
+                        color:'#d9534f',
+                        name: 'No Matched',
+                        data: [stats.srcKeyNoMatch]
 					}, {
 						maxPointWidth: 20,
+                        color:'#5bc0de',
 						//showInLegend: false,
 						name: 'Partial Matched',
 						data: [stats.srcKeyMatchPartial]
 					}, {
 						maxPointWidth: 20,
+                        color:'#5cb85c',
 						//showInLegend: false,
-						name: 'No Matched',
-						data: [stats.srcKeyNoMatch]
+                        name: 'Matched',
+                        data: [stats.srcKeyMatchBrodcast]
 					}]
 				});
 
@@ -810,19 +819,22 @@
 					},
 					series: [{
 						maxPointWidth: 20,
+                        color:'#d9534f',
 						//showInLegend: false,
-						name: 'Matched',
-						data: [stats.distKeyMatchBrodcast]
+                        name: 'No Matched',
+                        data: [stats.distKeyNoMatch]
 					}, {
 						maxPointWidth: 20,
+                        color:'#5bc0de',
 						//showInLegend: false,
 						name: 'Partial Matched',
 						data: [stats.distKeyMatchPartial]
 					}, {
 						maxPointWidth: 20,
+                        color:'#5cb85c',
 						//showInLegend: false,
-						name: 'No Matched',
-						data: [stats.distKeyNoMatch]
+                        name: 'Matched',
+                        data: [stats.distKeyMatchBrodcast]
 					}]
 				});
 			}
@@ -1308,19 +1320,19 @@
 								<table class="table table-bordered table-striped specialCollapse" id="stats">
 									<tbody>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Data Path : </small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Source Data Path : </td>
 											<td class="col-md-9 row">
 												<small id="src_path" style="font-size: 11pt;padding-left: 15px;"></small>
 											</td>
 										</tr>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Data Path  : </small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Data Path  : </td>
 											<td class="col-md-9 row">
 												<small id="dist_path" style="font-size: 11pt;padding-left: 15px;"></small>
 											</td>
 										</tr>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Records Matching : </small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Source Records Matching (Matched/Total) % : </td>
 											<td class="col-md-9 row">
 												<div class="col-md-2" style="top: 15px;">
 													<small id="src_percent" style="font-size: 15pt;">0%</small><small id="src_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
@@ -1329,7 +1341,7 @@
 											</td>
 										</tr>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Records Matching : </small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Records Matching (Matched/Total) % : </td>
 											<td class="col-md-9" row>
 												<div class="col-md-2" style="top: 15px;">
 													<small id="dist_percent" style="font-size: 15pt;">0%</small><small id="dist_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
@@ -1338,7 +1350,7 @@
 											</td>
 										</tr>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Keys Distribution:</small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Source Keys Distribution:</td>
 											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
 												<div class="col-md-2" style="top: 20px;">
 													<div>
@@ -1355,7 +1367,7 @@
 											</td>
 										</tr>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Keys Distribution:</small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Keys Distribution:</td>
 											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
 												<div class="col-md-2" style="top: 20px;">
 													<div>
@@ -1372,13 +1384,13 @@
 											</td>
 										</tr>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Columns Not Matching : </small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Columns Not Matching : </td>
 											<td class="col-md-9" row>
 												<button type="button" style="margin-left: 15px;" onclick="openDialog1()">Click Here!</button>
 											</td>
 										</tr>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Columns Not Matching In Records: </small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Columns Not Matching In Records: </td>
 											<td class="col-md-9">
 												<button type="button" style="margin-left: 15px;" onclick="openDialog2()">Click Here!</button>
 											</td>
