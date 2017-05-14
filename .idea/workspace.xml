@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9a2f6c01-144b-4667-9df1-dc4c90223859" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pages/jobresults.html" afterPath="$PROJECT_DIR$/pages/jobresults.html" />
     </list>
     <ignored path="paneldiff-master.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -768,11 +767,18 @@
       <option name="project" value="LOCAL" />
       <updated>1494733101171</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="small text fixes">
+      <created>1494733489668</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1494733489668</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10849000" />
+    <option name="totallyTimeSpent" value="10856000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="6" />
