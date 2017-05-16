@@ -390,7 +390,7 @@
 			}
 			
 			function submitJobJson() {
-				
+
 				var data = getInputData(srcRecordCnt != distRecordCnt);
 				
 				if (data.compareKey.length <= 0) {
@@ -751,7 +751,7 @@
 						maxPointWidth: 20,
 						//showInLegend: false,
                         color:'#d9534f',
-                        name: 'No Matched',
+                        name: 'Orphan Keys',
                         data: [stats.srcKeyNoMatch]
 					}, {
 						maxPointWidth: 20,
@@ -821,7 +821,7 @@
 						maxPointWidth: 20,
                         color:'#d9534f',
 						//showInLegend: false,
-                        name: 'No Matched',
+                        name: 'Orphan Keys',
                         data: [stats.distKeyNoMatch]
 					}, {
 						maxPointWidth: 20,
@@ -838,18 +838,18 @@
 					}]
 				});
 			}
-			
+
 			//To Fetch URL parameters.
 			function param(name) {
 				return (location.search.split(name + '=')[1] || '').split('&')[0];
 			}
-			
+
 			//To Set the Cookie.
 			$(document).ready(function(){
 				var currentpara= param('jobId');
 				getJobResult_new(currentpara);
 			});
-			
+
 			// Show data to Table
 			function setTable(tableData, headerArray) {
 				var keys= getCookie("keys");
@@ -878,7 +878,7 @@
 					/*
 					if (contains.call(changeHeaderArray, value)){
 						//tr = $('<th data-field="' + value + '" data-cell-style="cellStyle" data-formatter="stateFormatter">' + value + '<i class="glyphicon glyphicon-star"></i></th>');
-						
+
 						tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + ' <i class="glyphicon glyphicon-remove"></i></th>');
 					} else {
 						for(var i=0; i < count; i++){
@@ -910,7 +910,7 @@
 			function removeTableColumn() {
 				$("#table  thead tr th:last-child, #table td:last-child").addClass("intro");
 			}
-			
+
 			// Set mergeCells
 			function setMergeCell(startat, endat) {
 				$.each(mergeArray, function (index, value) {
@@ -925,13 +925,13 @@
 				});
 				removeTableColumn();
 			}
-			
+
 			// Set Row Color
 			function rowStyle(row, index) {
 				if (row['orphan'] == true)
 				return {
 					classes: 'orphan'
-					
+
 				};
 				if (row['type'] == 'src')
 				return {
@@ -942,7 +942,7 @@
 					classes: 'success'
 				};
 			}
-			
+
 			// Set Cell Text Color
 			function cellStyle(value, row, index, field) {
 				if (index === 1) {
@@ -955,7 +955,7 @@
 					classes: '',
 				};
 			}
-			
+
 			// Set Cell Text Formatter (First call before cellStyle)
 			function stateFormatter(value, row, index) {
 				var result = '';
@@ -965,7 +965,7 @@
 
 				if (diffCellArray[index] ) {
 					var cellarr = diffCellArray[index];
-					
+
 					$.each(cellarr, function (index, column) {
 						var keyindex = Object.keys(row).indexOf(column);
 						if (/*keyindex == curColumnIndex && */JSON.stringify(row[column]) === JSON.stringify(value)){
@@ -985,7 +985,7 @@
 						}
 					});
 				}
-				
+
 				if (curColumnIndex >= headerCount - 1){
 					curColumnIndex = 0;
 					} else {
@@ -993,21 +993,21 @@
 				}
 				return result;
 			}
-			
+
 			var contains = function (needle) {
 				// Per spec, the way to identify NaN is that it is not equal to itself
 				var findNaN = needle !== needle;
 				var indexOf;
-				
+
 				if (!findNaN && typeof Array.prototype.indexOf === 'function') {
 					indexOf = Array.prototype.indexOf;
 					} else {
 					indexOf = function (needle) {
 						var i = -1, index = -1;
-						
+
 						for (i = 0; i < this.length; i++) {
 							var item = this[i];
-							
+
 							if ((findNaN && item !== item) || item === needle) {
 								index = i;
 								break;
@@ -1016,10 +1016,10 @@
 						return index;
 					};
 				}
-				
+
 				return indexOf.call(this, needle) > -1;
 			};
-			
+
 			function setListeners() {
 				$(document).on('mouseenter', ".li-tiff", function () {
 					var $this = $(this);
@@ -1031,37 +1031,37 @@
 						$this.tooltip('show');
 					}
 				});
-				
+
 				$('.selectfile').on('change', function () {
 					var selected = $(this).find("option:selected").val();
-					
+
 					//Initialize Values
 					mergeArray = [];
 					changeHeaderArray = [];
 					diffCellArray = [];
 					curColumnIndex = 0;
 					headerCount = 0;
-					
+
 					getDataFromJsonFile("../json/" + selected);
 				});
-				
+
 				$('#table').on('search.bs.table', function (e, text) {
 					//merge cells again
 					//var data = $('#table').bootstrapTable('getData');
 					//var header = Object.keys(data[0]);
 					//setTable(data, header);
 				});
-				
+
 				$('#btn_save_rules').on('click', function(e){
 					edit = "false";
 					submitJobJson();
 					//$('#advancedRulesModal').modal('hide');
 				});
-				
+
 				$('#btn_cancel_rules').on('click', function(e) {
 					$('#advancedRulesModal').modal('hide');
 				});
-				
+
 				/* close the model*/
 				$("button[data-dismiss-modal=modal2]").click(function () {
 					$('#what1').modal('hide');
@@ -1081,23 +1081,23 @@
 				$("button[data-dismiss-modal=modal2]").click(function () {
 					$('#more2').modal('hide');
 				});
-				
+
 				$('#src_trans_plus').on('click', function(e) {
 					var srcNext = document.getElementById("src_trans_next");
 					insertRule(srcNext, "src");
 					createTypeahead($('.src_trans_column'), info.srcSchema, 'name');
 				});
-				
+
 				$('#src_trans_minus').on('click', function(e) {
 					removeRule($('.src-rule-extra'));
 				});
-				
+
 				$('#dist_trans_plus').on('click', function(e) {
 					var srcNext = document.getElementById("dist_trans_next");
 					insertRule(srcNext, "dist");
 					createTypeahead($('.dist_trans_column'), info.distSchema, 'name');
 				});
-				
+
 				$('#dist_trans_minus').on('click', function(e) {
 					removeRule($('.dist-rule-extra'));
 				});
@@ -1109,11 +1109,11 @@
 				$('#close2').on('click', function(e) {
 					$('#more2').hide();
 				});
-				
+
  				setIncludeListener();
 				setExcludeListener();
 			}
-			
+
 			$(document).ready(function () {
 				$.ajax({
 					type: "GET",
@@ -1130,7 +1130,7 @@
 						setToolDetail();
 					},
 					error: function (response) {
-						
+
 					},
 					complete: function() {
 						$("#loadingDiv").hide();
@@ -1152,20 +1152,20 @@
 					var i= $(el).index();
 					$(class_new).attr('rel',i);
 				});
-				
+
 				$( "#src_column" ).sortable({
 					connectWith: ".connectedSortable1",
 					placeholder: "ui-state-highlight",
-					
+
 					stop: function(event, ui){
-						
+
 						$("#src_column li").each(function(event, el){
 							//console.log(el);
 							//console.log($(el).index());
 							//$(el).attr('data-id',$(el).index() - 1);
 							//$("li span.glyphicon").attr('data-id',$(el).index() - 1);
 						});
-						
+
 						$("#src_column li").each(function(event, el){
 							var product = $(this);
 							var child= product.children("span.glyphicon").attr('id');
@@ -1173,7 +1173,7 @@
 							var i= $(el).index();
 							$(id).attr('new-div-id',i);
 						})
-						
+
 						$("#mapper div").each(function(event, el){
 							var product = $(this);
 							var child_new= product.children("img").attr('rel');
@@ -1182,14 +1182,14 @@
 							$(class_new).attr('rel',i);
 						});
 					}
-					
+
 				});
-				
+
 				$( "#dist_column" ).sortable({
 					connectWith: ".connectedSortable2",
 					placeholder: "ui-state-highlight"
 				});
-				
+
 				jobId =  QueryString.jobId;
 				edit = QueryString.edit;
 				if (jobId != null) {
@@ -1198,7 +1198,7 @@
 					getDataFromJsonFile("../json/diff_result.json");
 				}*/
 				mergeArray = [];
-				
+
 				setListeners();
 
 
@@ -1207,19 +1207,19 @@
 
 				//$('#drag1').draggable();
 			});
-			
+
 			function addURL() {
 				var data=window.location+"&edit=true";
 				//alert(data);
 				$('#advancedRulesModal').modal();
-				
+
 			}
 		</script>
-		
+
 		<div id="loadingDiv"></div>
-		
+
 		<div id="wrapper">
-			
+
 			<!-- Navigation -->
 			<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 				<div class="navbar-header">
@@ -1235,7 +1235,7 @@
 					<span class="navbar-brand" style="font-size: 18px;" id="tool-version"></span>
 				</div>
 				<!-- /.navbar-header -->
-				
+
 				<ul class="nav navbar-top-links navbar-right">
 					<li>
 						<a href="home.html">Home</a>
@@ -1267,7 +1267,7 @@
 				</ul>
 				<!-- /.navbar-top-links -->
 			</nav>
-			
+
 			<div id="page-wrapper" style="margin: 0 0 0 0;">
 				<div class="row">
 					<div class="col-lg-12">
@@ -1275,35 +1275,35 @@
 					</div>
 					<!-- /.col-lg-12 -->
 				</div>
-				
+
 				<div class="alert alert-success alert-dismissible" role="alert" style="display:none;">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<strong>SUCCESS!</strong> <span id="success-msg">Data differ successfully finished.</span>
 				</div>
-				
+
 				<div class="alert alert-info alert-dismissible" role="alert" style="display:none;">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<strong>RUNNING!</strong> Job is running now.
 				</div>
-				
+
 				<div class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<strong>ERROR!</strong> <span id="danger-msg">Json is not correct.</span>
 				</div>
-				
+
 				<div class="alert alert-danger alert-dismissible" role="alert" style="display:none;" id="alert-reason">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<strong>REASON!</strong> <span id="reason-msg">Json is not correct.</span>
 				</div>
-				
+
 				<div class="alert alert-warning alert-dismissible" role="alert" style="display:none;">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -1314,7 +1314,7 @@
 					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading summary" data-toggle="collapse" data-parent="#accordion"data-target="#specialCollapse">
-								<h3 class="panel-title accordion-toggle summary">Summary</h3>	
+								<h3 class="panel-title accordion-toggle summary">Summary</h3>
 							</div>
 							<div id="specialCollapse" class="panel-collapse collapse in">
 								<table class="table table-bordered table-striped specialCollapse" id="stats">
@@ -1360,7 +1360,7 @@
 														<span>Partial Matched: </span><span id="src_partial">0</span>
 													</div>
 													<div>
-														<span>Not Matched: </span><span id="src_not">0</span>
+														<span>Orphan Keys: </span><span id="src_not">0</span>
 													</div>
 												</div>
 												<div class="col-md-10" id="src_total" style="padding-left:0px;padding-right:0px;"></div>
@@ -1377,7 +1377,7 @@
 														<span>Partial Matched: </span><span id="dist_partial">0</span>
 													</div>
 													<div>
-														<span>Not Matched: </span><span id="dist_not">0</span>
+														<span>Orphan Keys: </span><span id="dist_not">0</span>
 													</div>
 												</div>
 												<div class="col-md-10" id="dist_total" style="padding-left:0px;padding-right:0px;"></div>
