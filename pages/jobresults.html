@@ -698,6 +698,7 @@
                     }]
 				});
 
+                $('#src_total_keys').html(stats.srcKeyCount);
 				$('#src_matched').html(stats.srcKeyMatchBrodcast);
 				$('#src_partial').html(stats.srcKeyMatchPartial);
 				$('#src_not').html(stats.srcKeyNoMatch);
@@ -757,7 +758,7 @@
 						maxPointWidth: 20,
                         color:'#5bc0de',
 						//showInLegend: false,
-						name: 'Partial Matched',
+						name: 'Mismatch keys',
 						data: [stats.srcKeyMatchPartial]
 					}, {
 						maxPointWidth: 20,
@@ -767,7 +768,7 @@
                         data: [stats.srcKeyMatchBrodcast]
 					}]
 				});
-
+                $('#dist_total_keys').html(stats.distKeyCount);
 				$('#dist_matched').html(stats.distKeyMatchBrodcast);
 				$('#dist_partial').html(stats.distKeyMatchPartial);
 				$('#dist_not').html(stats.distKeyNoMatch);
@@ -827,7 +828,7 @@
 						maxPointWidth: 20,
                         color:'#5bc0de',
 						//showInLegend: false,
-						name: 'Partial Matched',
+						name: 'Mismatch keys',
 						data: [stats.distKeyMatchPartial]
 					}, {
 						maxPointWidth: 20,
@@ -1354,10 +1355,13 @@
 											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
 												<div class="col-md-2" style="top: 20px;">
 													<div>
+														<span>Total keys : </span><span id="src_total_keys">0</span>
+													</div>
+													<div>
 														<span>Matched : </span><span id="src_matched">0</span>
 													</div>
 													<div>
-														<span>Partial Matched: </span><span id="src_partial">0</span>
+														<span>Mismatch keys: </span><span id="src_partial">0</span>
 													</div>
 													<div>
 														<span>Orphan Keys: </span><span id="src_not">0</span>
@@ -1371,10 +1375,13 @@
 											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
 												<div class="col-md-2" style="top: 20px;">
 													<div>
+														<span>Total keys : </span><span id="dist_total_keys">0</span>
+													</div>
+													<div>
 														<span>Matched : </span><span id="dist_matched">0</span>
 													</div>
 													<div>
-														<span>Partial Matched: </span><span id="dist_partial">0</span>
+														<span>Mismatch keys: </span><span id="dist_partial">0</span>
 													</div>
 													<div>
 														<span>Orphan Keys: </span><span id="dist_not">0</span>
