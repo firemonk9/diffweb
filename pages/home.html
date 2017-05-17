@@ -69,6 +69,7 @@
 
     <script type="text/javascript">
         var selectedJob = null;
+        var interval = 10000;
 
         // Class Job
         function Job(name, src, dest, submitTime, BeginTime,EndTime,Status,Result,jobId, input, srcColumns, distColumns) {
@@ -175,6 +176,14 @@
                 //return "Data Not Match";
             }
         }
+
+        function checkFormatter(value, row, index) {
+            if (row.Status == "RUNNING") {
+                return {disabled:true};
+            } else {
+                return {disabled:false};
+            }
+        }
         ///////
 
         // Get Jobs
@@ -193,8 +202,12 @@
                     for (var i = 0, l = response.summaryList.length; i < l; i++) {
                         var tmp = response.summaryList[i];
                         // Check RUNNING status, and then call this function after 5s
-                        if (tmp.status == "RUNNING")
-                            setTimeout(getJobs, 5000);
+                        if (tmp.status == "RUNNING") {
+                            interval = interval * 2;
+                            setTimeout(getJobs, interval);
+                        } else {
+                            interval = 10000;
+                        }
 
                         var sTime = new Date(tmp.submittedTime);
                         //tmp.submittedTime = sTime.toLocaleString('en-GB');
@@ -564,7 +577,7 @@
 										<th data-field="EndTime" data-sortable="true">End Time</th>
 										<th data-field="Status" data-sortable="true" data-cell-style="cellStyle">Status</th>
 										<th data-field="Result" data-sortable="true" data-formatter="stateFormatter" >Result</th>
-										<th data-field="state" data-checkbox="true"></th>
+										<th data-field="state" data-checkbox="true" data-formatter="checkFormatter"></th>
                                     </tr>
                                 </thead>
                             </table>

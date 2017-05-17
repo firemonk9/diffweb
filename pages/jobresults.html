@@ -58,11 +58,13 @@
 					var uri = window.location.href;
 					var add = "&edit=true";
 					window.location.href = uri + add;
-					$('#advancedRulesModal').modal();
+					//$('#advancedRulesmodal').show();
+					$('#advancedRulesModal').show();
 				});	
 				
 				$("#btn_edit").click(function() {
-					$('#advancedRulesModal').modal();
+					//$('#advancedRulesmodal').show();
+					$('#advancedRulesModal').show();
 				});	
 			});
 		</script>
@@ -331,6 +333,13 @@
 				$('#more2').css("left", "25%");
 				$('#more2').show();
 			}
+
+			function openAdvanced() {
+				$('#advancedRulesModal').css("position", "fixed");
+				$('#advancedRulesModal').css("top", "5%");
+				$('#advancedRulesModal').css("left", "20%");
+				$('#advancedRulesModal').show();
+			}
 			
 			function createAdvancedRulePage(response) {
 				//make src and dist transformation column inputs to typeahead
@@ -349,7 +358,8 @@
                 response.inputData.srcFile.filterSql, response.inputData.distFile.filterSql,
                 response.inputData.matchBoth, response.srcRowCount != response.distRowCount, response.inputData.randomSample, response.inputData.columnMapping
 				);
-				$('#advancedRulesModal').modal();
+				//$('#advancedRulesmodal').show();
+				$('#advancedRulesModal').show();
 				
 			}
 			
@@ -457,7 +467,8 @@
 						window.location.href = url + '/home.html';
 					},
 					error: function (response) {
-						$('#advancedRulesModal').modal('hide');
+						//$('#advancedRulesModal').hide();
+						$('#advancedRulesModal').hide();
 					}
 				});
 			}
@@ -903,7 +914,7 @@
 						setMergeCell((number - 1) * size, number * size);
 					}
 				});
-				setMergeCell(0, 10);
+				setMergeCell(0, tableData.length);
 				removeTableColumn();
 			}
 
@@ -1056,11 +1067,11 @@
 				$('#btn_save_rules').on('click', function(e){
 					edit = "false";
 					submitJobJson();
-					//$('#advancedRulesModal').modal('hide');
+					//$('#advancedRulesModal').hide();
 				});
 
 				$('#btn_cancel_rules').on('click', function(e) {
-					$('#advancedRulesModal').modal('hide');
+					$('#advancedRulesModal').hide();
 				});
 
 				/* close the model*/
@@ -1109,6 +1120,10 @@
 
 				$('#close2').on('click', function(e) {
 					$('#more2').hide();
+				});
+
+				$('#advanced').on('click', function(e) {
+					$('#advancedRulesModal').hide();
 				});
 
  				setIncludeListener();
@@ -1205,6 +1220,7 @@
 
 				$('#more').draggable();
 				$('#more2').draggable();
+				$('#advancedRulesModal').draggable();
 
 				//$('#drag1').draggable();
 			});
@@ -1212,7 +1228,8 @@
 			function addURL() {
 				var data=window.location+"&edit=true";
 				//alert(data);
-				$('#advancedRulesModal').modal();
+				//$('#advancedRulesmodal').show();
+				$('#advancedRulesModal').show();
 
 			}
 		</script>
@@ -1350,10 +1367,10 @@
 												<div class="col-md-10" id="dist_record" style="padding-left:0px;padding-right:0px;"></div>
 											</td>
 										</tr>
-										<tr>
+										<tr style="height: 100px;">
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Source Keys Distribution:</td>
 											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
-												<div class="col-md-2" style="top: 20px;">
+												<div class="col-md-2" style="top: 10px;padding-right: 0px;">
 													<div>
 														<span>Total keys : </span><span id="src_total_keys">0</span>
 													</div>
@@ -1370,10 +1387,10 @@
 												<div class="col-md-10" id="src_total" style="padding-left:0px;padding-right:0px;"></div>
 											</td>
 										</tr>
-										<tr>
+										<tr style="height: 100px;">
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Keys Distribution:</td>
 											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
-												<div class="col-md-2" style="top: 20px;">
+												<div class="col-md-2" style="top: 10px;padding-right: 0px;">
 													<div>
 														<span>Total keys : </span><span id="dist_total_keys">0</span>
 													</div>
@@ -1452,11 +1469,12 @@
 		<!-- /#wrapper -->
 		
 		<!-- Advanced Rule Modal -->
-		<div class="modal fade" id="advancedRulesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		
+		<div class="ui-dialog" id="advancedRulesModal" style="z-index:9999;display: none;width: 50%;position: absolute;top: 5%;left: 20%;">
 			<div class="modal-dialog" style="width: 800px;">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<button type="button" class="close" id="advanced" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="myModalLabel">Advanced Rules Mapping</h4>
 					</div>
 					

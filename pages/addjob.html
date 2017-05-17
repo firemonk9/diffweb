@@ -303,7 +303,7 @@
 					window.location.href = url + '/home.html';
 				},
 				error: function (response) {
-					$('#advancedRulesModal').modal('hide');
+					$('#advancedRulesModal').hide();
 				}
 			});
 		}
@@ -500,6 +500,9 @@
 			$('#src_jdbc_driver input').val("");
 
 			initForm(1);
+			$('#src_file_path').show();
+			$('#src_file_format').show();
+			$('#src_form_panel').show();
 		}
 
 		function resetDistFormData() {
@@ -515,6 +518,9 @@
 			$('#dist_jdbc_driver input').val("");
 
 			initForm(2);
+			$('#dist_file_path').show();
+			$('#dist_file_format').show();
+			$('#dist_form_panel').show();
 		}
 
 		function resetData() {
@@ -767,6 +773,10 @@
 				resetSrcData();
 			});
 
+			$('#btn_dist_reset').on('click', function (e) {
+				resetDistData();
+			});
+
 			$("#btn_save_job").on('click', function (e) {
 				submitJobJson();
 			});
@@ -865,13 +875,13 @@
 
 			$('#btn_advanced_rules').on('click', function (e) {
 				createListData();
-				$('#advancedRulesModal').modal();
+				$('#advancedRulesModal').show();
 			});
 
 			$('#btn_save_rules').on('click', function (e) {
 				advancedRuleEmpty = false;
 				submitJobJson();
-				//$('#advancedRulesModal').modal('hide');
+				//$('#advancedRulesModal').hide();
 			});
 
 			$('#btn_cancel_rules').on('click', function (e) {
@@ -881,7 +891,7 @@
 
 				$('#src_trans_rule').val('');
 				$('#dist_trans_rule').val('');
-				$('#advancedRulesModal').modal('hide');
+				$('#advancedRulesModal').hide();
 			});
 
 			$('#src_trans_plus').on('click', function (e) {
@@ -903,6 +913,12 @@
 			$('#dist_trans_minus').on('click', function (e) {
 				removeRule($('.dist-rule-extra'));
 			});
+			
+			$('#advanced').on('click', function(e) {
+				$('#advancedRulesModal').hide();
+			});
+
+			$('#advancedRulesModal').draggable();
 
 			//setMoveDownListener();
 			//setMoveUpListener();
@@ -1382,11 +1398,11 @@
 	<!-- /#wrapper -->
 
 	<!-- Advanced Rule Modal -->
-	<div class="modal fade" id="advancedRulesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="ui-dialog" id="advancedRulesModal" style="z-index:9999;display: none;width: 50%;position: absolute;top: 5%;left: 20%;">
 		<div class="modal-dialog" style="width: 800px;">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<button type="button" class="close" id="advanced" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="myModalLabel">Advanced Rules Mapping</h4>
 				</div>
 
