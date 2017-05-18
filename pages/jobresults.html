@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
-		
+
 		<link rel="stylesheet" href="../dist/css/sb-admin-2.css">
 		<link rel="stylesheet" href="../dist/css/bootstrap-tagsinput.css">
 		<link rel="stylesheet" href="../dist/css/custom.css">
@@ -58,12 +58,10 @@
 					var uri = window.location.href;
 					var add = "&edit=true";
 					window.location.href = uri + add;
-					//$('#advancedRulesmodal').show();
 					$('#advancedRulesModal').show();
 				});	
 				
 				$("#btn_edit").click(function() {
-					//$('#advancedRulesmodal').show();
 					$('#advancedRulesModal').show();
 				});	
 			});
@@ -631,14 +629,14 @@
 					series: [{
                         maxPointWidth: 20,
                         showInLegend: false,
-                        color:'#d9534f',
+						color:'#5cb85c',
                         name: 'Source Total Records',
                         data: [stats.srcRecordsCount]
                     },
 						{
 						maxPointWidth: 20,
 						showInLegend: false,
-                        color:'#5cb85c',
+						color:'#d9534f',
 						name: 'Source Record Matching',
 						data: [stats.totalSrcRecordsMatching]
 					}]
@@ -696,7 +694,7 @@
 					series: [{
 						maxPointWidth: 20,
 						showInLegend: false,
-                        color:'#d9534f',
+						color:'#5cb85c',
 						name: 'Source Total Records',
 						data: [stats.distRecordsCount]
 					},
@@ -704,7 +702,7 @@
                         maxPointWidth: 20,
                         showInLegend: false,
                         name: 'Destination Record Matching',
-                        color:'#5cb85c',
+						color:'#d9534f',
                         data: [stats.totalDistRecordsMatching]
                     }]
 				});
@@ -1138,7 +1136,7 @@
 					dataType: 'json',
 					data: {},
 					beforeSend: function() {
-						$("#loadingDiv").show();
+						//$("#loadingDiv").show();
 					},
 					success: function (response) {
 						setCookie("version", response.displayVersion);
@@ -1149,7 +1147,7 @@
 
 					},
 					complete: function() {
-						$("#loadingDiv").hide();
+						//$("#loadingDiv").hide();
 					}
 				});
 
@@ -1234,7 +1232,7 @@
 			}
 		</script>
 
-		<div id="loadingDiv"></div>
+		<!--<div id="loadingDiv"></div>-->
 
 		<div id="wrapper">
 

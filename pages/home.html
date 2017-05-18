@@ -254,6 +254,38 @@
             });
         }
 
+        function submitJob(jobs, index) {
+            var jsonTree = {};
+            var filesCompareList = new Array;
+            filesCompareList.push(jobs[index].input);
+            jsonTree["filesCompareList"] = filesCompareList;
+            var jsonStr = JSON.stringify(jsonTree);
+            $.ajax({
+                type: "POST",
+                url: "/job",
+                crossDomain: true,
+                dataType: 'json',
+                data: jsonStr,
+                contentType: 'application/json',
+                success: function (response) {
+                    var jobId = response.jobIds[0];
+                    if (jobId == "" || jobId == null) {
+                        document.getElementById("error-msg").innerHTML = "Job submittion failed.";
+                        $(".alert-danger").show();
+                    }
+                    else if(jobs.length - 1 > index){
+                        index ++;
+                        submitJob(jobs, index);
+                        document.getElementById("success-msg").innerHTML = "Job saved succesfully. Your job Id is '" + jobId + "'";
+                        $(".alert-success").show();
+                        getJobs();
+                    }
+                },
+                error: function (response) {
+                }
+            });
+        }
+
         $(document).ready(function () {
 		
 			$('#logout').on('click', function(e){
@@ -290,39 +322,14 @@
                 var jobs = $.map($table.bootstrapTable('getSelections'), function (row) {
                     return row;
                 });
-                selectedJob = jobs[0];
-                if (selectedJob == null) {
+
+                if (jobs.length <= 0) {
                     document.getElementById("danger-msg").innerHTML = "Select job first.";
                     $('.alert-danger').show();
                     return;
                 }
-                var jsonTree = {};
-                var filesCompareList = new Array;
-                filesCompareList.push(selectedJob.input);
-                jsonTree["filesCompareList"] = filesCompareList;
-                var jsonStr = JSON.stringify(jsonTree);
-                $.ajax({
-                    type: "POST",
-                    url: "/job",
-                    crossDomain: true,
-                    dataType: 'json',
-                    data: jsonStr,
-                    contentType: 'application/json',
-                    success: function (response) {
-                        var jobId = response.jobIds[0];
-                        if (jobId == "" || jobId == null) {
-                            document.getElementById("error-msg").innerHTML = "Job submittion failed.";
-                            $(".alert-danger").show();
-                        }
-                        else {
-                            document.getElementById("success-msg").innerHTML = "Job saved succesfully. Your job Id is '" + jobId + "'";
-                            $(".alert-success").show();
-                            getJobs();
-                        }
-                    },
-                    error: function (response) {
-                    }
-                });
+
+                submitJob(jobs, 0);
             });
 
             // Edit Jobs
