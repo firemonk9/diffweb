@@ -524,6 +524,9 @@
 				$('#src_path').html(srcPath.datasetPath + "  ("+srcPath.datasetFormat+")");
 				$('#dist_path').html(distPath.datasetPath + "  ("+distPath.datasetFormat+")");
 
+				stats["srcRecordsNotMatching"] = stats.srcRecordsCount - stats.totalSrcRecordsMatching
+                stats["destRecordsNotMatching"] = stats.distRecordsCount - stats.totalDistRecordsMatching
+
 				columnNotMatching = stats.columnsNotMatching;
 
 				$.each(columnNotMatching, function (k, value) {
@@ -641,7 +644,7 @@
                         showInLegend: false,
 						color:'#5cb85c',
                         name: 'Source Total Records',
-                        data: [stats.srcRecordsCount]
+                        data: [stats.destRecordsNotMatching]
                     },
 						{
 						maxPointWidth: 20,
@@ -706,7 +709,7 @@
 						showInLegend: false,
 						color:'#5cb85c',
 						name: 'Source Total Records',
-						data: [stats.distRecordsCount]
+						data: [stats.destRecordsNotMatching]
 					},
 						{
                         maxPointWidth: 20,
