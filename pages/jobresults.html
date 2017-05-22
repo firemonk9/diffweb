@@ -524,7 +524,7 @@
 				$('#src_path').html(srcPath.datasetPath + "  ("+srcPath.datasetFormat+")");
 				$('#dist_path').html(distPath.datasetPath + "  ("+distPath.datasetFormat+")");
 
-				stats["srcRecordsNotMatching"] = stats.srcRecordsCount - stats.totalSrcRecordsMatching
+				stats["srcRecordsNotMatching"] =  stats.srcRecordsCount -  stats.totalSrcRecordsMatching
                 stats["destRecordsNotMatching"] = stats.distRecordsCount - stats.totalDistRecordsMatching
 
 				columnNotMatching = stats.columnsNotMatching;
@@ -642,14 +642,14 @@
 					series: [{
                         maxPointWidth: 20,
                         showInLegend: false,
-						color:'#5cb85c',
+						color:'#d9534f',
                         name: 'Source Total Records',
-                        data: [stats.destRecordsNotMatching]
+                        data: [stats.srcRecordsNotMatching]
                     },
 						{
 						maxPointWidth: 20,
 						showInLegend: false,
-						color:'#d9534f',
+						color:'#5cb85c',
 						name: 'Source Record Matching',
 						data: [stats.totalSrcRecordsMatching]
 					}]
@@ -707,7 +707,7 @@
 					series: [{
 						maxPointWidth: 20,
 						showInLegend: false,
-						color:'#5cb85c',
+						color:'#d9534f',
 						name: 'Source Total Records',
 						data: [stats.destRecordsNotMatching]
 					},
@@ -715,7 +715,7 @@
                         maxPointWidth: 20,
                         showInLegend: false,
                         name: 'Destination Record Matching',
-						color:'#d9534f',
+						color:'#5cb85c',
                         data: [stats.totalDistRecordsMatching]
                     }]
 				});
