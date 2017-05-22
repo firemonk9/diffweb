@@ -187,6 +187,7 @@
 				if (response.reason != null) {
 					document.getElementById("reason-msg").innerHTML = response.reason;
 					$('#alert-reason').show();
+					$('#loadingDiv').hide();
 					return;
 				}
 				if (response.status == "RUNNING") {
@@ -194,10 +195,12 @@
 					setTimeout(function(){
 						getJobResult(jobId);
 					}, 5000);
+					$('#loadingDiv').hide();
 					return;
 				} else if (response.status == "Invalid Job id") {
 					document.getElementById("danger-msg").innerHTML = "Invalid job id.";
 					$('.alert-danger').show();
+					$('#loadingDiv').hide();
 					return;
 				}
 				
@@ -209,6 +212,7 @@
 				} else if (response.differencessForKey == null) {
 					document.getElementById("danger-msg").innerHTML = "Json is not correct.";
 					$('.alert-danger').show();
+					$('#loadingDiv').hide();
 					return;
 				}
 				for (var i = 0, l = response.differencessForKey.length; i < l; i++) {
@@ -304,9 +308,9 @@
 					document.getElementById("success-msg").innerHTML = "No differ data detected.";
 					$('.alert-success').show();
 				}
-				
-				
+
 				$('.alert-success').show();
+				$('#loadingDiv').hide();
 			}
 			
 			function createAdvancedRulePage_new(response) {
@@ -356,12 +360,11 @@
 				);
 				//$('#advancedRulesmodal').show();
 				$('#advancedRulesModal').show();
-				
+				$('#loadingDiv').hide();
 			}
 			
 			//Get Job Result from server with job id
 			function getJobResult(jobId) {
-				$('#loadModal').modal();
 				$.ajax({
 					type: "GET",
 					url: "/job/" + jobId,
@@ -374,14 +377,12 @@
 							info = response;
 							createAdvancedRulePage(response);
 						}
-						$('#loadModal').modal('hide');
 					},
 					xhr: function() {
 						var xhr = new window.XMLHttpRequest();
 						xhr.addEventListener("progress", function(evt) {
 							var percentComplete = evt.loaded / evt.total * 80;
 							console.log(percentComplete);
-							document.getElementById('funding').setAttribute("style", "width:" + parseInt(percentComplete).toString() + "%;");
 						}, false);
 
 						return xhr;
@@ -1245,7 +1246,7 @@
 			}
 		</script>
 
-		<!--<div id="loadingDiv"></div>-->
+		<div id="loadingDiv"></div>
 
 		<div id="loadModal" class="modal" role="dialog" data-backdrop="static" data-keyboard="false" >
 			<div class="modal-dialog modal-lg" style="top: 30%;">
