@@ -378,15 +378,15 @@
 							createAdvancedRulePage(response);
 						}
 					},
-					xhr: function() {
-						var xhr = new window.XMLHttpRequest();
-						xhr.addEventListener("progress", function(evt) {
-							var percentComplete = evt.loaded / evt.total * 80;
-							console.log(percentComplete);
-						}, false);
+					// xhr: function() {
+					// 	var xhr = new window.XMLHttpRequest();
+					// 	xhr.addEventListener("progress", function(evt) {
+					// 		var percentComplete = evt.loaded / evt.total * 80;
+					// 		console.log(percentComplete);
+					// 	}, false);
 
-						return xhr;
-					},
+					// 	return xhr;
+					// },
 					error: function(response) {
 						//alert(response);
 					}
@@ -413,7 +413,7 @@
 				var data = getInputData(srcRecordCnt != distRecordCnt);
 				
 				if (data.compareKey.length <= 0) {
-					swal("Validation Error", "Atleast one column shold be selectd as Join Key.", "error");
+					swal("Validation Error", "Atleast one column should be selectd as Compare Key.", "error");
 					return;
 				}
 				if (data.jobname == "") {
@@ -1534,15 +1534,15 @@
 												<div class="panel-body">
 													<div class="col-md-12" style="margin-bottom: 25px;">
 														<div class="form-group">
-															<label class="col-sm-4">Run on sample of</label>
+															<label class="col-sm-4">Compare only a sample records</label>
 															<div class="col-sm-8">
-																<input type="number" placeholder="Insert number..." class="form-control" id="rule_randomsample" min="0">
+																<input type="number" placeholder="Insert number of keys to comapre between 1 to 100,000" class="form-control" id="rule_randomsample" min="0">
 															</div>
 														</div>
 													</div>
 													<div class="col-md-12">
 														<div class="form-group" >
-															<label class="col-sm-4">Src Filter Sql</label>
+															<label class="col-sm-4">Source Filter Sql</label>
 															<div class="col-sm-8">
 																<input type="text" placeholder="Insert sql here..." class="form-control" id="src_filter_sql">
 															</div>
@@ -1551,7 +1551,7 @@
 													</div>
 													<div class="col-md-12">
 														<div class="form-group" >
-															<label class="col-sm-4">Dist Filter Sql</label>
+															<label class="col-sm-4">Destination Filter Sql</label>
 															<div class="col-sm-8">
 																<input type="text" placeholder="Insert sql here..." class="form-control" id="dist_filter_sql">
 															</div>

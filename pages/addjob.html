@@ -263,7 +263,7 @@
 		function submitJobJson() {
 			var data = getInputData(srcRecordCnt != distRecordCnt);
 			if (data.compareKey.length <= 0) {
-				swal("Validation Error", "Atleast one column shold be selectd as Join Key.", "error");
+				swal("Validation Error", "Atleast one column should be selectd as Compare Key.", "error");
 				return;
 			}
 
@@ -1126,7 +1126,7 @@
 			<div class="row" id="form_advanced">
 				<div class="col-lg-12" style="padding-bottom: 9px;">
 					<button id="btn_advanced_rules" type="button" class="btn btn-danger" >
-						<i class="glyphicon glyphicon-pencil"></i> Set Rules(Join key) to Compare datasets
+						<i class="glyphicon glyphicon-pencil"></i>Compare datasets
 					</button>
 				</div>
 			</div>
