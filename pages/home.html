@@ -69,6 +69,7 @@
 
     <script type="text/javascript">
         var selectedJob = null;
+        var runningJobs = [];
         var interval = 10000;
 
         // Class Job
@@ -164,6 +165,15 @@
                 classes: '',
             };
         }
+        function rowStyle(row, index) {
+            if (row.Status == "RUNNING") {
+                return {
+                    css: {"background-color": "red"}
+                };
+            } else {
+                return {};
+            }
+        }
 
         // Set Cell Text Formatter (First call before cellStyle)
         function stateFormatter(value, row, index) {
@@ -179,9 +189,9 @@
 
         function checkFormatter(value, row, index) {
             if (row.Status == "RUNNING") {
-                return {disabled:true};
+                return { disabled:true};
             } else {
-                return {disabled:false};
+                return { disabled:false};
             }
         }
         ///////
@@ -567,7 +577,8 @@
 							 <table id="table" class="table fixed" 
                                     data-toolbar="#toolbar"
                                     data-height="540" 
-                                    data-search="true" 
+                                    data-search="true"
+                                    data-row-style="rowStyle"
                                     data-show-columns="true" 
                                     data-pagination="true"
                                     data-show-export="true" >
