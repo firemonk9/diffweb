@@ -218,7 +218,7 @@ function insertCheckLi(ul, text, type, i = '') {
 
     var textdiv = document.createElement("div");
     textdiv.setAttribute("class", "li-tiff");
-    textdiv.setAttribute("style", "width: 163px;float: left;");
+    textdiv.setAttribute("style", "width: 146px;float: left;");
     textdiv.innerText = text;
     li.appendChild(textdiv);
 
