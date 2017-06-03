@@ -675,6 +675,8 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
     //$('#rule_compare').prop("checked", compareCommon);
     if (randomSample != false && randomSample != null)
         $('#rule_randomsample').val(randomSample);
+    else
+        $('#rule_randomsample').val("");
 
     /***********************************Generate Transformations Tab****************************************/
     /*******************************************************************************************************/
@@ -723,9 +725,13 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
 
     if (srcFiterSql != null) {
         $('#src_filter_sql').val(srcFiterSql);
+    } else {
+        $('#src_filter_sql').val("");
     }
     if (distFilterSql != null) {
         $('#dist_filter_sql').val(distFilterSql);
+    } else {
+        $('#dist_filter_sql').val("");
     }
 
     setMapperListener();
