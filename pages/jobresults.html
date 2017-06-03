@@ -1376,19 +1376,19 @@
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Source Data Path : </td>
 											<td class="col-md-9 row">
-												<small id="src_path" style="font-size: 11pt;padding-left: 15px;"></small>
+												<small id="src_path" style="font-size: 11pt;"></small>
 											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Data Path  : </td>
 											<td class="col-md-9 row">
-												<small id="dist_path" style="font-size: 11pt;padding-left: 15px;"></small>
+												<small id="dist_path" style="font-size: 11pt;"></small>
 											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Source Records Matching (Matched/Total) % : </td>
 											<td class="col-md-9 row">
-												<div class="col-md-2" style="top: 15px;">
+												<div class="col-md-2" style="top: 15px; padding-left: 0px;">
 													<small id="src_percent" style="font-size: 15pt;">0%</small><small id="src_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
 												</div>
 												<div class="col-md-10" id="src_record" style="padding-left:0px;padding-right:0px;"></div>
@@ -1397,7 +1397,7 @@
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Records Matching (Matched/Total) % : </td>
 											<td class="col-md-9" row>
-												<div class="col-md-2" style="top: 15px;">
+												<div class="col-md-2" style="top: 15px; padding-left: 0px;">
 													<small id="dist_percent" style="font-size: 15pt;">0%</small><small id="dist_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
 												</div>
 												<div class="col-md-10" id="dist_record" style="padding-left:0px;padding-right:0px;"></div>
@@ -1405,19 +1405,19 @@
 										</tr>
 										<tr style="height: 100px;">
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Source Keys Distribution:</td>
-											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
-												<div class="col-md-2" style="top: 10px;padding-right: 0px;">
+											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0; ">
+												<div class="col-md-2" style="top: 10px;padding-right: 0px; padding-left: 0; padding-right: 10px;">
 													<div>
-														<span>Total keys : </span><span id="src_total_keys">0</span>
+														<span>Total keys : </span><span id="src_total_keys" style="float:right;">0</span>
 													</div>
 													<div>
-														<span>Matched : </span><span id="src_matched">0</span>
+														<span>Matched : </span><span id="src_matched" style="float:right;">0</span>
 													</div>
 													<div>
-														<span>Mismatch keys: </span><span id="src_partial">0</span>
+														<span>Mismatch keys: </span><span id="src_partial" style="float:right;">0</span>
 													</div>
 													<div>
-														<span>Orphan Keys: </span><span id="src_not">0</span>
+														<span>Orphan Keys: </span><span id="src_not" style="float:right;">0</span>
 													</div>
 												</div>
 												<div class="col-md-10" id="src_total" style="padding-left:0px;padding-right:0px;"></div>
@@ -1426,18 +1426,18 @@
 										<tr style="height: 100px;">
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Keys Distribution:</td>
 											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
-												<div class="col-md-2" style="top: 10px;padding-right: 0px;">
+												<div class="col-md-2" style="top: 10px;padding-right: 0px; padding-left: 0; padding-right: 10px;">
 													<div>
-														<span>Total keys : </span><span id="dist_total_keys">0</span>
+														<span>Total keys : </span><span id="dist_total_keys" style="float:right;">0</span>
 													</div>
 													<div>
-														<span>Matched : </span><span id="dist_matched">0</span>
+														<span>Matched : </span><span id="dist_matched" style="float:right;">0</span>
 													</div>
 													<div>
-														<span>Mismatch keys: </span><span id="dist_partial">0</span>
+														<span>Mismatch keys: </span><span id="dist_partial" style="float:right;">0</span>
 													</div>
 													<div>
-														<span>Orphan Keys: </span><span id="dist_not">0</span>
+														<span>Orphan Keys: </span><span id="dist_not" style="float:right;">0</span>
 													</div>
 												</div>
 												<div class="col-md-10" id="dist_total" style="padding-left:0px;padding-right:0px;"></div>
@@ -1446,13 +1446,13 @@
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Columns Not Matching : </td>
 											<td class="col-md-9" row>
-												<button type="button" style="margin-left: 15px;" onclick="openDialog1()">Click Here!</button>
+												<button type="button" style="" onclick="openDialog1()">Click Here!</button>
 											</td>
 										</tr>
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Columns Not Matching In Records: </td>
 											<td class="col-md-9">
-												<button type="button" style="margin-left: 15px;" onclick="openDialog2()">Click Here!</button>
+												<button type="button" style="" onclick="openDialog2()">Click Here!</button>
 											</td>
 										</tr>
 									</tbody>

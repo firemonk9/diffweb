@@ -333,6 +333,7 @@
 							$('#src_form_panel').show();
 							return;
 						}
+						$('#src_heading').html(response.fileSource.datasetPath);
 						srcColumns = response.schema;
 						createSrcTableHeader();
 
@@ -407,6 +408,7 @@
 							$('#dist_form_panel').show();
 							return;
 						}
+						$('#dist_heading').html(response.fileSource.datasetPath);
 						distColumns = response.schema;
 						createDistTableHeader();
 						/*
@@ -787,12 +789,14 @@
 				);
 			});
 
-			$('#btn_src_reset').on('click', function (e) {
+			$('#btn_src_reset, #btn_src_reset2').on('click', function (e) {
 				resetSrcData();
+				$('#src_heading').html('');
 			});
 
-			$('#btn_dist_reset').on('click', function (e) {
+			$('#btn_dist_reset, #btn_dist_reset2').on('click', function (e) {
 				resetDistData();
+				$('#dist_heading').html('');
 			});
 
 			$("#btn_save_job").on('click', function (e) {
@@ -1165,7 +1169,7 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading">Source Dataset</div>
+						<div class="panel-heading">Source Dataset<span id="src_heading" style="margin-left: 10px"></span></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="src_form_panel">
 							<div class="row">
@@ -1264,7 +1268,6 @@
 									<div class="form-group" id="src_validate">
 										<label class="col-sm-3"> </label>
 										<div class="col-sm-6" style="text-align:right">
-											<button class="btn btn-primary" id="btn_src_reset">Reset</button>
 											<button class='btn btn-warning' id="btn_src_validate">Validate</button>
 										</div>
 										<br>
@@ -1273,24 +1276,26 @@
 							</div>
 						</div>
 						<div class="panel-body" id="src_progress">
-							<div class="progress progress-striped active" style="margin-bottom:0;">
+							<div class="progress progress-striped active" style="margin-bottom:10px;">
 								<div class="progress-bar" style="width: 100%"></div>
 							</div>
+							<button class="btn btn-primary col-sm-offset-10 col-sm-2" id="btn_src_reset">Reset</button>
 						</div>
 						<div class="panel-body" id="src_table_panel">
 							<table id="src_table" class="table table-hover"
-							data-height="100%"
-							data-search="true"
-							data-show-export="true"
-							data-show-columns="true"
-							data-pagination="true" >
+								data-height="100%"
+								data-search="true"
+								data-show-export="true"
+								data-show-columns="true"
+								data-pagination="true" >
 							</table>
+							<button class="btn btn-primary col-sm-offset-10 col-sm-2" id="btn_src_reset2">Reset</button>
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading">Destination Dataset</div>
+						<div class="panel-heading">Destination Dataset<span id="dist_heading" style="margin-left: 10px"></span></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="dist_form_panel">
 							<div class="row">
@@ -1388,7 +1393,6 @@
 									<div class="form-group" id="dist_validate">
 										<label class="col-sm-3"> </label>
 										<div class="col-sm-6" style="text-align:right">
-											<button class="btn btn-primary" id="btn_dist_reset">Reset</button>
 											<button class='btn btn-warning' id="btn_dist_validate">Validate</button>
 										</div>
 										<br>
@@ -1397,18 +1401,20 @@
 							</div>
 						</div>
 						<div class="panel-body" id="dist_progress">
-							<div class="progress progress-striped active" style="margin-bottom:0;">
+							<div class="progress progress-striped active" style="margin-bottom:10px;">
 								<div class="progress-bar" style="width: 100%"></div>
 							</div>
+							<button class="btn btn-primary col-sm-offset-10 col-sm-2" id="btn_dist_reset">Reset</button>
 						</div>
 						<div class="panel-body" id="dist_table_panel" >
 							<table id="dist_table" class="table"
-							data-height="100%"
-							data-search="true"
-							data-show-columns="true"
-							data-pagination="true"
-							data-show-export="true" >
+								data-height="100%"
+								data-search="true"
+								data-show-columns="true"
+								data-pagination="true"
+								data-show-export="true" >
 							</table>
+							<button class="btn btn-primary col-sm-offset-10 col-sm-2" id="btn_dist_reset2">Reset</button>
 						</div>
 					</div>
 				</div>
