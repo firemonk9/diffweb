@@ -148,7 +148,10 @@
                         checkbox: true,
                         width: "7%"
                     }
-                ]
+                ],
+                formatNoMatches: function () {
+                    return 'Please add jobs.';
+                }
             });
             $('#table').bootstrapTable('refresh');
         }
