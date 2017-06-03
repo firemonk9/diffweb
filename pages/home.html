@@ -316,6 +316,9 @@
                     $("#loadingDiv").show();
                 },
                 success: function (response) {
+                    if (response.localMode == false) {
+                        $('#nav_logout').hide();
+                    }
                     setCookie("version", response.displayVersion);
                     setCookie("localMode", response.localMode);
                     setToolDetail();
@@ -508,7 +511,7 @@
                     <a href="jobresults.html">Job Results</a>
                 </li>
                 -->
-                <li class="dropdown">
+                <li class="dropdown" id="nav_logout">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>

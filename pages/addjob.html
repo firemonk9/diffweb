@@ -965,6 +965,9 @@
 					$("#loadingDiv").show();
 				},
 				success: function (response) {
+					if (response.localMode == false) {
+						$('#nav_logout').hide();
+					}
 					setCookie("version", response.displayVersion);
 					setCookie("localMode", response.localMode);
 					setToolDetail();
@@ -1261,6 +1264,7 @@
 									<div class="form-group" id="src_validate">
 										<label class="col-sm-3"> </label>
 										<div class="col-sm-6" style="text-align:right">
+											<button class="btn btn-primary" id="btn_src_reset">Reset</button>
 											<button class='btn btn-warning' id="btn_src_validate">Validate</button>
 										</div>
 										<br>
@@ -1384,6 +1388,7 @@
 									<div class="form-group" id="dist_validate">
 										<label class="col-sm-3"> </label>
 										<div class="col-sm-6" style="text-align:right">
+											<button class="btn btn-primary" id="btn_dist_reset">Reset</button>
 											<button class='btn btn-warning' id="btn_dist_validate">Validate</button>
 										</div>
 										<br>
@@ -1808,8 +1813,8 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" id="btn_cancel_rules">Cancel</button>
-					<button class="btn btn-primary" id="btn_reset">Reset</button>
+					<!--<button type="button" class="btn btn-default" id="btn_cancel_rules">Cancel</button>-->
+					<!--<button class="btn btn-primary" id="btn_reset">Reset</button>-->
 					<a class="btn btn-success btn-ok" id="btn_save_rules">Submit Job</a>
 				</div>
 			</div>

@@ -1158,6 +1158,9 @@
 						//$("#loadingDiv").show();
 					},
 					success: function (response) {
+						if (response.localMode == false) {
+							$('#nav_logout').hide();
+						}
 						setCookie("version", response.displayVersion);
 						setCookie("localMode", response.localMode);
 						setToolDetail();
