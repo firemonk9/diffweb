@@ -112,6 +112,18 @@
 	
 <body>
 	<script type="text/javascript">
+		$(document).on('mouseenter', ".datapath-tiff", function () {
+			var $this = $(this);
+			if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
+				$this.tooltip({
+					title: $this.text(),
+					width: "100%",
+					placement: "bottom"
+				});
+				$this.tooltip('show');
+			}
+		});
+
 		$(document).ready(function () {
 			$('#logout').on('click', function (e) {
 				setCookie("email", "");
@@ -1169,7 +1181,7 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading">Source Dataset<span id="src_heading" style="margin-left: 10px"></span></div>
+						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Source Dataset<div id="src_heading" class="datapath-tiff" style="margin-left: 10px"></div></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="src_form_panel">
 							<div class="row">
@@ -1295,7 +1307,7 @@
 				</div>
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading">Destination Dataset<span id="dist_heading" style="margin-left: 10px"></span></div>
+						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset<div id="dist_heading" class="datapath-tiff" style="width:450px; margin-left: 10px"></div></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="dist_form_panel">
 							<div class="row">

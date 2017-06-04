@@ -71,6 +71,18 @@
     text-overflow:ellipsis;
 }
 
+.datapath-tiff {
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    text-align: left;
+    font-size: 14px;
+    direction: rtl;
+    width: 480px;
+    float: right;
+    font-weight: normal;
+}
+
 #src_column li, #dist_column li {
     height: 40px;
 }
