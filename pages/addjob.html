@@ -382,8 +382,9 @@
 							$('#form_advanced2').show();
 						}
 
-						document.getElementById("success-msg").innerHTML = "Retreived sample data.";
-						$('.alert-info').show();
+						$('#src_success').show();
+						document.getElementById("success-src-msg").innerHTML = "<strong>SUCCESS</strong>‘Source Dataset’ connected, showing sample " + response.sampleData.length +" records below";
+						$('#sample_message').css("display", "inline-block");
 						srcAjax = null;
 					}
 				},
@@ -464,8 +465,9 @@
 							$('#form_advanced2').show();
 						}
 
-						document.getElementById("success-msg").innerHTML = "Retreived sample data";
-						$('.alert-info').show();
+						$('#dist_success').show();
+						document.getElementById("success-dist-msg").innerHTML = "<strong>SUCCESS</strong>‘Destination Dataset’ connected, showing sample " + response.sampleData.length +" records below";
+						$('#sample_message').css("display", "inline-block");
 
 						distAjax = null;
 					}
@@ -1160,6 +1162,18 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 						<strong>SUCCESS</strong> <span id="success-msg">This data is validated successfully.</span>
+					</div>
+
+					<div id="sample_message" class="alert alert-info alert-dismissible" role="alert" style="width: 100%; display:none;">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<span style="float: left;" id="src_success" style="display: none;">
+							<span id="success-src-msg"></span>
+						</span>
+						<span style="float: right;" id="dist_success" style="display: none;">
+							<span id="success-dist-msg"></span>
+						</span>
 					</div>
 
 					<div class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
