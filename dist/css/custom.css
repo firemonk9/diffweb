@@ -78,7 +78,8 @@
     text-align: left;
     font-size: 14px;
     direction: rtl;
-    width: 480px;
+    unicode-bidi: plaintext;
+    width: 78%;
     float: right;
     font-weight: normal;
 }

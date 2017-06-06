@@ -106,7 +106,14 @@
 		background: url('../dist/img/loading.gif');
 		background-size: 100%;
 		}
-
+		/*
+		.tooltip {
+			width: 100%;
+		}
+		*/
+		div.tooltip-inner {
+		    max-width: 800px;
+		}
 	</style>
 </head>
 	
@@ -1195,7 +1202,7 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Source Dataset<div id="src_heading" class="datapath-tiff" style="margin-left: 5px"></div></div>
+						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Source Dataset:<div id="src_heading" class="datapath-tiff" style="margin-left: 5px"></div></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="src_form_panel">
 							<div class="row">
@@ -1321,7 +1328,7 @@
 				</div>
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset<div id="dist_heading" class="datapath-tiff" style="width:450px; margin-left: 5px"></div></div>
+						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset:<div id="dist_heading" class="datapath-tiff" style="width:77%; margin-left: 5px"></div></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="dist_form_panel">
 							<div class="row">
@@ -1969,7 +1976,7 @@
 
 .tooltipd .tooltiptext {
     visibility: hidden;
-    width: 150px;
+    width: 100%;
     background-color: #555;
     color: #fff;
     text-align: center;
