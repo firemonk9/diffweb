@@ -389,7 +389,7 @@
 						}
 
 						$('#src_success').show();
-						document.getElementById("success-src-msg").innerHTML = "<strong>SUCCESS</strong>‘Source Dataset’ connected, showing sample " + response.sampleData.length +" records below";
+						document.getElementById("success-src-msg").innerHTML = "<strong>SUCCESS</strong>!! 'Source Dataset' connected, showing sample " + response.sampleData.length +" records below";
 						$('#sample_message').css("display", "inline-block");
 						srcAjax = null;
 					}
@@ -472,7 +472,7 @@
 						}
 
 						$('#dist_success').show();
-						document.getElementById("success-dist-msg").innerHTML = "<strong>SUCCESS</strong>‘Destination Dataset’ connected, showing sample " + response.sampleData.length +" records below";
+						document.getElementById("success-dist-msg").innerHTML = "<strong>SUCCESS</strong>!! 'Destination Dataset' connected, showing sample " + response.sampleData.length +" records below";
 						$('#sample_message').css("display", "inline-block");
 
 						distAjax = null;
@@ -1523,24 +1523,24 @@
 												<div class="form-group">
 													<label class="col-sm-4">Run on sample of</label>
 													<div class="col-sm-8">
-														<input type="number" placeholder="Insert number..." class="form-control" id="rule_randomsample" min="0">
+														<input type="number" placeholder="Insert number of keys to comapre between 1 to 100,000" class="form-control" id="rule_randomsample" min="0">
 													</div>
 												</div>
 											</div>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label class="col-sm-4">Src Filter Sql</label>
+													<label class="col-sm-4">Source Filter Sql</label>
 													<div class="col-sm-8">
-														<input type="text" placeholder="Insert sql here..." class="form-control" id="src_filter_sql">
+														<input type="text" placeholder="Insert sql here to filter Source Dataset..." class="form-control" id="src_filter_sql">
 													</div>
 													<br><br>
 												</div>
 											</div>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label class="col-sm-4">Dist Filter Sql</label>
+													<label class="col-sm-4">Destination Filter Sql</label>
 													<div class="col-sm-8">
-														<input type="text" placeholder="Insert sql here..." class="form-control" id="dist_filter_sql">
+														<input type="text" placeholder="Insert sql here to filter Destination Dataset..." class="form-control" id="dist_filter_sql">
 													</div>
 													<br><br>
 												</div>
