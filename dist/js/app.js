@@ -199,7 +199,7 @@ function makeBadgeType(type) {
     return type;
 }
 
-function insertCheckLi(ul, text, type,i='') {
+function insertCheckLi(ul, text, type, i = '') {
     var li = document.createElement("li");
     li.setAttribute("class", "list-group-item");
 	li.setAttribute("data-id", i);
@@ -217,8 +217,8 @@ function insertCheckLi(ul, text, type,i='') {
     li.appendChild(badgespan);
 
     var textdiv = document.createElement("div");
-    textdiv.setAttribute("class", "li-tiff")
-    textdiv.setAttribute("style", "width: 163px;float: left;");
+    textdiv.setAttribute("class", "li-tiff");
+    textdiv.setAttribute("style", "width: 146px;float: left;");
     textdiv.innerText = text;
     li.appendChild(textdiv);
 
@@ -260,7 +260,7 @@ function insertLi(ul, text, type) {
 }
 
 //Applying class for TICKS.
-function insertMapper(mapper, mapped,i='') {
+function insertMapper(mapper, mapped,i = '') {
 	//alert(i);
 	//alert(mapper);
 	
@@ -324,6 +324,30 @@ function resetRuleData() {
     $('.src_trans_rule').val('');
     $('.dist_trans_rule').val('');
 }
+
+function resetSrcRuleData() {
+    $('ul#src_column li').remove();
+    $('ul#src_excluded li').remove();
+
+    while ($('.src-rule-extra').length > 0) {
+        $('.src-rule-extra')[0].remove();
+    }
+
+    $('.src_trans_column').tagsinput('removeAll');
+    $('.src_trans_rule').val('');
+}
+
+function resetDistRuleData() {
+    $('ul#dist_column li').remove();
+    $('ul#dist_excluded li').remove();
+
+    while ($('.dist-rule-extra').length > 0) {
+        $('.dist-rule-extra')[0].remove();
+    }
+    $('.dist_trans_column').tagsinput('removeAll');
+    $('.dist_trans_rule').val('');
+}
+
 
 function insertRule(nextEl, tag) {
     var group = document.createElement("div");
@@ -411,17 +435,11 @@ function concatExclude(srcColumns, srcExcluded) {
     return srcColumns.concat(tmp);
 }
 
-function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColumns, distExcluded, primaryKeys, srcTransformations, distTransformations, srcFiterSql, distFilterSql, matchBoth, columnMaps, randomSample) {
+function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColumns, distExcluded, primaryKeys, srcTransformations, distTransformations, srcFiterSql, distFilterSql, matchBoth, columnMaps, randomSample, columnMapping) {
     if (reload == true) {   //determine to create or show
         resetRuleData();
 		
         var n= $('#job_name').val(jobname);
-
-	
-		//alert(result[4]);
-		
-		
-
 		
         /******************************Generate Column Map Tab *******************************************/
         /*************************************************************************************************/
@@ -443,28 +461,79 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
         var remainSrcColumns = {}, remainDistColumns = {};
 
         //Write src columns to the list.
-        for (var i = 0; i < srcColumns.length; i++){
-			
-			//$('.list img').attr('rel', i);
-			
+        for (var i = 0; i < srcColumns.length; i++) {
+
+            //$('.list img').attr('rel', i);
+
             //When src column mapped to dist column, extract src column name.
-            if (srcColumns[i].name.indexOf('__') > 0) {
-                var vals = srcColumns[i].name.split('__');
-                insertCheckLi(srcUl, vals[0], srcColumns[i].dataType,i);
-                insertLi(distUl, vals[1], srcColumns[i].dataType);
-                insertMapper(mapper, true,i);
-                remainSrcColumns[srcColumns[i].name] = true;
-                remainDistColumns[srcColumns[i].name] = true;
-            } else {    // when src column contains excluded column, don't include to src list.
-                if (srcExcluded.length > 0) {
-                    var srcNotExcluded = true;
-                    for (var j = 0; j < srcExcluded.length; j++){
-                        if (srcExcluded[j] == srcColumns[i].name) {
-                            srcNotExcluded = false;
-                            break;
-                        }
+            /*for (var t = 0; t < columnMapping.length; t++) {
+                if (columnMapping[t].srcColumn == srcColumns[i].name) {
+                    insertCheckLi(srcUl, columnMapping[t].srcColumn, srcColumns[i].dataType, i);
+                    insertLi(distUl, columnMapping[t].distColumn, srcColumns[i].dataType);
+                    insertMapper(mapper, true, i);
+                    remainSrcColumns[columnMapping[t].srcColumn] = true;
+                    remainDistColumns[columnMapping[t].distColumn] = true;
+                }*/
+                var flag = false;
+                for (var t = 0; t < columnMapping.length; t++) {
+                    if (columnMapping[t].srcColumn == srcColumns[i].name) {
+                        insertCheckLi(srcUl, columnMapping[t].srcColumn, srcColumns[i].dataType, i);
+                        insertLi(distUl, columnMapping[t].distColumn, srcColumns[i].dataType);
+                        insertMapper(mapper, true, i);
+                        remainSrcColumns[columnMapping[t].srcColumn] = true;
+                        remainDistColumns[columnMapping[t].distColumn] = true;
+                        flag = true;
+                        break;
                     }
-                    if (srcNotExcluded) {
+                }
+                if (flag == true)
+                    continue;
+                if (srcColumns[i].name.indexOf('__') > 0) {
+                    var vals = srcColumns[i].name.split('__');
+                    insertCheckLi(srcUl, vals[0], srcColumns[i].dataType,i);
+                    insertLi(distUl, vals[1], srcColumns[i].dataType);
+                    insertMapper(mapper, true, i);
+                    remainSrcColumns[srcColumns[i].name] = true;
+                    remainDistColumns[srcColumns[i].name] = true;
+                } else {    // when src column contains excluded column, don't include to src list.
+                    if (srcExcluded.length > 0) {
+                        var srcNotExcluded = true;
+                        for (var j = 0; j < srcExcluded.length; j++) {
+                            if (srcExcluded[j] == srcColumns[i].name) {
+                                srcNotExcluded = false;
+                                break;
+                            }
+                        }
+                        if (srcNotExcluded) {
+                            for (var j = 0; j < distColumns.length; j++) {
+                                if (distExcluded.length > 0) {
+                                    var distNotExcluded = true;
+                                    for (var k = 0; k < distExcluded.length; k++) {
+                                        if (distColumns[j].name == distExcluded[k]) {
+                                            distNotExcluded = false;
+                                            break;
+                                        }
+                                    }
+                                    if (distNotExcluded) {
+                                        if (srcColumns[i].name == distColumns[j].name) {
+                                            insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType, i);
+                                            remainSrcColumns[srcColumns[i].name] = true;
+                                            insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
+                                            remainDistColumns[distColumns[j].name] = true;
+                                            insertMapper(mapper, true, i);
+                                            break;
+                                        }
+                                    }
+                                } else if (srcColumns[i].name == distColumns[j].name) {
+                                    insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType, i);
+                                    remainSrcColumns[srcColumns[i].name] = true;
+                                    insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
+                                    remainDistColumns[distColumns[j].name] = true;
+                                    insertMapper(mapper, true, i);
+                                }
+                            }
+                        }
+                    } else { //when src column doesn't contain excluded column include to src list.
                         for (var j = 0; j < distColumns.length; j++) {
                             if (distExcluded.length > 0) {
                                 var distNotExcluded = true;
@@ -476,218 +545,196 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                                 }
                                 if (distNotExcluded) {
                                     if (srcColumns[i].name == distColumns[j].name) {
-                                        insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
+                                        li = insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType, i);
                                         remainSrcColumns[srcColumns[i].name] = true;
                                         insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
                                         remainDistColumns[distColumns[j].name] = true;
-                                        insertMapper(mapper, true,i);
+                                        insertMapper(mapper, true, i);
                                         break;
                                     }
                                 }
                             } else if (srcColumns[i].name == distColumns[j].name) {
-                                insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
+                                li = insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType, i);
                                 remainSrcColumns[srcColumns[i].name] = true;
                                 insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
                                 remainDistColumns[distColumns[j].name] = true;
-                                insertMapper(mapper, true,i);
+                                insertMapper(mapper, true, i);
                             }
-                        }
-                    }
-                } else { //when src column doesn't contain excluded column include to src list.
-                    for (var j = 0; j < distColumns.length; j++) {
-                        if (distExcluded.length > 0) {
-                            var distNotExcluded = true;
-                            for (var k = 0; k < distExcluded.length; k++) {
-                                if (distColumns[j].name == distExcluded[k]) {
-                                    distNotExcluded = false;
-                                    break;
-                                }
-                            }
-                            if (distNotExcluded) {
-                                if (srcColumns[i].name == distColumns[j].name) {
-                                    li = insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
-                                    remainSrcColumns[srcColumns[i].name] = true;
-                                    insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
-                                    remainDistColumns[distColumns[j].name] = true;
-                                    insertMapper(mapper, true,i);
-                                    break;
-                                }
-                            }
-                        } else if (srcColumns[i].name == distColumns[j].name) {
-                            li = insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
-                            remainSrcColumns[srcColumns[i].name] = true;
-                            insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
-                            remainDistColumns[distColumns[j].name] = true;
-                            insertMapper(mapper, true,i);
                         }
                     }
                 }
-            }
+            //}
         }
+    }
 
-        for (var i = 0; i < srcColumns.length; i++) {
-            if (remainSrcColumns[srcColumns[i].name] != true) {
-                if (srcExcluded.length > 0) {
-                    var srcNotExcluded = true;
-                    for (var j = 0; j < srcExcluded.length; j++) {
-                        if (srcExcluded[j] == srcColumns[i].name) {
-                            srcNotExcluded = false;
-                            break;
-                        }
+    for (var i = 0; i < srcColumns.length; i++) {
+        if (remainSrcColumns[srcColumns[i].name] != true) {
+            if (srcExcluded.length > 0) {
+                var srcNotExcluded = true;
+                for (var j = 0; j < srcExcluded.length; j++) {
+                    if (srcExcluded[j] == srcColumns[i].name) {
+                        srcNotExcluded = false;
+                        break;
                     }
-                    if (srcNotExcluded) {
-                        insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
-                        var map = insertMapper(mapper, false,i);
-                        for (var j = 0; j < columnMaps.length; j++) {
-                            if (columnMaps[j].srcColumn == srcColumns[i]) {
-                                map.children[0].setAttribute("src", "../dist/img/green_arrow.png");
-                                break;
-                            }
-                        }
-                    }
-                }else {
+                }
+                if (srcNotExcluded) {
                     insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
                     var map = insertMapper(mapper, false,i);
                     for (var j = 0; j < columnMaps.length; j++) {
-                        if (columnMaps[j].srcColumn == srcColumns[i].name) {
+                        if (columnMaps[j].srcColumn == srcColumns[i]) {
                             map.children[0].setAttribute("src", "../dist/img/green_arrow.png");
                             break;
                         }
                     }
                 }
+            }else {
+                insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType,i);
+                var map = insertMapper(mapper, false,i);
+                for (var j = 0; j < columnMaps.length; j++) {
+                    if (columnMaps[j].srcColumn == srcColumns[i].name) {
+                        map.children[0].setAttribute("src", "../dist/img/green_arrow.png");
+                        break;
+                    }
+                }
             }
         }
+    }
 
-        for (var i = 0; i < distColumns.length; i++) {
-            if (remainDistColumns[distColumns[i].name] != true) {
-                if (srcExcluded.length > 0) {
-                    var distNotExcluded = true;
-                    for (var j = 0; j < distExcluded.length; j++) {
-                        if (distExcluded[j] == distColumns[i].name) {
-                            distNotExcluded = false;
-                            break;
-                        }
+    for (var i = 0; i < distColumns.length; i++) {
+        if (remainDistColumns[distColumns[i].name] != true) {
+            if (srcExcluded.length > 0) {
+                var distNotExcluded = true;
+                for (var j = 0; j < distExcluded.length; j++) {
+                    if (distExcluded[j] == distColumns[i].name) {
+                        distNotExcluded = false;
+                        break;
                     }
-                    if (distNotExcluded) {
-                        insertLi(distUl, distColumns[i].name, distColumns[i].dataType);
-                    }
-                } else {
+                }
+                if (distNotExcluded) {
                     insertLi(distUl, distColumns[i].name, distColumns[i].dataType);
                 }
+            } else {
+                insertLi(distUl, distColumns[i].name, distColumns[i].dataType);
             }
         }
+    }
 
-        //when src column contains primary key set column make check mark.
-        $('ul#src_column li').each(function(index){
-            for (var i = 0; i < primaryKeys.length; i++) {
-                if ($(this)[0].children[1].innerText == primaryKeys[i]) {
-                    $(this)[0].children[2].classList.remove("glyphicon-unchecked");
-                    $(this)[0].children[2].classList.add("glyphicon-check");
-                }
+    //when src column contains primary key set column make check mark.
+    $('ul#src_column li').each(function(index){
+        for (var i = 0; i < primaryKeys.length; i++) {
+            if ($(this)[0].children[1].innerText == primaryKeys[i]) {
+                $(this)[0].children[2].classList.remove("glyphicon-unchecked");
+                $(this)[0].children[2].classList.add("glyphicon-check");
+            }
+        }
+    });
+
+    //Write src excluded columns to list
+    for (var i = 0; i < srcExcluded.length; i++) {
+        for (var j = 0; j < srcColumns.length; j++) {
+            if (srcExcluded[i] == srcColumns[j].name) {
+                insertCheckLi(srcUl, srcColumns[j].name, srcColumns[j].dataType == null ? 'no' : srcColumns[j].dataType,j);
+                insertMapper(mapper, false,j);
+            }
+        }
+    }
+
+    //Write dist excluded columns to list
+    for (var i = 0; i < distExcluded.length; i++) {
+        for (var j = 0; j < distColumns.length; j++) {
+            if (distExcluded[i] == distColumns[j].name) {
+                insertLi(distUl, distColumns[j].name, distColumns[j].dataType == null ? 'no' : distColumns[j].dataType);
+            }
+        }
+    }
+
+
+    /***********************************End Generating Column Map Tab***************************************/
+    /*******************************************************************************************************/
+
+    /***********************************Generate check boxes ***********************************************/
+
+    $('#rule_matchboth').prop( "checked", matchBoth );
+    //$('#rule_matchboth').prop('checked', true);
+    if(matchBoth == false){
+        var url = window.location.href;
+        var result = url.split('/');
+        var length= result.length - 1;
+        //alert(result[length]);
+        if(result[length] == 'addjob.html'){
+            $('#rule_matchboth').prop("checked", true);
+        }else{
+            $('#rule_matchboth').prop("checked", false);
+        }
+    }else if(matchBoth == true){
+        $('#rule_matchboth').prop("checked", true);
+    }
+
+
+
+    //$('#rule_compare').prop("checked", compareCommon);
+    if (randomSample != false && randomSample != null)
+        $('#rule_randomsample').val(randomSample);
+    else
+        $('#rule_randomsample').val("");
+
+    /***********************************Generate Transformations Tab****************************************/
+    /*******************************************************************************************************/
+
+    //when transformations exist put the values to proper form
+    if (srcTransformations.length > 1) {
+        for (var i = 0; i < srcTransformations.length - 1; i++) {
+            var srcNext = document.getElementById("src_trans_next");
+            insertRule(srcNext, "src");
+            createTypeahead($('.src_trans_column'), concatExclude(srcColumns, srcExcluded), 'name');
+        }
+    }
+    if (srcTransformations.length > 0) {
+        $('.src_trans_column').each(function(index){
+            for (var i = 0; i < srcTransformations[index].column.length; i++) {
+                $(this).tagsinput('add', {"name":srcTransformations[index].column[i]});
             }
         });
-
-        //Write src excluded columns to list
-        for (var i = 0; i < srcExcluded.length; i++) {
-            for (var j = 0; j < srcColumns.length; j++) {
-                if (srcExcluded[i] == srcColumns[j].name) {
-                    insertCheckLi(srcUl, srcColumns[j].name, srcColumns[j].dataType == null ? 'no' : srcColumns[j].dataType,j);
-                    insertMapper(mapper, false,j);
-                }
-            }
-        }
-
-        //Write dist excluded columns to list
-        for (var i = 0; i < distExcluded.length; i++) {
-            for (var j = 0; j < distColumns.length; j++) {
-                if (distExcluded[i] == distColumns[j].name) {
-                    insertLi(distUl, distColumns[j].name, distColumns[j].dataType == null ? 'no' : distColumns[j].dataType);
-                }
-            }
-        }
-		
-
-        /***********************************End Generating Column Map Tab***************************************/
-        /*******************************************************************************************************/
-
-        /***********************************Generate check boxes ***********************************************/
-
-        $('#rule_matchboth').prop( "checked", matchBoth );
-		//$('#rule_matchboth').prop('checked', true);
-		if(matchBoth == false){
-			var url = window.location.href;
-			var result = url.split('/');
-			var length= result.length - 1;
-			//alert(result[length]);
-			if(result[length] == 'addjob.html'){
-				$('#rule_matchboth').prop("checked", true);
-			}else{
-				$('#rule_matchboth').prop("checked", false);
-			}
-		}else if(matchBoth == true){
-			$('#rule_matchboth').prop("checked", true);
-		}
-		
-		
-		
-        //$('#rule_compare').prop("checked", compareCommon);
-        if (randomSample != false && randomSample != null)
-            $('#rule_randomsample').val(randomSample);
-
-        /***********************************Generate Transformations Tab****************************************/
-        /*******************************************************************************************************/
-
-        //when transformations exist put the values to proper form
-        if (srcTransformations.length > 1) {
-            for (var i = 0; i < srcTransformations.length - 1; i++) {
-                var srcNext = document.getElementById("src_trans_next");
-                insertRule(srcNext, "src");
-                createTypeahead($('.src_trans_column'), concatExclude(srcColumns, srcExcluded), 'name');
-            }
-        }
-        if (srcTransformations.length > 0) {
-            $('.src_trans_column').each(function(index){
-                for (var i = 0; i < srcTransformations[index].column.length; i++) {
-                    $(this).tagsinput('add', {"name":srcTransformations[index].column[i]});
-                }
-            });
-            $('.src_trans_rule').each(function(index){
-                $(this).val(Base64.decode(srcTransformations[index].rule));
-            });
-        }
-
-        //when transformations exist put the values to proper form
-        if (distTransformations.length > 1) {
-            for (var i = 0; i < distTransformations.length - 1; i++) {
-                var srcNext = document.getElementById("dist_trans_next");
-                insertRule(srcNext, "dist");
-                createTypeahead($('.dist_trans_column'), concatExclude(distColumns, distExcluded), 'name');
-            }
-        }
-        if (distTransformations.length > 0) {
-            $('.dist_trans_column').each(function(index){
-                for (var i = 0; i < distTransformations[index].column.length; i++) {
-                    $(this).tagsinput('add', {"name":distTransformations[index].column[i]});
-                }
-            });
-            $('.dist_trans_rule').each(function(index){
-                $(this).val(Base64.decode(distTransformations[index].rule));
-            });
-        }
-        /***********************************End Generating Transformations Tab***********************************/
-        /********************************************************************************************************/
-
-
-
-        if (srcFiterSql != null) {
-            $('#src_filter_sql').val(srcFiterSql);
-        }
-        if (distFilterSql != null) {
-            $('#dist_filter_sql').val(distFilterSql);
-        }
-
-        setMapperListener();
+        $('.src_trans_rule').each(function(index){
+            $(this).val(Base64.decode(srcTransformations[index].rule));
+        });
     }
+
+    //when transformations exist put the values to proper form
+    if (distTransformations.length > 1) {
+        for (var i = 0; i < distTransformations.length - 1; i++) {
+            var srcNext = document.getElementById("dist_trans_next");
+            insertRule(srcNext, "dist");
+            createTypeahead($('.dist_trans_column'), concatExclude(distColumns, distExcluded), 'name');
+        }
+    }
+    if (distTransformations.length > 0) {
+        $('.dist_trans_column').each(function(index){
+            for (var i = 0; i < distTransformations[index].column.length; i++) {
+                $(this).tagsinput('add', {"name":distTransformations[index].column[i]});
+            }
+        });
+        $('.dist_trans_rule').each(function(index){
+            $(this).val(Base64.decode(distTransformations[index].rule));
+        });
+    }
+    /***********************************End Generating Transformations Tab***********************************/
+    /********************************************************************************************************/
+
+
+
+    if (srcFiterSql != null) {
+        $('#src_filter_sql').val(srcFiterSql);
+    } else {
+        $('#src_filter_sql').val("");
+    }
+    if (distFilterSql != null) {
+        $('#dist_filter_sql').val(distFilterSql);
+    } else {
+        $('#dist_filter_sql').val("");
+    }
+
+    setMapperListener();
 }
 
 
@@ -898,12 +945,19 @@ function getInputData(compareCommon) {
             srcFile["columns"] = $('#src_file_schema').val().split(srcFile["datasetDelimiter"]);
         }
     } else if (srcFile["datasetFormat"] == "JDBC") {
+        /*
         var jdbcData = {};
         jdbcData["jdbcUrl"] = $('#src_url').val();
         jdbcData["jdbcUser"] = $('#src_user').val();
         jdbcData["jdbcPassword"] = $('#src_pass').val();
         jdbcData["jdbcDriverPath"] = $('#src_driver').val();
         srcFile["jdbcData"] = jdbcData;
+        */
+        srcFile["jdbcUrl"] = $('#src_url').val();
+        srcFile["jdbcUser"] = $('#src_user').val();
+        srcFile["jdbcPassword"] = $('#src_pass').val();
+        srcFile["jdbcDriverPath"] = $('#src_driver').val();
+        srcFile["datasetPath"] = $('#src_jtable').val();
     }
     var transformations = new Array;
     if ($('.src_trans_column').tagsinput('items').length > 0) {
@@ -946,12 +1000,19 @@ function getInputData(compareCommon) {
             distFile["columns"] = $('#dist_file_schema').val().split(distFile["datasetDelimiter"]);
         }
     } else if (distFile["datasetFormat"] == "JDBC") {
+        /*
         var jdbcData = {};
         jdbcData["jdbcUrl"] = $('#dist_url').val();
         jdbcData["jdbcUser"] = $('#dist_user').val();
         jdbcData["jdbcPassword"] = $('#dist_pass').val();
         jdbcData["jdbcDriverPath"] = $('#dist_driver').val();
         distFile["jdbcData"] = jdbcData;
+        */
+        distFile["jdbcUrl"] = $('#dist_url').val();
+        distFile["jdbcUser"] = $('#dist_user').val();
+        distFile["jdbcPassword"] = $('#dist_pass').val();
+        distFile["jdbcDriverPath"] = $('#dist_driver').val();
+        distFile["datasetPath"] = $('#dist_jtable').val();
     }
     transformations = [];
     if ($('.dist_trans_column').tagsinput('items').length > 0) {
@@ -1012,12 +1073,15 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         if (!distFile["header"]) {
             distFile["columns"] = distInput.columns;
         }
-    } else if (distFile["datasetFormat"] == "JSON") {
+    } else if (distFile["datasetFormat"] == "JDBC") {
         var jdbcData = {};
         jdbcData["jdbcUrl"] = distInput.jdbcUrl;
         jdbcData["jdbcUser"] = distInput.jdbcUser;
         jdbcData["jdbcPassword"] = distInput.jdbcPassword;
-        jdbcData["jdbcDriverPath"] = distInput.jdbcDriverPath;
+        if (getCookie("localMode") == "true")
+            jdbcData["jdbcDriverPath"] = "";
+        else
+            jdbcData["jdbcDriverPath"] = distInput.jdbcDriverPath;
         distFile["jdbcData"] = jdbcData;
     }
 
@@ -1043,12 +1107,15 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         if (!srcFile["header"]) {
             srcFile["columns"] = srcInput.columns;
         }
-    } else if (srcFile["datasetFormat"] == "JSON") {
+    } else if (srcFile["datasetFormat"] == "JDBC") {
         var jdbcData = {};
         jdbcData["jdbcUrl"] = srcInput.jdbcUrl;
         jdbcData["jdbcUser"] = srcInput.jdbcUser;
         jdbcData["jdbcPassword"] = srcInput.jdbcPassword;
-        jdbcData["jdbcDriverPath"] = srcInput.jdbcDriverPath;
+        if (getCookie("localMode") == "true")
+            jdbcData["jdbcDriverPath"] = "";
+        else
+            jdbcData["jdbcDriverPath"] = srcInput.jdbcDriverPath;
         srcFile["jdbcData"] = jdbcData;
     }
 
