@@ -274,7 +274,7 @@
                 response.inputData.compareKey,
                 response.inputData.srcFile.transformations, response.inputData.distFile.transformations,
                 response.inputData.srcFile.filterSql, response.inputData.distFile.filterSql,
-                response.inputData.matchBoth, response.srcRowCount != response.distRowCount, response.inputData.randomSample
+                response.inputData.matchBoth, response.srcRowCount != response.distRowCount, response.inputData.randomSample, response.inputData.columnMapping
 				);
 				$('#advancedRulesModal').modal();
 				
@@ -856,16 +856,16 @@
 								<table class="table table-bordered table-striped specialCollapse" id="stats">
 									<tbody>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Records Matching : </small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Records Matching (Matched/Total) % :  </small></td>
 											<td class="col-md-9"><small id="src_percent" style="font-size: 15pt;"></small><small id="src_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small></td>
 										</tr>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Records Matching : </small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Records Matching (Matched/Total) % :  </small></td>
 											<td class="col-md-9"><small id="dist_percent" style="font-size: 15pt;"></small><small id="dist_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small></td>
 										</tr>
 										
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Columns Not Matching : </small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Induvidual Column Mismatch Count : </small></td>
 											<td class="col-md-9"><small class="columnsnotmatching" id="more"></small><button type="button"  data-toggle="modal" data-target="#more">Click Here!</button></td>
 										</tr>
 									</tbody>

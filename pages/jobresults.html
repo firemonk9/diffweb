@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 	
-	
 	<head>
 		<title>Job Results</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="shortcut icon" href="https://static.wixstatic.com/media/9815c9_642c9beb50dd45339ddfa02bba2a1182%7Emv2.png/v1/fill/w_32%2Ch_32%2Clg_1%2Cusm_0.66_1.00_0.01/9815c9_642c9beb50dd45339ddfa02bba2a1182%7Emv2.png" type="image/png">
 		
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
-		
+
 		<link rel="stylesheet" href="../dist/css/sb-admin-2.css">
 		<link rel="stylesheet" href="../dist/css/bootstrap-tagsinput.css">
 		<link rel="stylesheet" href="../dist/css/custom.css">
+		<link rel="stylesheet" href="../dist/css/sweetalert.css">
 		<link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-		
-		<script src="https://johnny.github.io/jquery-sortable/js/jquery-sortable.js"></script>
+
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -35,35 +36,34 @@
 		
 		<script src="../dist/js/bootstrap-table-export.js"></script>
 		<script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
-		
+
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="../dist/js/sweetalert-dev.js"></script>
 		<script src="../dist/js/app.js"></script>
-		
-		
+
 		<script>
 			$(document).ready(function(){
 				url = window.location.href;
-			if( url.match(edit=true) ) {
-				$( '#btn_edit_job' ).addClass( "a" );
-				$( '#btn_edit' ).removeClass( "job" );
+				if( url.match(edit=true) ) {
+					$( '#btn_edit_job' ).addClass( "a" );
+					$( '#btn_edit' ).removeClass( "job" );
 				}else{
-				$( '#btn_edit_job' ).removeClass( "a" );
-				$( '#btn_edit' ).addClass( "job" );
+					$( '#btn_edit_job' ).removeClass( "a" );
+					$( '#btn_edit' ).addClass( "job" );
 				}
 				
 				$("#btn_edit_job").click(function() {
-				var uri = window.location.href;
-				var add = "&edit=true";
-				window.location.href = uri + add;
-				$('#advancedRulesModal').modal();
+					var uri = window.location.href;
+					var add = "&edit=true";
+					window.location.href = uri + add;
+					$('#advancedRulesModal').show();
 				});	
 				
 				$("#btn_edit").click(function() {
-				$('#advancedRulesModal').modal();
+					$('#advancedRulesModal').show();
 				});	
-		});
-	
+			});
 		</script>
-		
 		
 		<style>
 			.clickable{
@@ -132,37 +132,17 @@
 	
 	<body>
 		<script>
+			var tblData = [];
 			$(document).ready(function(){
 				
 				$('#logout').on('click', function(e){
 					setCookie("email", "");
 					setCookie("password", "");
 				});
-				
-				$.ajax({
-					type: "GET",
-					url: "/startUp",
-					crossDomain: true,
-					dataType: 'json',
-					data: {},
-					success: function (response) {
-						var email= getCookie("email");
-						if(response.authentication == 'basic' && email != ''){
-							setCookie("version", response.displayVersion);
-							setCookie("localMode", response.localMode);
-							setToolDetail();
-							}else if(response.authentication == 'basic' && email == ''){
-							location.href = "./login.html";
-						}
-					},
-					error: function (response) {
-						
-					}
-				});
-				
 			});
-			
-			
+
+			var columnNotMatching = []; var columnNotMatchingMap = [];
+
 			var mergeArray = [];
 			var changeHeaderArray = [];
 			var diffCellArray = [];
@@ -207,6 +187,7 @@
 				if (response.reason != null) {
 					document.getElementById("reason-msg").innerHTML = response.reason;
 					$('#alert-reason').show();
+					$('#loadingDiv').hide();
 					return;
 				}
 				if (response.status == "RUNNING") {
@@ -214,10 +195,12 @@
 					setTimeout(function(){
 						getJobResult(jobId);
 					}, 5000);
+					$('#loadingDiv').hide();
 					return;
-					} else if (response.status == "Invalid Job id") {
+				} else if (response.status == "Invalid Job id") {
 					document.getElementById("danger-msg").innerHTML = "Invalid job id.";
 					$('.alert-danger').show();
+					$('#loadingDiv').hide();
 					return;
 				}
 				
@@ -226,9 +209,10 @@
 					except.innerHTML = response.exception;
 					$('.alert-warning').show();
 					return;
-					} else if (response.differencessForKey == null) {
+				} else if (response.differencessForKey == null) {
 					document.getElementById("danger-msg").innerHTML = "Json is not correct.";
 					$('.alert-danger').show();
+					$('#loadingDiv').hide();
 					return;
 				}
 				for (var i = 0, l = response.differencessForKey.length; i < l; i++) {
@@ -253,6 +237,7 @@
 							var row = {}
 							row["key"] = keyStr;
 							row["type"] = "src";
+							row["matching"] = JSON.stringify(badcolsarr);
 							for (var j = 0, jl = sarr.length; j < jl; j++) {
 								row[sarr[j].col] = sarr[j].value;
 							}
@@ -270,13 +255,14 @@
 							var row = {}
 							row["key"] = keyStr;
 							row["type"] = "dest";
+							row["matching"] = JSON.stringify(badcolsarr);
 							for (var j = 0, jl = darr.length; j < jl; j++) {
 								row[darr[j].col] = darr[j].value;
 							}
 							newData.push(row);
 							if(!sarr){
 								row["orphan"]=true;
-								}else {
+							}else {
 								row["orphan"] = false;
 							}
 							//if (doubleexist == true) {
@@ -304,31 +290,59 @@
 					mergeArray.push(mergeVal);
 				}
 				
-				setStatsTable(response.stats);
+				setStatsTable(response.stats, response.inputData.srcFile, response.inputData.distFile);
 				
 				// Get HeaderArray
 				if (newData.length > 0) {
 					var headerArray = Object.keys(newData[0]);
-					//alert(headerArray);
+					var index = headerArray.indexOf("matching");
+					headerArray.splice(index, 1);
 					headerCount = headerArray.length;
 					curColumnIndex = 0;
 					var res = JSON.stringify(newData);
+					tblData = newData;
 					setTable(newData, headerArray);
 					document.getElementById("success-msg").innerHTML = "Data differ successfully finished.";
 					$('.alert-success').show();
-					} else {
+				} else {
 					document.getElementById("success-msg").innerHTML = "No differ data detected.";
 					$('.alert-success').show();
 				}
-				
-				
+
 				$('.alert-success').show();
+				$('#loadingDiv').hide();
 			}
-			
 			
 			function createAdvancedRulePage_new(response) {
 				//alert(response.inputData.compareKey);
 				return response.inputData.compareKey;
+			}
+
+			function openDialog1() {
+				$('#more2').hide();
+				$('#more').css("position", "fixed");
+				$('#more').css("top", "25%");
+				$('#more').css("left", "25%");
+				$('#more').show();
+			}
+
+			function openDialog2() {
+				$('#more').hide();
+				$('#more2').css("position", "fixed");
+				$('#more2').css("top", "25%");
+				$('#more2').css("left", "25%");
+				$('#more2').show();
+				$('body').css("height",$( window ).height());
+				$('body').css("overflow","hidden");
+				$('.modal-body').css("overflow-y","auto");
+				$('.modal-body').css("height","200");
+			}
+
+			function openAdvanced() {
+				$('#advancedRulesModal').css("position", "fixed");
+				$('#advancedRulesModal').css("top", "5%");
+				$('#advancedRulesModal').css("left", "20%");
+				$('#advancedRulesModal').show();
 			}
 			
 			function createAdvancedRulePage(response) {
@@ -346,10 +360,11 @@
                 response.inputData.compareKey,
                 response.inputData.srcFile.transformations, response.inputData.distFile.transformations,
                 response.inputData.srcFile.filterSql, response.inputData.distFile.filterSql,
-                response.inputData.matchBoth, response.srcRowCount != response.distRowCount, response.inputData.randomSample
+                response.inputData.matchBoth, response.srcRowCount != response.distRowCount, response.inputData.randomSample, response.inputData.columnMapping
 				);
-				$('#advancedRulesModal').modal();
-				
+				//$('#advancedRulesmodal').show();
+				$('#advancedRulesModal').show();
+				$('#loadingDiv').hide();
 			}
 			
 			//Get Job Result from server with job id
@@ -367,6 +382,15 @@
 							createAdvancedRulePage(response);
 						}
 					},
+					// xhr: function() {
+					// 	var xhr = new window.XMLHttpRequest();
+					// 	xhr.addEventListener("progress", function(evt) {
+					// 		var percentComplete = evt.loaded / evt.total * 80;
+					// 		console.log(percentComplete);
+					// 	}, false);
+
+					// 	return xhr;
+					// },
 					error: function(response) {
 						//alert(response);
 					}
@@ -388,17 +412,16 @@
 				});
 			}
 			
-			
 			function submitJobJson() {
-				
+
 				var data = getInputData(srcRecordCnt != distRecordCnt);
 				
 				if (data.compareKey.length <= 0) {
-					alert("You should set at least one key.");
+					swal("Validation Error", "Atleast one column should be selectd as Compare Key.", "error");
 					return;
 				}
 				if (data.jobname == "") {
-					alert("You should input job name.");
+					swal("Validation Error", "Enter a name for the job.", "error");
 					return;
 				}
 				
@@ -457,7 +480,8 @@
 						window.location.href = url + '/home.html';
 					},
 					error: function (response) {
-						$('#advancedRulesModal').modal('hide');
+						//$('#advancedRulesModal').hide();
+						$('#advancedRulesModal').hide();
 					}
 				});
 			}
@@ -501,72 +525,390 @@
 			}
 			
 			// Show Stats Table
-			function setStatsTable(stats) {
-				//alert(JSON.stringify(stats.columnsNotMatching));
-				/*
-					$('.srcrecordscount').html(stats.srcRecordsCount);
-					$('.distrecordscount').html(stats.distRecordsCount);
-					$('.totalsrcrecordsmatching').html(stats.totalSrcRecordsMatching);
-					$('.totalsrcrecordsnotmatching').html(stats.totalSrcRecordsNotMatching);
-					$('.totaldistrecordsmatching').html(stats.totalDistRecordsMatching);
-					$('.totaldistrecordsnotmatching').html(stats.totalDistRecordsNotMatching);
-					$('.columnsnotmatching').html(JSON.stringify(stats.columnsNotMatching));
-					$('.columnsnotmatchingmap').html(JSON.stringify(stats.columnsNotMatchingMap));
-				*/
-				
-				//alert(JSON.stringify(stats.columnsNotMatching));
-				//var newjson = {"Dest":185,"Origin":689,"DepTime":15,"DayOfWeek":15,"TailNum":394,"Distance":268,"DepDelay":689};
-				
-				var newjson = JSON.stringify(stats.columnsNotMatching);
-				var newjson = JSON.parse(newjson);
-				
-				$.each(newjson, function (k, value) {
+			function setStatsTable(stats, srcPath, distPath) {
+				$('#src_path').html(srcPath.datasetPath + "  ("+srcPath.datasetFormat+")");
+				$('#dist_path').html(distPath.datasetPath + "  ("+distPath.datasetFormat+")");
+
+				stats["srcRecordsNotMatching"] =  stats.srcRecordsCount -  stats.totalSrcRecordsMatching
+                stats["destRecordsNotMatching"] = stats.distRecordsCount - stats.totalDistRecordsMatching
+
+				columnNotMatching = stats.columnsNotMatching;
+
+				$.each(columnNotMatching, function (k, value) {
 					var tr;
-					tr = $('<tr/>');
+					tr = $('<tr style="cursor: pointer;"></tr>');
+					tr.on('click', function(e) {
+						var index = e.currentTarget.rowIndex;
+						var key = Object.keys(columnNotMatching)[index - 1];
+						for (var i = 0; i < diffCellArray.length; i++) {
+							if (diffCellArray[i] != null && diffCellArray[i].indexOf(key) >= 0) {
+								break;
+							}
+						}
+						var top = 0;
+						$('#table').find('tbody tr').each(function (ind) {
+							if (ind < i) {
+								top += $(this).height();
+							}
+						});
+						$('#table').bootstrapTable('scrollTo', top);
+
+					});
 					tr.append("<td>" + k + "</td>");
 					tr.append("<td>" + value + "</td>");	
 					$('#tblGrid').append(tr);
 				});
-				
-				//$('.columnsnotmatching').html('click here->');
+
+				columnNotMatchingMap = stats.columnsNotMatchingMap;
+
+				$.each(columnNotMatchingMap, function (k, value) {
+					var tr;
+					tr = $('<tr style="cursor: pointer;"></tr>');
+					tr.on('click', function(e) {
+						var index = e.currentTarget.rowIndex;
+						var keys = Object.keys(columnNotMatchingMap)[index - 1];
+						var keyarr = keys.split(", ");
+						for (var i = 0; i < diffCellArray.length; i++) {
+							var check = true;
+							if (diffCellArray[i] != null && diffCellArray[i].length > 0) {
+								for (var j = 0; j < keyarr.length; j++) {
+									if (diffCellArray[i].indexOf(keyarr[j]) < 0) {
+										check = false;
+										break;
+									}
+								}
+							} else {
+								check = false;
+							}
+
+							if (check == true && diffCellArray[i].length == keyarr.length) {
+								var top = 0;
+								$('#table').find('tbody tr').each(function (ind) {
+									if (ind < i) {
+										top += $(this).height();
+									}
+								});
+								$('#table').bootstrapTable('scrollTo', top);
+								break;
+							}
+						}
+					});
+					tr.append("<td>" + k + "</td>");
+					tr.append("<td>" + value + "</td>");
+					$('#tblGrid2').append(tr);
+				});
 				
 				var src_percent = (stats.totalSrcRecordsMatching / stats.srcRecordsCount) * 100;
 				$('#src_percent').html(parseInt(src_percent) + "%");
 				$('#src_count').html("(" + stats.totalSrcRecordsMatching + " / " + stats.srcRecordsCount + ")");
-				
+				Highcharts.chart('src_record', {
+					chart: {
+						type: 'bar',
+						height: 60,
+						width: 750,
+						margin: 0,
+						backgroundColor: '#F9F9F9'
+					},
+					credits: {
+						enabled: false
+					},
+					title: {
+						text: ''
+					},
+					xAxis: {
+						categories: ['Source Record Matching'],
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						minorTickLength: 0,
+						tickLength: 0
+					},
+					yAxis: {
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						gridLineColor: 'transparent',
+						lineColor: 'transparent',
+						tickInterval: 1,
+						minorTickLength: 0,
+						tickLength: 0,
+						visible: false
+					},
+					legend: {
+						reversed: false
+					},
+					plotOptions: {
+						series: {
+							stacking: 'percent'
+						},
+					},
+					series: [{
+                        maxPointWidth: 20,
+                        showInLegend: false,
+						color:'#d9534f',
+                        name: 'Source Total Records',
+                        data: [stats.srcRecordsNotMatching]
+                    },
+						{
+						maxPointWidth: 20,
+						showInLegend: false,
+						color:'#5cb85c',
+						name: 'Source Record Matching',
+						data: [stats.totalSrcRecordsMatching]
+					}]
+				});
+
 				var dist_percent = (stats.totalDistRecordsMatching / stats.distRecordsCount) * 100;
 				$('#dist_percent').html(parseInt(dist_percent) + "%");
 				$('#dist_count').html("(" + stats.totalDistRecordsMatching + " / " + stats.distRecordsCount + ")");
+				Highcharts.chart('dist_record', {
+					chart: {
+						type: 'bar',
+						height: 60,
+						width: 750,
+						margin: 0,
+						backgroundColor: '#FFFFFF'
+					},
+					credits: {
+						enabled: false
+					},
+					title: {
+						text: ''
+					},
+					xAxis: {
+						categories: ['Destination Record Matching'],
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						minorTickLength: 0,
+						tickLength: 0
+					},
+					yAxis: {
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						gridLineColor: 'transparent',
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						tickInterval: 1,
+						minorTickLength: 0,
+						tickLength: 0,
+						visible: false
+					},
+					legend: {
+						reversed: false
+					},
+					plotOptions: {
+						series: {
+							stacking: 'percent'
+						},
+					},
+					series: [{
+						maxPointWidth: 20,
+						showInLegend: false,
+						color:'#d9534f',
+						name: 'Source Total Records',
+						data: [stats.destRecordsNotMatching]
+					},
+						{
+                        maxPointWidth: 20,
+                        showInLegend: false,
+                        name: 'Destination Record Matching',
+						color:'#5cb85c',
+                        data: [stats.totalDistRecordsMatching]
+                    }]
+				});
+
+                $('#src_total_keys').html(stats.srcKeyCount);
+				$('#src_matched').html(stats.srcKeyMatchBrodcast);
+				$('#src_partial').html(stats.srcKeyMatchPartial);
+				$('#src_not').html(stats.srcKeyNoMatch);
+				Highcharts.chart('src_total', {
+					chart: {
+						type: 'bar',
+						height: 100,
+						width: 750,
+						margin: 0,
+						backgroundColor: '#F9F9F9'
+					},
+					credits: {
+						enabled: false
+					},
+					title: {
+						text: ''
+					},
+					xAxis: {
+						categories: ['Source Total Keys'],
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						minorTickLength: 0,
+						tickLength: 0
+					},
+					yAxis: {
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						gridLineColor: 'transparent',
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						tickInterval: 1,
+						minorTickLength: 0,
+						tickLength: 0,
+						visible: false
+					},
+					legend: {
+						reversed: false
+					},
+					plotOptions: {
+						series: {
+							stacking: 'percent'
+						},
+					},
+					series: [{
+						maxPointWidth: 20,
+						//showInLegend: false,
+                        color:'#5bc0de',
+                        name: 'Orphan Keys',
+                        data: [stats.srcKeyNoMatch]
+					}, {
+						maxPointWidth: 20,
+                        color:'#d9534f',
+						//showInLegend: false,
+						name: 'Mismatch keys',
+						data: [stats.srcKeyMatchPartial]
+					}, {
+						maxPointWidth: 20,
+                        color:'#5cb85c',
+						//showInLegend: false,
+                        name: 'Matched',
+                        data: [stats.srcKeyMatchBrodcast]
+					}]
+				});
+                $('#dist_total_keys').html(stats.distKeyCount);
+				$('#dist_matched').html(stats.distKeyMatchBrodcast);
+				$('#dist_partial').html(stats.distKeyMatchPartial);
+				$('#dist_not').html(stats.distKeyNoMatch);
+				Highcharts.chart('dist_total', {
+					chart: {
+						type: 'bar',
+						height: 100,
+						width: 750,
+						margin: 0,
+						backgroundColor: '#FFFFFF'
+					},
+					credits: {
+						enabled: false
+					},
+					title: {
+						text: ''
+					},
+					xAxis: {
+						categories: ['Destination Total Keys'],
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						minorTickLength: 0,
+						tickLength: 0
+					},
+					yAxis: {
+						lineWidth: 0,
+						minorGridLineWidth: 0,
+						gridLineColor: 'transparent',
+						lineColor: 'transparent',
+						labels: {
+							enabled: false
+						},
+						tickInterval: 1,
+						minorTickLength: 0,
+						tickLength: 0,
+						visible: false
+					},
+					legend: {
+						reversed: false
+					},
+					plotOptions: {
+						series: {
+							stacking: 'percent'
+						},
+					},
+					series: [{
+						maxPointWidth: 20,
+                        color:'#5bc0de',
+						//showInLegend: false,
+                        name: 'Orphan Keys',
+                        data: [stats.distKeyNoMatch]
+					}, {
+						maxPointWidth: 20,
+                        color:'#d9534f',
+						//showInLegend: false,
+						name: 'Mismatch keys',
+						data: [stats.distKeyMatchPartial]
+					}, {
+						maxPointWidth: 20,
+                        color:'#5cb85c',
+						//showInLegend: false,
+                        name: 'Matched',
+                        data: [stats.distKeyMatchBrodcast]
+					}]
+				});
 			}
-			
+
 			//To Fetch URL parameters.
 			function param(name) {
 				return (location.search.split(name + '=')[1] || '').split('&')[0];
 			}
-			
+
 			//To Set the Cookie.
 			$(document).ready(function(){
 				var currentpara= param('jobId');
 				getJobResult_new(currentpara);
 			});
-			
+
 			// Show data to Table
 			function setTable(tableData, headerArray) {
 				var keys= getCookie("keys");
 				var result = keys.split(',');
 				var count= result.length;
-				
-				
+
 				$("#table").bootstrapTable('destroy');
 				$("#table thead tr").html('');
 				$.each(headerArray, function (index, value) {
-					var tr = '';
-					
+					var tr = '<th data-field="' + value + '" data-formatter="stateFormatter">' + value;
+
+					for (var i = 0; i < count; i++) {
+						var arr = value.split("__");
+						if (arr[0] == result[i]) {
+							tr += '<img src="../dist/img/key.jpg" width="20px" height="20px"></th>';
+						} else {
+							if (arr.length > 1 && arr[1] == result[i]) {
+								tr += '<img src="../dist/img/key.jpg" width="20px" height="20px"></th>';
+							}
+						}
+					}
+					if (contains.call(changeHeaderArray, value)){
+						tr += '<i class="glyphicon glyphicon-remove"></i>';
+					}
+					tr += '</th>';
+					/*
 					if (contains.call(changeHeaderArray, value)){
 						//tr = $('<th data-field="' + value + '" data-cell-style="cellStyle" data-formatter="stateFormatter">' + value + '<i class="glyphicon glyphicon-star"></i></th>');
-						
+
 						tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + ' <i class="glyphicon glyphicon-remove"></i></th>');
-						} else {
+					} else {
 						for(var i=0; i < count; i++){
 							if(value == result[i] || value == name){
 								//alert(result[i]);
@@ -577,25 +919,26 @@
 							}
 						}
 					}
-					
-					$("#table thead tr").append(tr);
+					*/
+					var t = $(tr);
+					$("#table thead tr").append(t);
 				});
-				
+
 				$('#table').bootstrapTable({
 					data: tableData,
 					onPageChange: function (number, size) {
 						setMergeCell((number - 1) * size, number * size);
 					}
 				});
-				setMergeCell(0, 10);
+				setMergeCell(0, tableData.length);
 				removeTableColumn();
 			}
-			
+
 			/* function to delete last column*/
 			function removeTableColumn() {
 				$("#table  thead tr th:last-child, #table td:last-child").addClass("intro");
 			}
-			
+
 			// Set mergeCells
 			function setMergeCell(startat, endat) {
 				$.each(mergeArray, function (index, value) {
@@ -610,13 +953,13 @@
 				});
 				removeTableColumn();
 			}
-			
+
 			// Set Row Color
 			function rowStyle(row, index) {
 				if (row['orphan'] == true)
 				return {
 					classes: 'orphan'
-					
+
 				};
 				if (row['type'] == 'src')
 				return {
@@ -627,7 +970,7 @@
 					classes: 'success'
 				};
 			}
-			
+
 			// Set Cell Text Color
 			function cellStyle(value, row, index, field) {
 				if (index === 1) {
@@ -640,34 +983,37 @@
 					classes: '',
 				};
 			}
-			
+
 			// Set Cell Text Formatter (First call before cellStyle)
 			function stateFormatter(value, row, index) {
 				var result = '';
 				result = value;
+
+				index = tblData.indexOf(row);
+
 				if (diffCellArray[index] ) {
 					var cellarr = diffCellArray[index];
-					
+
 					$.each(cellarr, function (index, column) {
 						var keyindex = Object.keys(row).indexOf(column);
-						if (keyindex == curColumnIndex && JSON.stringify(row[column]) === JSON.stringify(value)){
+						if (/*keyindex == curColumnIndex && */JSON.stringify(row[column]) === JSON.stringify(value)){
 							result = '<div class="table-error">' +
                             value +
                             '</div>';
 						}
 					});
-					} else if (diffCellArray[index - 1]){
+				} else if (diffCellArray[index - 1]){
 					var cellarr = diffCellArray[index - 1];
 					$.each(cellarr, function (index, column) {
 						var keyindex = Object.keys(row).indexOf(column);
-						if (keyindex == curColumnIndex && JSON.stringify(row[column]) === JSON.stringify(value)){
+						if (/*keyindex == curColumnIndex && */JSON.stringify(row[column]) === JSON.stringify(value)){
 							result = '<div class="table-error">' +
                             value +
                             '</div>';
 						}
 					});
 				}
-				
+
 				if (curColumnIndex >= headerCount - 1){
 					curColumnIndex = 0;
 					} else {
@@ -675,21 +1021,21 @@
 				}
 				return result;
 			}
-			
+
 			var contains = function (needle) {
 				// Per spec, the way to identify NaN is that it is not equal to itself
 				var findNaN = needle !== needle;
 				var indexOf;
-				
+
 				if (!findNaN && typeof Array.prototype.indexOf === 'function') {
 					indexOf = Array.prototype.indexOf;
 					} else {
 					indexOf = function (needle) {
 						var i = -1, index = -1;
-						
+
 						for (i = 0; i < this.length; i++) {
 							var item = this[i];
-							
+
 							if ((findNaN && item !== item) || item === needle) {
 								index = i;
 								break;
@@ -698,10 +1044,10 @@
 						return index;
 					};
 				}
-				
+
 				return indexOf.call(this, needle) > -1;
 			};
-			
+
 			function setListeners() {
 				$(document).on('mouseenter', ".li-tiff", function () {
 					var $this = $(this);
@@ -711,36 +1057,44 @@
 							placement: "bottom"
 						});
 						$this.tooltip('show');
+					} else {
+						$this.tooltip({
+							title: 'You can drag columns to realign',
+							placement: "bottom"
+						});
 					}
 				});
-				
+
 				$('.selectfile').on('change', function () {
 					var selected = $(this).find("option:selected").val();
-					
+
 					//Initialize Values
 					mergeArray = [];
 					changeHeaderArray = [];
 					diffCellArray = [];
 					curColumnIndex = 0;
 					headerCount = 0;
-					
+
 					getDataFromJsonFile("../json/" + selected);
 				});
-				
+
 				$('#table').on('search.bs.table', function (e, text) {
 					//merge cells again
+					//var data = $('#table').bootstrapTable('getData');
+					//var header = Object.keys(data[0]);
+					//setTable(data, header);
 				});
-				
+
 				$('#btn_save_rules').on('click', function(e){
 					edit = "false";
 					submitJobJson();
-					//$('#advancedRulesModal').modal('hide');
+					//$('#advancedRulesModal').hide();
 				});
-				
+
 				$('#btn_cancel_rules').on('click', function(e) {
-					$('#advancedRulesModal').modal('hide');
+					$('#advancedRulesModal').hide();
 				});
-				
+
 				/* close the model*/
 				$("button[data-dismiss-modal=modal2]").click(function () {
 					$('#what1').modal('hide');
@@ -757,33 +1111,48 @@
 				$("button[data-dismiss-modal=modal2]").click(function () {
 					$('#more').modal('hide');
 				});
-				
+				$("button[data-dismiss-modal=modal2]").click(function () {
+					$('#more2').modal('hide');
+				});
+
 				$('#src_trans_plus').on('click', function(e) {
 					var srcNext = document.getElementById("src_trans_next");
 					insertRule(srcNext, "src");
 					createTypeahead($('.src_trans_column'), info.srcSchema, 'name');
 				});
-				
+
 				$('#src_trans_minus').on('click', function(e) {
 					removeRule($('.src-rule-extra'));
 				});
-				
+
 				$('#dist_trans_plus').on('click', function(e) {
 					var srcNext = document.getElementById("dist_trans_next");
-					insertRule(srcNext, "dest");
+					insertRule(srcNext, "dist");
 					createTypeahead($('.dist_trans_column'), info.distSchema, 'name');
 				});
-				
+
 				$('#dist_trans_minus').on('click', function(e) {
 					removeRule($('.dist-rule-extra'));
 				});
-				
-				setIncludeListener();
+
+				$('#close1').on('click', function(e) {
+					$('#more').hide();
+				});
+
+				$('#close2').on('click', function(e) {
+					$('#more2').hide();
+					$('body').css("height",$( window ).height());
+				$('body').css("overflow","inherit");
+				});
+
+				$('#advanced').on('click', function(e) {
+					$('#advancedRulesModal').hide();
+				});
+
+ 				setIncludeListener();
 				setExcludeListener();
 			}
-			
-			
-			
+
 			$(document).ready(function () {
 				$.ajax({
 					type: "GET",
@@ -792,53 +1161,53 @@
 					dataType: 'json',
 					data: {},
 					beforeSend: function() {
-						$("#loadingDiv").show();
+						//$("#loadingDiv").show();
 					},
 					success: function (response) {
+						if (response.localMode == true) {
+							$('#nav_logout').hide();
+						}
 						setCookie("version", response.displayVersion);
 						setCookie("localMode", response.localMode);
 						setToolDetail();
 					},
 					error: function (response) {
-						
+
 					},
 					complete: function() {
-						$("#loadingDiv").hide();
+						//$("#loadingDiv").hide();
 					}
 				});
-				
-				$(document).ready(function(){
-					$("#src_column li").each(function(event, el){
-						var product = $(this);
-						var child= product.children("span.glyphicon").attr('id');
-						var id= "#"+child;
-						var i= $(el).index();
-						$(id).attr('new-div-id',i);
-					})
-					
-					$("#mapper div").each(function(event, el){
-						var product = $(this);
-						var child_new= product.children("img").attr('rel');
-						var class_new= ".list_"+child_new+" img";
-						var i= $(el).index();
-						$(class_new).attr('rel',i);
-					});
+
+				$("#src_column li").each(function(event, el){
+					var product = $(this);
+					var child= product.children("span.glyphicon").attr('id');
+					var id= "#"+child;
+					var i= $(el).index();
+					$(id).attr('new-div-id',i);
 				})
-				
-				
+
+				$("#mapper div").each(function(event, el){
+					var product = $(this);
+					var child_new= product.children("img").attr('rel');
+					var class_new= ".list_"+child_new+" img";
+					var i= $(el).index();
+					$(class_new).attr('rel',i);
+				});
+
 				$( "#src_column" ).sortable({
 					connectWith: ".connectedSortable1",
 					placeholder: "ui-state-highlight",
-					
+
 					stop: function(event, ui){
-						
+
 						$("#src_column li").each(function(event, el){
 							//console.log(el);
 							//console.log($(el).index());
 							//$(el).attr('data-id',$(el).index() - 1);
 							//$("li span.glyphicon").attr('data-id',$(el).index() - 1);
 						});
-						
+
 						$("#src_column li").each(function(event, el){
 							var product = $(this);
 							var child= product.children("span.glyphicon").attr('id');
@@ -846,7 +1215,7 @@
 							var i= $(el).index();
 							$(id).attr('new-div-id',i);
 						})
-						
+
 						$("#mapper div").each(function(event, el){
 							var product = $(this);
 							var child_new= product.children("img").attr('rel');
@@ -855,14 +1224,14 @@
 							$(class_new).attr('rel',i);
 						});
 					}
-					
+
 				});
-				
+
 				$( "#dist_column" ).sortable({
 					connectWith: ".connectedSortable2",
 					placeholder: "ui-state-highlight"
 				});
-				
+
 				jobId =  QueryString.jobId;
 				edit = QueryString.edit;
 				if (jobId != null) {
@@ -871,28 +1240,44 @@
 					getDataFromJsonFile("../json/diff_result.json");
 				}*/
 				mergeArray = [];
-				
+
 				setListeners();
+
+
+				$('#what').draggable();
+				$('#what1').draggable();
+				$('#what2').draggable();
+				$('#what3').draggable();
+				$('#more').draggable();
+				$('#more2').draggable();
+				$('#advancedRulesModal').draggable();
+
+				//$('#drag1').draggable();
 			});
-			
-			function addURL()
-			{
+
+			function addURL() {
 				var data=window.location+"&edit=true";
 				//alert(data);
-				$('#advancedRulesModal').modal();
-				
+				//$('#advancedRulesmodal').show();
+				$('#advancedRulesModal').show();
+
 			}
-			
-			
-			
 		</script>
-		
-		<div id="loadingDiv">
-			
+
+		<div id="loadingDiv"></div>
+
+		<div id="loadModal" class="modal" role="dialog" data-backdrop="static" data-keyboard="false" >
+			<div class="modal-dialog modal-lg" style="top: 30%;">
+				<div class = "progress progress-striped active">
+					<div class = "progress-bar progress-bar-info" role = "progressbar" id="funding"
+						 aria-valuenow = "0" aria-valuemin = "0" aria-valuemax = "100" style = "width: 0%;">
+					</div>
+				</div>
+			</div>
 		</div>
-		
+
 		<div id="wrapper">
-			
+
 			<!-- Navigation -->
 			<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 				<div class="navbar-header">
@@ -908,20 +1293,22 @@
 					<span class="navbar-brand" style="font-size: 18px;" id="tool-version"></span>
 				</div>
 				<!-- /.navbar-header -->
-				
+
 				<ul class="nav navbar-top-links navbar-right">
 					<li>
 						<a href="home.html">Home</a>
 					</li>
+					<!--
 					<li>
 						<a href="addjob.html">Add Job</a>
 					</li>
+					-->
 					<!--
 						<li>
 						<a href="jobresults.html">Job Results</a>
 						</li>
 					-->
-					<li class="dropdown">
+					<li class="dropdown" id="nav_logout">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 							<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
 						</a>
@@ -940,7 +1327,7 @@
 				</ul>
 				<!-- /.navbar-top-links -->
 			</nav>
-			
+
 			<div id="page-wrapper" style="margin: 0 0 0 0;">
 				<div class="row">
 					<div class="col-lg-12">
@@ -948,95 +1335,135 @@
 					</div>
 					<!-- /.col-lg-12 -->
 				</div>
-				
+
 				<div class="alert alert-success alert-dismissible" role="alert" style="display:none;">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<strong>SUCCESS!</strong> <span id="success-msg">Data differ successfully finished.</span>
 				</div>
-				
+
 				<div class="alert alert-info alert-dismissible" role="alert" style="display:none;">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<strong>RUNNING!</strong> Job is running now.
 				</div>
-				
+
 				<div class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<strong>ERROR!</strong> <span id="danger-msg">Json is not correct.</span>
 				</div>
-				
+
 				<div class="alert alert-danger alert-dismissible" role="alert" style="display:none;" id="alert-reason">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<strong>REASON!</strong> <span id="reason-msg">Json is not correct.</span>
 				</div>
-				
+
 				<div class="alert alert-warning alert-dismissible" role="alert" style="display:none;">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<strong>EXCEPTION!</strong> <span id="exception-value"></span>
 				</div>
-				<div class="col-md-12">
-					<div class="modal fade" id="more" role="dialog">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
-								</div>
-								<div class="modal-body">
-									<table class="table table-striped" id="tblGrid">
-										<thead id="tblHead">
-											<tr>
-												<th>Name</th>
-												<th>Value</th>
-											</tr>
-										</thead>
-										<tbody>
-											
-										</tbody>
-									</table>
-								</div>
-								
-								
-							</div>
-						</div>
-					</div>
-				</div>
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading summary" data-toggle="collapse" data-parent="#accordion"data-target="#specialCollapse">
-								<h3 class="panel-title accordion-toggle summary">Summary</h3>	
+								<h3 class="panel-title accordion-toggle summary">Summary</h3>
 							</div>
 							<div id="specialCollapse" class="panel-collapse collapse in">
 								<table class="table table-bordered table-striped specialCollapse" id="stats">
 									<tbody>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Source Records Matching : </small></td>
-											<td class="col-md-9"><small id="src_percent" style="font-size: 15pt;"></small><small id="src_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Source Data Path : </td>
+											<td class="col-md-9 row">
+												<small id="src_path" style="font-size: 11pt;"></small>
+											</td>
 										</tr>
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Destination Records Matching : </small></td>
-											<td class="col-md-9"><small id="dist_percent" style="font-size: 15pt;"></small><small id="dist_count" style="position: relative;bottom: 2px;margin-left: 10px;"></small></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Data Path  : </td>
+											<td class="col-md-9 row">
+												<small id="dist_path" style="font-size: 11pt;"></small>
+											</td>
 										</tr>
-										
 										<tr>
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;"><small>Columns Not Matching : </small></td>
-											<td class="col-md-9"><small class="columnsnotmatching" id="more"></small><button type="button"  data-toggle="modal" data-target="#more">Click Here!</button></td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Source Records Matching (Matched/Total) % : </td>
+											<td class="col-md-9 row">
+												<div class="col-md-2" style="top: 15px; padding-left: 0px;">
+													<small id="src_percent" style="font-size: 15pt;">0%</small><small id="src_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
+												</div>
+												<div class="col-md-10" id="src_record" style="padding-left:0px;padding-right:0px;"></div>
+											</td>
+										</tr>
+										<tr>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Records Matching (Matched/Total) % : </td>
+											<td class="col-md-9" row>
+												<div class="col-md-2" style="top: 15px; padding-left: 0px;">
+													<small id="dist_percent" style="font-size: 15pt;">0%</small><small id="dist_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
+												</div>
+												<div class="col-md-10" id="dist_record" style="padding-left:0px;padding-right:0px;"></div>
+											</td>
+										</tr>
+										<tr style="height: 100px;">
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Source Keys Distribution:</td>
+											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0; ">
+												<div class="col-md-2" style="top: 10px;padding-right: 0px; padding-left: 0; padding-right: 10px;">
+													<div>
+														<span>Total keys: </span><span id="src_total_keys" style="float:right;">0</span>
+													</div>
+													<div>
+														<span>Matched keys: </span><span id="src_matched" style="float:right;">0</span>
+													</div>
+													<div>
+														<span>Mismatch keys: </span><span id="src_partial" style="float:right;">0</span>
+													</div>
+													<div>
+														<span>Orphan keys: </span><span id="src_not" style="float:right;">0</span>
+													</div>
+												</div>
+												<div class="col-md-10" id="src_total" style="padding-left:0px;padding-right:0px;"></div>
+											</td>
+										</tr>
+										<tr style="height: 100px;">
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Keys Distribution:</td>
+											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
+												<div class="col-md-2" style="top: 10px;padding-right: 0px; padding-left: 0; padding-right: 10px;">
+													<div>
+														<span>Total keys: </span><span id="dist_total_keys" style="float:right;">0</span>
+													</div>
+													<div>
+														<span>Matched keys: </span><span id="dist_matched" style="float:right;">0</span>
+													</div>
+													<div>
+														<span>Mismatch keys: </span><span id="dist_partial" style="float:right;">0</span>
+													</div>
+													<div>
+														<span>Orphan keys: </span><span id="dist_not" style="float:right;">0</span>
+													</div>
+												</div>
+												<div class="col-md-10" id="dist_total" style="padding-left:0px;padding-right:0px;"></div>
+											</td>
+										</tr>
+										<tr>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Individual Column Mismatch Count: </td>
+											<td class="col-md-9" row>
+												<button type="button" style="" onclick="openDialog1()">Click Here!</button>
+											</td>
+										</tr>
+										<tr>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Column Combination Mismatch Count: </td>
+											<td class="col-md-9">
+												<button type="button" style="" onclick="openDialog2()">Click Here!</button>
+											</td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
-							
-							
-							
 						</div>
 					</div>
 				</div>
@@ -1051,7 +1478,7 @@
 								data-height="540"
 								data-search="true"
 								data-show-columns="true"
-								data-pagination="true"
+								data-pagination="false"
 								data-show-export="true"
 								data-row-style="rowStyle">
 									<thead>
@@ -1084,11 +1511,12 @@
 		<!-- /#wrapper -->
 		
 		<!-- Advanced Rule Modal -->
-		<div class="modal fade" id="advancedRulesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		
+		<div class="ui-dialog" id="advancedRulesModal" style="z-index:9999;display: none;width: 50%;position: absolute;top: 5%;left: 20%;">
 			<div class="modal-dialog" style="width: 800px;">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<button type="button" class="close" id="advanced" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="myModalLabel">Advanced Rules Mapping</h4>
 					</div>
 					
@@ -1103,7 +1531,7 @@
 						</ul>
 						<div class="col-md-6" style="margin-left: 20%;">
 							<div class="form-group">
-								<label class="col-sm-4" style="margin-top:13px;">Job Name</label>
+								<label class="col-sm-4" style="margin-top:13px;">Job Name <span style="color: red;">*</span></label>
 								<div class="col-sm-8">
 									<input type="text" id="job_name" placeholder="Name" class="form-control" style="margin-top:9px;">
 								</div>
@@ -1126,26 +1554,26 @@
 												<div class="panel-body">
 													<div class="col-md-12" style="margin-bottom: 25px;">
 														<div class="form-group">
-															<label class="col-sm-4">Run on sample of</label>
+															<label class="col-sm-4">Compare only a sample records</label>
 															<div class="col-sm-8">
-																<input type="number" placeholder="Insert number..." class="form-control" id="rule_randomsample" min="0">
+																<input type="number" placeholder="Insert number of keys to comapre between 1 to 100,000" class="form-control" id="rule_randomsample" min="0">
 															</div>
 														</div>
 													</div>
 													<div class="col-md-12">
-														<div class="form-group" >
-															<label class="col-sm-4">Src Filter Sql</label>
+														<div class="form-group">
+															<label class="col-sm-4">Source Filter Sql</label>
 															<div class="col-sm-8">
-																<input type="text" placeholder="Insert sql here..." class="form-control" id="src_filter_sql">
+																<input type="text" placeholder="Insert sql here to filter Source Dataset..." class="form-control" id="src_filter_sql">
 															</div>
 															<br><br>
 														</div>
 													</div>
 													<div class="col-md-12">
-														<div class="form-group" >
-															<label class="col-sm-4">Dist Filter Sql</label>
+														<div class="form-group">
+															<label class="col-sm-4">Destination Filter Sql</label>
 															<div class="col-sm-8">
-																<input type="text" placeholder="Insert sql here..." class="form-control" id="dist_filter_sql">
+																<input type="text" placeholder="Insert sql here to filter Destination Dataset..." class="form-control" id="dist_filter_sql">
 															</div>
 															<br><br>
 														</div>
@@ -1166,10 +1594,7 @@
 																		<p>Note :  You can refer to the dataset as my_data.</p>
 																		
 																		<p>Ex : select * from my_data where age > 30</p>
-																		
 																	</div>
-																	
-																	
 																</div>
 															</div>
 														</div>
@@ -1290,7 +1715,6 @@
 																		<table class="table2" style="width:100%">
 																			<th>Example scenario</th>
 																			<th>Rule</th>
-																			
 																			<tr>
 																				<td>Convert to lower case</td>
 																				<td>
@@ -1321,7 +1745,6 @@
 																					if(value != null && value.indexOf(".")  > -1) value.substring(0,value.lastIndexOf(".")) else value
 																				</td>
 																			</tr>
-																			
 																		</table>
 																		
 																		<style>
@@ -1333,23 +1756,15 @@
 																			
 																			table.table2 td{border: 1px solid black;
 																			border-collapse: collapse;padding: 6px;}
-																			
-																			
 																		</style>
-																		
-																		
 																	</div>
-																	
-																	
 																</div>
 															</div>
 														</div>
 													</div>
 													<div class="col-md-12">
-														
 														<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what2" />
 													</div>
-													
 												</div>
 											</div>
 										</div>
@@ -1401,12 +1816,14 @@
 									<div class="col-md-5">
 									<ul style="padding-left: 0px;margin-left: 30px;">
 											<label style="width: 100%;font-weight: bold;
-											color: #000000;">Source Columns <span style="float:right">Compare Key</span></label>
+											color: #000000;">Source Columns <span style="float:right">Compare Key<span style="color: red;"> *</span></span></label>
 									</ul>
 										<ul class="list-group connectedSortable1" style="padding-left: 0px;margin-left: 30px" id="src_column">	
 										</ul>
 									</div>
-									
+
+									<label style="position: relative; right: 325px; top: 84px; hfont-weight: bold;color: #000000;margin-left:-17%">Columns Included</label>
+
 									<div class="col-md-2" style="margin-top: 35px;text-align: center;" id="mapper">
 									</div>
 									
@@ -1420,57 +1837,6 @@
 									</div>
 								</div>
 							</div>
-							<!--<div class="row tab-pane fade" id="transmation">
-								<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="transHelp()" />
-								<div class="col-md-6">
-								<label>Source Dataset</label>
-								<div class="form-group row" style="margin-top: 15px;">
-								<label class="col-sm-3">Column</label>
-								<div class="col-sm-9">
-								<div class="src_trans_column">
-								<input type="text" class="form-control">
-								</div>
-								</div>
-								<label class="col-sm-3">Rule</label>
-								<div class="col-sm-9">
-								<input type="text" class="form-control src_trans_rule">
-								</div>
-								</div>
-								<div class="form-group row" id="src_trans_next">
-								<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
-								<span class="glyphicon glyphicon-plus"></span>
-								</button>
-								<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
-								<span class="glyphicon glyphicon-minus"></span>
-								</button>
-								</div>
-								
-								</div>
-								
-								<div class="col-md-6">
-								<label>Destination Dataset</label>
-								<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
-								<label class="col-sm-3">Column</label>
-								<div class="col-sm-9">
-								<div class="dist_trans_column">
-								<input type="text" class="form-control" value="">
-								</div>
-								</div>
-								<label class="col-sm-3">Rule</label>
-								<div class="col-sm-9">
-								<input type="text" class="form-control dist_trans_rule">
-								</div>
-								</div>
-								<div class="form-group row" id="dist_trans_next">
-								<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
-								<span class="glyphicon glyphicon-plus"></span>
-								</button>
-								<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
-								<span class="glyphicon glyphicon-minus"></span>
-								</button>
-								</div>
-								</div>
-							</div>-->
 						</div>
 					</div>
 					
@@ -1478,6 +1844,41 @@
 						<button type="button" class="btn btn-default" id="btn_cancel_rules">Cancel</button>
 						<a class="btn btn-success btn-ok" id="btn_save_rules">Submit Job</a>
 					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="ui-dialog" id="more" style="z-index:9999;display: none;width: 50%;position: absolute;top: 50%;left: 25%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" id="close1" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<table class="table table-striped" id="tblGrid">
+						<thead id="tblHead">
+						<tr>
+							<th>Column Name</th>
+							<th>Mismatch count</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="ui-dialog" id="more2" style="z-index:9999;display: none;width: 50%;position: absolute;top: 50%;left: 25%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" aria-hidden="true" id="close2">&times;</button>
+				</div>
+				<div class="modal-body">
+					<table class="table table-striped" id="tblGrid2">
+						<thead>
+						<tr>
+							<th>Mismatch Columns</th>
+							<th>Mismatch count</th>
+						</tr>
+						</thead>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -1556,6 +1957,7 @@
 		.glyphicon.glyphicon-remove {
 		color: red;
 		}
+		
 		
 		
 		
