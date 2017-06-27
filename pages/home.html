@@ -262,10 +262,12 @@
                     //$table.bootstrapTable('append', randomData());
                     document.getElementById("success-msg").innerHTML = "Successfully imported.";
                     $('.alert-success').show();
+					setTimeout(function () {$('.alert-success').fadeOut();}, 10000);
                     getJobs();
                 }
             });
         }
+		
 
         function submitJob(jobs, index) {
             var jsonTree = {};
@@ -337,6 +339,7 @@
             $('#btn_submit').on('click', function (e) {
                 var jobs = $.map($table.bootstrapTable('getSelections'), function (row) {
                     return row;
+					
                 });
 
                 if (jobs.length <= 0) {
@@ -619,7 +622,7 @@
                                     </ul>
                                 </div>
 								<button class='btn btn-primary' id="btn_export" disabled>Export JSON</button>
-                                <button class='btn btn-success'id="btn_submit" disabled>Submit Job</button>
+                                <button class='btn btn-success'id="btn_submit" onClick="window.location.reload();" disabled>Submit Job</button>
                                 <button class='btn btn-danger' data-toggle="modal" data-target="#confirm-delete" id="btn_delete" disabled>Delete Job</button>
                                 <button class='btn btn-info' id="btn_edit" disabled>Edit Job</button>
 							</div>

@@ -348,6 +348,7 @@
 							document.getElementById("exception-msg").innerHTML = response.exception;
 							$('.alert-warning').show();
 							$('#src_progress').hide();
+							$('#sample_message').hide();
 							$('#src_form_panel').show();
 							return;
 						}
@@ -390,7 +391,8 @@
 
 						$('#src_success').show();
 						document.getElementById("success-src-msg").innerHTML = "<strong>SUCCESS</strong>!! 'Source Dataset' connected, showing sample " + response.sampleData.length +" records below";
-						$('#sample_message').css("display", "inline-block");
+						$('#sample_message_first').css("display", "inline-block");
+						$('.alert-warning').hide();
 						srcAjax = null;
 					}
 				},
@@ -424,6 +426,7 @@
 							document.getElementById("exception-msg").innerHTML = response.exception;
 							$('#dist_progress').hide();
 							$('.alert-warning').show();
+							$('#sample_message_first').hide();
 							$('#dist_form_panel').show();
 							return;
 						}
@@ -474,6 +477,8 @@
 						$('#dist_success').show();
 						document.getElementById("success-dist-msg").innerHTML = "<strong>SUCCESS</strong>!! 'Destination Dataset' connected, showing sample " + response.sampleData.length +" records below";
 						$('#sample_message').css("display", "inline-block");
+						$('.alert-warning').hide();
+						$('#sample_message_first').hide();
 
 						distAjax = null;
 					}
@@ -810,13 +815,20 @@
 			});
 
 			$('#btn_src_reset, #btn_src_reset2').on('click', function (e) {
+			//alert("ghjhg");
 				resetSrcData();
 				$('#src_heading').html('');
+				$('#sample_message_first').hide();
+				$('#sample_message').hide();
+				$('.alert-warning').hide();
 			});
 
 			$('#btn_dist_reset, #btn_dist_reset2').on('click', function (e) {
 				resetDistData();
 				$('#dist_heading').html('');
+				$('.alert-warning').hide();
+				$('#sample_message').hide();
+				$('#sample_message_first').hide();
 			});
 
 			$("#btn_save_job").on('click', function (e) {
@@ -1171,14 +1183,20 @@
 						<strong>SUCCESS</strong> <span id="success-msg">This data is validated successfully.</span>
 					</div>
 
-					<div id="sample_message" class="alert alert-info alert-dismissible" role="alert" style="width: 100%; display:none;">
+					<div id="sample_message_first" class="alert alert-info alert-dismissible" role="alert" style="width: 100%; display:none;">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 						<span style="float: left;" id="src_success" style="display: none;">
 							<span id="success-src-msg"></span>
 						</span>
-						<span style="float: right;" id="dist_success" style="display: none;">
+					</div>
+					
+					<div id="sample_message" class="alert alert-info alert-dismissible" role="alert" style="width: 100%; display:none;">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<span style="float: left;" id="dist_success" style="display: none;">
 							<span id="success-dist-msg"></span>
 						</span>
 					</div>
@@ -1328,7 +1346,7 @@
 				</div>
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset:<div id="dist_heading" class="datapath-tiff" style="width:77%; margin-left: 5px"></div></div>
+						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset:<div id="dist_heading" class="datapath-tiff" style="width:77%"></div></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="dist_form_panel">
 							<div class="row">

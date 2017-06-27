@@ -208,6 +208,7 @@
 					var except = document.getElementById("exception-value");
 					except.innerHTML = response.exception;
 					$('.alert-warning').show();
+					setTimeout(function () {$('.alert-warning').fadeOut();}, 10000);
 					return;
 				} else if (response.differencessForKey == null) {
 					document.getElementById("danger-msg").innerHTML = "Json is not correct.";
@@ -304,9 +305,11 @@
 					setTable(newData, headerArray);
 					document.getElementById("success-msg").innerHTML = "Data differ successfully finished.";
 					$('.alert-success').show();
+					setTimeout(function () {$('.alert-success').fadeOut();}, 10000);
 				} else {
 					document.getElementById("success-msg").innerHTML = "No differ data detected.";
 					$('.alert-success').show();
+					setTimeout(function () {$('.alert-success').fadeOut();}, 10000);
 				}
 
 				$('.alert-success').show();
@@ -332,6 +335,10 @@
 				$('#more2').css("top", "25%");
 				$('#more2').css("left", "25%");
 				$('#more2').show();
+				$('body').css("height",$( window ).height());
+				$('body').css("overflow","hidden");
+				$('.modal-body').css("overflow-y","auto");
+				$('.modal-body').css("height","200");
 			}
 
 			function openAdvanced() {
@@ -1137,6 +1144,8 @@
 
 				$('#close2').on('click', function(e) {
 					$('#more2').hide();
+					$('body').css("height",$( window ).height());
+					$('body').css("overflow","inherit");
 				});
 
 				$('#advanced').on('click', function(e) {
