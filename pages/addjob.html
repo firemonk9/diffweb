@@ -113,6 +113,7 @@
 		div.tooltip-inner {
 		    max-width: 800px;
 		}
+		
 	</style>
 </head>
 	
@@ -338,6 +339,7 @@
 				dataType: "json",
 				data: {},
 				success: function (response) {
+				//alert(response.fileSource.datasetPath);
 					if (response.status == "RUNNING") {
 						setTimeout(function () {
 							getSrcSampleJobData();
@@ -348,10 +350,16 @@
 							document.getElementById("exception-msg").innerHTML = response.exception;
 							$('.alert-warning').show();
 							$('#src_progress').hide();
+							$('#sample_message').hide();
 							$('#src_form_panel').show();
 							return;
 						}
+						$('#src_format').html('('+response.fileSource.datasetFormat+')');
+						$('#src_format').css({ 					
+						"padding-left":"21%","margin-top" : "-2%"
+			 });
 						$('#src_heading').html(response.fileSource.datasetPath);
+						$('#src_heading').css({"width":"81% !important","margin-top" : "-12px","text-decoration":"overline"});
 						srcColumns = response.schema;
 						createSrcTableHeader();
 
@@ -390,7 +398,8 @@
 
 						$('#src_success').show();
 						document.getElementById("success-src-msg").innerHTML = "<strong>SUCCESS</strong>!! 'Source Dataset' connected, showing sample " + response.sampleData.length +" records below";
-						$('#sample_message').css("display", "inline-block");
+						$('#sample_message_first').css("display", "inline-block");
+						$('.alert-warning').hide();
 						srcAjax = null;
 					}
 				},
@@ -424,10 +433,16 @@
 							document.getElementById("exception-msg").innerHTML = response.exception;
 							$('#dist_progress').hide();
 							$('.alert-warning').show();
+							$('#sample_message_first').hide();
 							$('#dist_form_panel').show();
 							return;
 						}
+						$('#dist_format').html('('+response.fileSource.datasetFormat+')');
+						$('#dist_format').css({ 					
+						"padding-left":"21%","margin-top" : "-2%","width":"77%"
+			 });
 						$('#dist_heading').html(response.fileSource.datasetPath);
+						$('#dist_heading').css({"width":"73%","margin-top" : "-12px","text-decoration":"overline"});
 						distColumns = response.schema;
 						createDistTableHeader();
 						/*
@@ -474,6 +489,8 @@
 						$('#dist_success').show();
 						document.getElementById("success-dist-msg").innerHTML = "<strong>SUCCESS</strong>!! 'Destination Dataset' connected, showing sample " + response.sampleData.length +" records below";
 						$('#sample_message').css("display", "inline-block");
+						$('.alert-warning').hide();
+						$('#sample_message_first').hide();
 
 						distAjax = null;
 					}
@@ -692,6 +709,7 @@
 					success: function (response) {
 						srcJobId = response.jobIds[0];
 						getSrcSampleJobData();
+						$('#sample_message').hide();
 					},
 					error: function (response) {
 						console.log(response);
@@ -810,13 +828,20 @@
 			});
 
 			$('#btn_src_reset, #btn_src_reset2').on('click', function (e) {
+			//alert("ghjhg");
 				resetSrcData();
 				$('#src_heading').html('');
+				$('#sample_message_first').hide();
+				$('#sample_message').hide();
+				$('.alert-warning').hide();
 			});
 
 			$('#btn_dist_reset, #btn_dist_reset2').on('click', function (e) {
 				resetDistData();
 				$('#dist_heading').html('');
+				$('.alert-warning').hide();
+				$('#sample_message').hide();
+				$('#sample_message_first').hide();
 			});
 
 			$("#btn_save_job").on('click', function (e) {
@@ -1110,7 +1135,7 @@
 								<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 							</div>
 							<div class="modal-body">
-								<p><b>CSV :</b> When a dataset is CSV and there is no header, provide the column names as comma seperated in ‚ÄúColumn Names‚Äù field. Provide the Delimiter.</p>
+								<p><b>CSV :</b> When a dataset is CSV and there is no header, provide the column names as comma seperated in ìColumn Namesî field. Provide the Delimiter.</p>
 
 								<p><b>JSON :</b> The JSON file needs to be in JSONL format. The records cannot be like JSON-array. Each line should be a valid JSON value.</p>
 
@@ -1123,7 +1148,7 @@
 
 								<p><b>Parquet, Avro, ORC :</b> Enter the file path. In cluster mode.</p>
 
-								<p>On clicking ‚ÄúValidate‚Äù a small sample of 20 records are displayed in the table.</p>
+								<p>On clicking ìValidateî a small sample of 20 records are displayed in the table.</p>
 
 
 							</div>
@@ -1171,14 +1196,20 @@
 						<strong>SUCCESS</strong> <span id="success-msg">This data is validated successfully.</span>
 					</div>
 
-					<div id="sample_message" class="alert alert-info alert-dismissible" role="alert" style="width: 100%; display:none;">
+					<div id="sample_message_first" class="alert alert-info alert-dismissible" role="alert" style="width: 100%; display:none;">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 						<span style="float: left;" id="src_success" style="display: none;">
 							<span id="success-src-msg"></span>
 						</span>
-						<span style="float: right;" id="dist_success" style="display: none;">
+					</div>
+					
+					<div id="sample_message" class="alert alert-info alert-dismissible" role="alert" style="width: 100%; display:none;">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<span style="float: left;" id="dist_success" style="display: none;">
 							<span id="success-dist-msg"></span>
 						</span>
 					</div>
@@ -1202,7 +1233,8 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Source Dataset:<div id="src_heading" class="datapath-tiff" style="margin-left: 5px"></div></div>
+						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Source Dataset:<div id="src_format" class="datapath-tiff" style="margin-left: 5px"></div>
+						<div id="src_heading" class="datapath-tiff" style="margin-left: 5px"></div></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="src_form_panel">
 							<div class="row">
@@ -1328,7 +1360,9 @@
 				</div>
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset:<div id="dist_heading" class="datapath-tiff" style="width:77%; margin-left: 5px"></div></div>
+						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset:
+						<div id="dist_format" class="datapath-tiff"></div>
+						<div id="dist_heading" class="datapath-tiff"></div></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="dist_form_panel">
 							<div class="row">
@@ -1474,7 +1508,7 @@
 		</div>
 		<!-- /#page-wrapper -->
 		<footer>
-			<p class="copyright">¬© DiffTool, 2017</p>
+			<p class="copyright">© DiffTool, 2017</p>
 		</footer>
 	</div>
 	<!-- /#wrapper -->
@@ -1698,7 +1732,7 @@
 																	<tr>
 																		<td>Remove charecters after last decimal.</td>
 																		<td>
-																			if(value != null && value.indexOf(‚Äú.‚Äù)  > -1) value.substring(0,value.lastIndexOf(‚Äú.‚Äù)) else value
+																			if(value != null && value.indexOf(ì.î)  > -1) value.substring(0,value.lastIndexOf(ì.î)) else value
 																		</td>
 																	</tr>
 
@@ -2000,6 +2034,10 @@
     border-style: solid;
     border-color: #555 transparent transparent transparent;
 }
+
+.panel-heading {
+    padding: 22px 15px !important;
+	}
 
 	
 </style>

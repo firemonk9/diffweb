@@ -262,10 +262,12 @@
                     //$table.bootstrapTable('append', randomData());
                     document.getElementById("success-msg").innerHTML = "Successfully imported.";
                     $('.alert-success').show();
+					setTimeout(function () {$('.alert-success').fadeOut();}, 10000);
                     getJobs();
                 }
             });
         }
+		
 
         function submitJob(jobs, index) {
             var jsonTree = {};
@@ -335,9 +337,9 @@
 
             // Submit Jobs
             $('#btn_submit').on('click', function (e) {
-			//alert("vbn");
                 var jobs = $.map($table.bootstrapTable('getSelections'), function (row) {
                     return row;
+					
                 });
 
                 if (jobs.length <= 0) {
