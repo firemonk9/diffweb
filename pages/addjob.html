@@ -113,6 +113,7 @@
 		div.tooltip-inner {
 		    max-width: 800px;
 		}
+		
 	</style>
 </head>
 	
@@ -338,6 +339,7 @@
 				dataType: "json",
 				data: {},
 				success: function (response) {
+				//alert(response.fileSource.datasetPath);
 					if (response.status == "RUNNING") {
 						setTimeout(function () {
 							getSrcSampleJobData();
@@ -352,7 +354,12 @@
 							$('#src_form_panel').show();
 							return;
 						}
+						$('#src_format').html('('+response.fileSource.datasetFormat+')');
+						$('#src_format').css({ 					
+						"padding-left":"21%","margin-top" : "-2%"
+			 });
 						$('#src_heading').html(response.fileSource.datasetPath);
+						$('#src_heading').css({"width":"81% !important","margin-top" : "-12px","text-decoration":"overline"});
 						srcColumns = response.schema;
 						createSrcTableHeader();
 
@@ -430,7 +437,12 @@
 							$('#dist_form_panel').show();
 							return;
 						}
+						$('#dist_format').html('('+response.fileSource.datasetFormat+')');
+						$('#dist_format').css({ 					
+						"padding-left":"21%","margin-top" : "-2%","width":"77%"
+			 });
 						$('#dist_heading').html(response.fileSource.datasetPath);
+						$('#dist_heading').css({"width":"73%","margin-top" : "-12px","text-decoration":"overline"});
 						distColumns = response.schema;
 						createDistTableHeader();
 						/*
@@ -697,6 +709,7 @@
 					success: function (response) {
 						srcJobId = response.jobIds[0];
 						getSrcSampleJobData();
+						$('#sample_message').hide();
 					},
 					error: function (response) {
 						console.log(response);
@@ -1122,7 +1135,7 @@
 								<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 							</div>
 							<div class="modal-body">
-								<p><b>CSV :</b> When a dataset is CSV and there is no header, provide the column names as comma seperated in ‚ÄúColumn Names‚Äù field. Provide the Delimiter.</p>
+								<p><b>CSV :</b> When a dataset is CSV and there is no header, provide the column names as comma seperated in ìColumn Namesî field. Provide the Delimiter.</p>
 
 								<p><b>JSON :</b> The JSON file needs to be in JSONL format. The records cannot be like JSON-array. Each line should be a valid JSON value.</p>
 
@@ -1135,7 +1148,7 @@
 
 								<p><b>Parquet, Avro, ORC :</b> Enter the file path. In cluster mode.</p>
 
-								<p>On clicking ‚ÄúValidate‚Äù a small sample of 20 records are displayed in the table.</p>
+								<p>On clicking ìValidateî a small sample of 20 records are displayed in the table.</p>
 
 
 							</div>
@@ -1220,7 +1233,8 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Source Dataset:<div id="src_heading" class="datapath-tiff" style="margin-left: 5px"></div></div>
+						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Source Dataset:<div id="src_format" class="datapath-tiff" style="margin-left: 5px"></div>
+						<div id="src_heading" class="datapath-tiff" style="margin-left: 5px"></div></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="src_form_panel">
 							<div class="row">
@@ -1346,7 +1360,9 @@
 				</div>
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset:<div id="dist_heading" class="datapath-tiff" style="width:77%"></div></div>
+						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset:
+						<div id="dist_format" class="datapath-tiff"></div>
+						<div id="dist_heading" class="datapath-tiff"></div></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="dist_form_panel">
 							<div class="row">
@@ -1492,7 +1508,7 @@
 		</div>
 		<!-- /#page-wrapper -->
 		<footer>
-			<p class="copyright">¬© DiffTool, 2017</p>
+			<p class="copyright">© DiffTool, 2017</p>
 		</footer>
 	</div>
 	<!-- /#wrapper -->
@@ -1630,7 +1646,7 @@
 										<div class="panel-body">
 											<div class="col-md-12">
 												<div class="col-md-6">
-													<label>Source Dataset</label>
+													<!--<label>Source Dataset</label>-->
 													<div class="form-group row" style="margin-top: 15px;">
 														<label class="col-sm-3">Column</label>
 														<div class="col-sm-9">
@@ -1638,42 +1654,42 @@
 																<input type="text" class="form-control">
 															</div>
 														</div>
-														<label class="col-sm-3">Rule</label>
+														<!--<label class="col-sm-3">Rule</label>
 														<div class="col-sm-9">
 															<input type="text" class="form-control src_trans_rule">
-														</div>
+														</div>-->
 													</div>
-													<div class="form-group row" id="src_trans_next">
+													<!--<div class="form-group row" id="src_trans_next">
 														<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
 															<span class="glyphicon glyphicon-plus"></span>
 														</button>
 														<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
 															<span class="glyphicon glyphicon-minus"></span>
 														</button>
-													</div>
+													</div>-->
 												</div>
 												<div class="col-md-6">
-													<label>Destination Dataset</label>
+													<!--<label>Destination Dataset</label>-->
 													<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
-														<label class="col-sm-3">Column</label>
+														<!--<label class="col-sm-3">Column</label>-->
 														<div class="col-sm-9">
 															<div class="dist_trans_column">
-																<input type="text" class="form-control" value="">
+																<input type="hidden" class="form-control" value="">
 															</div>
 														</div>
-														<label class="col-sm-3">Rule</label>
+														<!--<label class="col-sm-3">Rule</label>
 														<div class="col-sm-9">
 															<input type="text" class="form-control dist_trans_rule">
-														</div>
+														</div>-->
 													</div>
-													<div class="form-group row" id="dist_trans_next">
+													<!--<div class="form-group row" id="dist_trans_next">
 														<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
 															<span class="glyphicon glyphicon-plus"></span>
 														</button>
 														<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
 															<span class="glyphicon glyphicon-minus"></span>
 														</button>
-													</div>
+													</div>-->
 												</div>
 											</div>
 											<div class="col-md-12">
@@ -1716,7 +1732,7 @@
 																	<tr>
 																		<td>Remove charecters after last decimal.</td>
 																		<td>
-																			if(value != null && value.indexOf(‚Äú.‚Äù)  > -1) value.substring(0,value.lastIndexOf(‚Äú.‚Äù)) else value
+																			if(value != null && value.indexOf(ì.î)  > -1) value.substring(0,value.lastIndexOf(ì.î)) else value
 																		</td>
 																	</tr>
 
@@ -2017,6 +2033,14 @@
     border-width: 5px;
     border-style: solid;
     border-color: #555 transparent transparent transparent;
+}
+
+.panel-heading {
+    padding: 22px 15px !important;
+	}
+	
+	div#dist_trans_first {
+    display: none !important;
 }
 
 	
