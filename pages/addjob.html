@@ -1712,57 +1712,56 @@
 															<div class="modal-header">
 																<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
 															</div>
-															<div class="modal-body">
-																<p>	<b>Transformations :</b> DiffTool provides ability to transform the columns before comparing. Transformation rule can be applied to one or more columns. Currently, only scala code is accepted to make a  transformation on a column. Below are some scenarios and sample code.</p>
-																<table class="table2" style="width:100%">
-																	<th>Example scenario</th>
-																	<th>Rule</th>
-
-																	<tr>
-																		<td>Convert to lower case</td>
-																		<td>
-																			if(value != null) value.toLowerCase() else value
-																		</td>
-																	</tr>
-																	<tr>
-																		<td>Convert to upper case</td>
-																		<td>
-																			if(value != null) value.toUpperCase() else value
-																		</td>
-																	</tr>
-																	<tr>
-																		<td>Trim a string (remove spaces)</td>
-																		<td>
-																			if(value != null) value.trim() else value
-																		</td>
-																	</tr>
-																	<tr>
-																		<td>Make a substring of at most 10 charecters</td>
-																		<td>
-																			if(value != null && value.length > 10) value.substring(10) else value
-																		</td>
-																	</tr>
-																	<tr>
-																		<td>Remove charecters after last decimal.</td>
-																		<td>
-																			if(value != null && value.indexOf(�.�)  > -1) value.substring(0,value.lastIndexOf(�.�)) else value
-																		</td>
-																	</tr>
-
-																</table>
-
-																<style>
-																	table.table2 tr {
-																		text-transform: none;
-																		}
-																	table.table2 th{border: 1px solid black;
-																	border-collapse: collapse;padding: 6px;}
-
-																	table.table2 td{border: 1px solid black;
-																	border-collapse: collapse;padding: 6px;}
-																</style>
-
-															</div>
+																																		<div class="modal-body">
+																		<p>	<b>Transformations</b> : DiffTool provides ability to transform the columns before comparing. Transformation rule can be applied to one or more columns. The transformations can be applied using SQL functions.</p>
+																		
+																		<table class="table2" style="width:100%">
+																			<th>Example scenario</th>
+																			<th>Rule</th>
+																			<tr>
+																				<td>Convert column “first_name” to lower case</td>
+																				<td>
+																					LOWER(first_name) as first_name
+																				</td>
+																			</tr>
+																			<tr>
+																				<td>Convert column “first_name” to lower case , increase column “age” by 1</td>
+																				<td>
+																					LOWER(first_name) as first_name, (age+1) as age
+																				</td>
+																			</tr>
+																			<tr>
+																				<td>Trim a string and upper case for column “organization”</td>
+																				<td>
+																					trim(upper(organization)) as organization
+																				</td>
+																			</tr>
+																			<tr>
+																				<td>Make a substring of at most 10 charecters for column “organization”</td>
+																				<td>
+																					substring(organization,0,10)  as organization
+																				</td>
+																			</tr>
+																			<tr>
+																				<td>Join columns “first_name” and “last_name” and populate column “name”
+Note : column “name” should already exist and be marked for comparision.</td>
+																				<td>
+																					concat(first_name | last_name) as name
+																				</td>
+																			</tr>
+																		</table>
+																		
+																		<style>
+																			table.table2 tr {
+																			text-transform: none;
+																			}
+																			table.table2 th{border: 1px solid black;
+																			border-collapse: collapse;padding: 6px;}
+																			
+																			table.table2 td{border: 1px solid black;
+																			border-collapse: collapse;padding: 6px;}
+																		</style>
+																	</div>
 
 
 														</div>
