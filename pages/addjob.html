@@ -113,7 +113,6 @@
 		div.tooltip-inner {
 		    max-width: 800px;
 		}
-		
 	</style>
 </head>
 	
@@ -300,6 +299,9 @@
 				return;
 
 			}
+			data.srcFile.sql= true;
+			data.distFile.sql= true;
+				
 			var jsonStr = makeInputJson(data.jobname, data.compareCommonColumnsOnly,
 					data.validateRowsCount, data.randomSample, data.matchBoth, true,
 					data.columnMapping, data.srcFile, data.distFile, data.compareKey);
@@ -339,7 +341,6 @@
 				dataType: "json",
 				data: {},
 				success: function (response) {
-				//alert(response.fileSource.datasetPath);
 					if (response.status == "RUNNING") {
 						setTimeout(function () {
 							getSrcSampleJobData();
@@ -350,16 +351,10 @@
 							document.getElementById("exception-msg").innerHTML = response.exception;
 							$('.alert-warning').show();
 							$('#src_progress').hide();
-							$('#sample_message').hide();
 							$('#src_form_panel').show();
 							return;
 						}
-						$('#src_format').html('('+response.fileSource.datasetFormat+')');
-						$('#src_format').css({ 					
-						"padding-left":"21%","margin-top" : "-2%"
-			 });
-						$('#src_heading').html(response.fileSource.datasetPath);
-						$('#src_heading').css({"width":"81% !important","margin-top" : "-12px","text-decoration":"overline"});
+						$('#src_heading').html('('+response.fileSource.datasetFormat+')'+ ' '+response.fileSource.datasetPath+'');
 						srcColumns = response.schema;
 						createSrcTableHeader();
 
@@ -398,7 +393,7 @@
 
 						$('#src_success').show();
 						document.getElementById("success-src-msg").innerHTML = "<strong>SUCCESS</strong>!! 'Source Dataset' connected, showing sample " + response.sampleData.length +" records below";
-						$('#sample_message_first').css("display", "inline-block");
+						$('#sample_message').css("display", "inline-block");
 						$('.alert-warning').hide();
 						srcAjax = null;
 					}
@@ -423,6 +418,7 @@
 				dataType: "json",
 				data: {},
 				success: function (response) {
+				//alert(response.exception);
 					if (response.status == "RUNNING") {
 						setTimeout(function () {
 							getDistSampleJobData();
@@ -430,19 +426,13 @@
 					} else {
 						console.log(response);
 						if (response.exception != null) {
-							document.getElementById("exception-msg").innerHTML = response.exception;
+							document.getElementById("exception-msg-dest").innerHTML = response.exception;
 							$('#dist_progress').hide();
-							$('.alert-warning').show();
-							$('#sample_message_first').hide();
+							$('.alert-warning-dest').show();
 							$('#dist_form_panel').show();
 							return;
 						}
-						$('#dist_format').html('('+response.fileSource.datasetFormat+')');
-						$('#dist_format').css({ 					
-						"padding-left":"21%","margin-top" : "-2%","width":"77%"
-			 });
-						$('#dist_heading').html(response.fileSource.datasetPath);
-						$('#dist_heading').css({"width":"73%","margin-top" : "-12px","text-decoration":"overline"});
+						$('#dist_heading').html('('+response.fileSource.datasetFormat+')'+ ' '+response.fileSource.datasetPath+'');
 						distColumns = response.schema;
 						createDistTableHeader();
 						/*
@@ -487,11 +477,12 @@
 						}
 
 						$('#dist_success').show();
+						
+						
 						document.getElementById("success-dist-msg").innerHTML = "<strong>SUCCESS</strong>!! 'Destination Dataset' connected, showing sample " + response.sampleData.length +" records below";
-						$('#sample_message').css("display", "inline-block");
-						$('.alert-warning').hide();
-						$('#sample_message_first').hide();
-
+						$('#sample_message_dest').css("display", "inline-block");
+						$('.alert-warning-dest').hide();
+						
 						distAjax = null;
 					}
 				},
@@ -709,7 +700,6 @@
 					success: function (response) {
 						srcJobId = response.jobIds[0];
 						getSrcSampleJobData();
-						$('#sample_message').hide();
 					},
 					error: function (response) {
 						console.log(response);
@@ -828,20 +818,16 @@
 			});
 
 			$('#btn_src_reset, #btn_src_reset2').on('click', function (e) {
-			//alert("ghjhg");
 				resetSrcData();
-				$('#src_heading').html('');
-				$('#sample_message_first').hide();
 				$('#sample_message').hide();
-				$('.alert-warning').hide();
+				$('#src_heading').html('');
 			});
 
 			$('#btn_dist_reset, #btn_dist_reset2').on('click', function (e) {
 				resetDistData();
+				sample_message_dest
+				$('#sample_message_dest').hide();
 				$('#dist_heading').html('');
-				$('.alert-warning').hide();
-				$('#sample_message').hide();
-				$('#sample_message_first').hide();
 			});
 
 			$("#btn_save_job").on('click', function (e) {
@@ -1174,7 +1160,7 @@
 
 			</div>
 			<div class="row">
-				<div class="col-lg-12">
+				<div class="col-lg-6">
 					<div class="alert alert-success alert-dismissible" role="alert" style="display:none;">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -1196,7 +1182,7 @@
 						<strong>SUCCESS</strong> <span id="success-msg">This data is validated successfully.</span>
 					</div>
 
-					<div id="sample_message_first" class="alert alert-info alert-dismissible" role="alert" style="width: 100%; display:none;">
+					<div id="sample_message" class="alert alert-info alert-dismissible" role="alert" style="width: 100%; display:none;">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -1204,8 +1190,38 @@
 							<span id="success-src-msg"></span>
 						</span>
 					</div>
-					
-					<div id="sample_message" class="alert alert-info alert-dismissible" role="alert" style="width: 100%; display:none;">
+
+					<div class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<strong>ERROR</strong> <span id="error-msg">Error occures while loading data.</span>
+					</div>
+				</div>
+				
+				<div class="col-lg-6" style="float:right">
+					<div class="alert alert-success alert-dismissible" role="alert" style="display:none;">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<strong>Success!</strong> <span id="saved_job">Saved job successfully.</span>
+					</div>
+
+					<div class="alert alert-warning-dest alert-dismissible" role="alert" style="display:none;">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<strong>EXCEPTION</strong> <span id="exception-msg-dest">Error occures while loading data.</span>
+					</div>
+
+					<div class="alert alert-info alert-dismissible" role="alert" style="display:none;">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<strong>SUCCESS</strong> <span id="success-msg">This data is validated successfully.</span>
+					</div>
+
+					<div id="sample_message_dest" class="alert alert-info alert-dismissible" role="alert" style="width: 100%; display:none;">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -1233,8 +1249,7 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Source Dataset:<div id="src_format" class="datapath-tiff" style="margin-left: 5px"></div>
-						<div id="src_heading" class="datapath-tiff" style="margin-left: 5px"></div></div>
+						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Source Dataset:<div id="src_heading" class="datapath-tiff" style="margin-left: 5px"></div></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="src_form_panel">
 							<div class="row">
@@ -1360,9 +1375,7 @@
 				</div>
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset:
-						<div id="dist_format" class="datapath-tiff"></div>
-						<div id="dist_heading" class="datapath-tiff"></div></div>
+						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset:<div id="dist_heading" class="datapath-tiff" style="width:77%; margin-left: 5px"></div></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="dist_form_panel">
 							<div class="row">
@@ -1646,18 +1659,18 @@
 										<div class="panel-body">
 											<div class="col-md-12">
 												<div class="col-md-6">
-													<!--<label>Source Dataset</label>-->
+													<label>Source Dataset</label>
 													<div class="form-group row" style="margin-top: 15px;">
-														<label class="col-sm-3">Column</label>
-														<div class="col-sm-9">
+														<!--<label class="col-sm-3">Column</label>-->
+														<div class="col-sm-9 src_dataset">
 															<div class="src_trans_column">
 																<input type="text" class="form-control">
 															</div>
 														</div>
-														<!--<label class="col-sm-3">Rule</label>
+														<label class="col-sm-3">SQL</label>
 														<div class="col-sm-9">
-															<input type="text" class="form-control src_trans_rule">
-														</div>-->
+															<input type="text" class="form-control src_trans_rule" placeholder="Enter transformation SQL">
+														</div>
 													</div>
 													<!--<div class="form-group row" id="src_trans_next">
 														<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
@@ -1669,18 +1682,18 @@
 													</div>-->
 												</div>
 												<div class="col-md-6">
-													<!--<label>Destination Dataset</label>-->
+													<label>Destination Dataset</label>
 													<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
 														<!--<label class="col-sm-3">Column</label>-->
-														<div class="col-sm-9">
+														<div class="col-sm-9 desti_dataset">
 															<div class="dist_trans_column">
-																<input type="hidden" class="form-control" value="">
+																<input type="text" class="form-control" value="">
 															</div>
 														</div>
-														<!--<label class="col-sm-3">Rule</label>
+														<label class="col-sm-3">SQL</label>
 														<div class="col-sm-9">
-															<input type="text" class="form-control dist_trans_rule">
-														</div>-->
+															<input type="text" class="form-control dist_trans_rule" placeholder="Enter transformation SQL">
+														</div>
 													</div>
 													<!--<div class="form-group row" id="dist_trans_next">
 														<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
@@ -2034,14 +2047,20 @@
     border-style: solid;
     border-color: #555 transparent transparent transparent;
 }
+.alert-warning-dest {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
 
-.panel-heading {
-    padding: 22px 15px !important;
-	}
-	
-	div#dist_trans_first {
+.col-sm-9.desti_dataset{
     display: none !important;
 }
+.col-sm-9.src_dataset{
+    display: none !important;
+}
+
+
 
 	
 </style>

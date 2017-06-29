@@ -435,11 +435,21 @@
 					return;
 					}  
 				*/
+
+				//data.sql= true;
+				data.srcFile.sql= true;
+				data.distFile.sql= true;
 				
 				//data.jobname = info.inputData.name;
 				//data.compareCommonColumnsOnly = info.inputData.compareCommonColumnsOnly;
 				//data.validateRowsCount = info.inputData.validateRowsCount;
 				//data.randomSample = info.inputData.randomSample;
+				
+				//alert(data.jobname);
+				//alert(data.compareCommonColumnsOnly);
+				//alert(data.validateRowsCount);
+				//alert(data.randomSample);
+				
 				
 				//data.srcFile.filterSql = info.inputData.srcFile.filterSql;
 				data.srcFile.datasetPath = info.inputData.srcFile.datasetPath;
@@ -464,9 +474,17 @@
 						data.distFile.columns = info.inputData.distFile.columns;
 					}
 				}
+				
+				//alert(data.sql);
+				//console.log(data.distFile);
+				
 				var jsonStr = makeInputJson(data.jobname,data.compareCommonColumnsOnly,
                 data.validateRowsCount,data.randomSample,data.matchBoth,true,
                 data.columnMapping,data.srcFile,data.distFile,data.compareKey);
+				
+				//console.log(jsonStr);
+				//alert(jsonStr);
+				
 				$.ajax({
 					type: "POST",
 					url: "/job",
@@ -1659,50 +1677,50 @@
 														<div class="col-md-6">
 															<label>Source Dataset</label>
 															<div class="form-group row" style="margin-top: 15px;">
-																<label class="col-sm-3">Column</label>
-																<div class="col-sm-9">
+																<!--<label class="col-sm-3">Column</label>-->
+																<div class="col-sm-9 src_dataset">
 																	<div class="src_trans_column">
-																		<input type="text" class="form-control">
+																		<input type="text" class="form-control ">
 																	</div>
 																</div>
-																<label class="col-sm-3">Rule</label>
+																<label class="col-sm-3">SQL</label>
 																<div class="col-sm-9">
 																	<input type="text" class="form-control src_trans_rule">
 																</div>
 															</div>
-															<div class="form-group row" id="src_trans_next">
+															<!--<div class="form-group row" id="src_trans_next">
 																<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
 																	<span class="glyphicon glyphicon-plus"></span>
 																</button>
 																<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
 																	<span class="glyphicon glyphicon-minus"></span>
 																</button>
-															</div>
+															</div>-->
 															
 														</div>
 														
 														<div class="col-md-6">
 															<label>Destination Dataset</label>
 															<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
-																<label class="col-sm-3">Column</label>
-																<div class="col-sm-9">
+																<!--<label class="col-sm-3">Column</label>-->
+																<div class="col-sm-9 desti_dataset">
 																	<div class="dist_trans_column">
 																		<input type="text" class="form-control" value="">
 																	</div>
 																</div>
-																<label class="col-sm-3">Rule</label>
+																<label class="col-sm-3">SQL</label>
 																<div class="col-sm-9">
 																	<input type="text" class="form-control dist_trans_rule">
 																</div>
 															</div>
-															<div class="form-group row" id="dist_trans_next">
+															<!--<div class="form-group row" id="dist_trans_next">
 																<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
 																	<span class="glyphicon glyphicon-plus"></span>
 																</button>
 																<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
 																	<span class="glyphicon glyphicon-minus"></span>
 																</button>
-															</div>
+															</div>-->
 														</div>
 													</div>
 													<div class="col-md-12">
@@ -1962,7 +1980,12 @@
 		}
 		
 		
-		
+		.col-sm-9.desti_dataset{
+			display: none !important;
+		}
+		.col-sm-9.src_dataset{
+			display: none !important;
+		}
 	</style>
 	
 </html>
