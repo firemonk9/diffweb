@@ -962,6 +962,7 @@ function getInputData(compareCommon) {
     var transformations = new Array;
     // if ($('.src_trans_column').tagsinput('items').length > 0) {
     //     $('.src_trans_column').each(function(index){
+    if($('.src_trans_rule')[0].value ) {
             var transform = {};
             transform["base64"] = true;
             var column = new Array;
@@ -971,10 +972,10 @@ function getInputData(compareCommon) {
 
             transform["sql"]=true;
             transform["column"] = ["c"];
-            transform["rule"] = Base64.encode($('.src_trans_rule')[index].value);
+            transform["rule"] = Base64.encode($('.src_trans_rule')[0].value);
             transformations.push(transform);
     //     });
-    // }
+     }
     srcFile["transformations"] = transformations;
     result["srcFile"] = srcFile;
     /***********************************End src Input********************************/
@@ -1019,18 +1020,20 @@ function getInputData(compareCommon) {
     transformations = [];
     // if ($('.dist_trans_column').tagsinput('items').length > 0) {
     //     $('.dist_trans_column').each(function(index){
-            var transform = {};
-            transform["base64"] = true;
-            var column = new Array;
-            for (var i = 0; i < $(this).tagsinput('items').length; i++) {
-                column.push($(this).tagsinput('items')[i].name);
-            }
-            transform["sql"]=true;
-            transform["column"] =  ["c"];
-            transform["rule"] = Base64.encode($('.dist_trans_rule')[index].value);
-            transformations.push(transform);
-    //     });
-    // }
+    if($('.dist_trans_rule')[0].value ) {
+        var transform = {};
+        transform["base64"] = true;
+        var column = new Array;
+        //   for (var i = 0; i < $(this).tagsinput('items').length; i++) {
+        //  column.push($(this).tagsinput('items')[0].name);
+        //  }
+        transform["sql"] = true;
+        transform["column"] = ["c"];
+        transform["rule"] = Base64.encode($('.dist_trans_rule')[0].value);
+        transformations.push(transform);
+        //     });
+        // }
+    }
     distFile["transformations"] = transformations;
     result["distFile"] = distFile;
     /*******************************End dist Input*********************************/
