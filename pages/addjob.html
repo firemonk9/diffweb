@@ -352,6 +352,8 @@
 							$('.alert-warning').show();
 							$('#src_progress').hide();
 							$('#src_form_panel').show();
+							$('#src_error-msg').hide();
+							$('.src_alert-danger').hide();
 							return;
 						}
 						$('#src_heading').html('('+response.fileSource.datasetFormat+')'+ ' '+response.fileSource.datasetPath+'');
@@ -395,6 +397,8 @@
 						document.getElementById("success-src-msg").innerHTML = "<strong>SUCCESS</strong>!! 'Source Dataset' connected, showing sample " + response.sampleData.length +" records below";
 						$('#sample_message').css("display", "inline-block");
 						$('.alert-warning').hide();
+						$('#src_error-msg').hide();
+						$('.src_alert-danger').hide();
 						srcAjax = null;
 					}
 				},
@@ -430,6 +434,8 @@
 							$('#dist_progress').hide();
 							$('.alert-warning-dest').show();
 							$('#dist_form_panel').show();
+							$('#dest_error-msg').hide();
+							$('.dest_alert-danger').hide();
 							return;
 						}
 						$('#dist_heading').html('('+response.fileSource.datasetFormat+')'+ ' '+response.fileSource.datasetPath+'');
@@ -482,7 +488,8 @@
 						document.getElementById("success-dist-msg").innerHTML = "<strong>SUCCESS</strong>!! 'Destination Dataset' connected, showing sample " + response.sampleData.length +" records below";
 						$('#sample_message_dest').css("display", "inline-block");
 						$('.alert-warning-dest').hide();
-						
+						$('#dest_error-msg').hide();
+						$('.dest_alert-danger').hide();
 						distAjax = null;
 					}
 				},
@@ -703,8 +710,10 @@
 					},
 					error: function (response) {
 						console.log(response);
-						document.getElementById("error-msg").innerHTML = "Data is not correct.";
-						$('.alert-danger').show();
+						$('#src_error-msg').show();
+						document.getElementById("src_error-msg").innerHTML = "Data is not correct.";
+						$('.alert-warning').hide();
+						$('.src_alert-danger').show();
 						srcAjax = null;
 						$('#src_form_panel').show();
 						$('#src_progress').hide();
@@ -795,8 +804,10 @@
 					},
 					error: function (response) {
 						console.log(response);
-						document.getElementById("error-msg").innerHTML = "Data is not correct.";
-						$('.alert-danger').show();
+						$('#dest_error-msg').show();
+						document.getElementById("dest_error-msg").innerHTML = "Data is not correct.";
+						$('.dest_alert-danger').show();
+						$('.alert-warning-dest').hide();
 						distAjax = null;
 						$('#dist_form_panel').show();
 						$('#dist_progress').hide();
@@ -1160,6 +1171,7 @@
 
 			</div>
 			<div class="row">
+			<!--start leftside message-->
 				<div class="col-lg-6">
 					<div class="alert alert-success alert-dismissible" role="alert" style="display:none;">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -1190,15 +1202,23 @@
 							<span id="success-src-msg"></span>
 						</span>
 					</div>
-
-					<div class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+				
+					<div class="alert alert-danger alert-dismissible src_alert-danger" role="alert" style="display:none;">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<strong>ERROR</strong> <span id="error-msg">Error occures while loading data.</span>
+						<strong>ERROR</strong> <span id="src_error-msg">Error occures while loading data.</span>
+					</div>
+					
+					<div class="alert alert-danger alert-dismissible src_alert-danger" role="alert" style="display:none;">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					<strong>ERROR</strong> <span id="src_error-msg">Error occures while loading data.</span>
 					</div>
 				</div>
 				
+<!--start rightside message-->				
 				<div class="col-lg-6" style="float:right">
 					<div class="alert alert-success alert-dismissible" role="alert" style="display:none;">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -1230,11 +1250,18 @@
 						</span>
 					</div>
 
-					<div class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+					<div class="alert alert-danger alert-dismissible dest_alert-danger" role="alert" style="display:none;">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<strong>ERROR</strong> <span id="error-msg">Error occures while loading data.</span>
+						<strong>ERROR</strong> <span id="dest_error-msg">Error occures while loading dataaa.</span>
+					</div>
+					
+					<div class="alert alert-danger alert-dismissible dest_alert-danger" role="alert" style="display:none;">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<strong>ERROR</strong> <span id="dest_error-msg">Errors occures while loading data.</span>
 					</div>
 				</div>
 			</div>
@@ -1777,6 +1804,53 @@ Note : column “name” should already exist and be marked for comparision.</td
 									</div>
 								</div>
 							</div>
+							
+							<!--changes-->
+								<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
+								<div class="panel-heading" data-toggle="collapse" data-parent="#accordion"data-target="#cluster">
+										<h3 class="panel-title accordion-toggle">Cluster Resources</h3>
+									</div>
+									<div id="cluster" class="panel-collapse collapse">
+										<div class="panel-body">
+									
+									 <div class="col-md-12" style="margin-bottom: 25px;">
+												<div class="form-group">
+													<label class="col-sm-4">Number of Executors</label>
+													<div class="col-sm-8">
+														<input type="number" class="form-control" id="rule_randomsample" min="0">
+													</div>
+												</div>
+											</div><br><br>
+											
+											<div class="col-md-12">
+												<div class="form-group">
+													<label class="col-sm-4">Executor Memory</label>
+													<div class="col-sm-8">
+														<input type="text" class="form-control" id="dist_filter_sql">
+													</div>
+													<br><br>
+												</div>
+											</div>
+											
+											<div class="col-md-12" style="margin-bottom: 25px;">
+												<div class="form-group">
+													<label class="col-sm-4">Number of cores per executor</label>
+													<div class="col-sm-8">
+														<input type="number" class="form-control" id="rule_randomsample" min="0">
+													</div>
+												</div>
+											</div>
+									
+									
+										</div>
+									
+									</div>
+								</div>
+								
+									
+											
+								
+								<!--end changes-->
 							<div class="panel-body">
 								<div class="col-md-12">
 									<div class="modal fade" id="what3" role="dialog">
