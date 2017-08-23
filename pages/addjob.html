@@ -654,7 +654,7 @@
 						params["useOtherSchema"] = false;
 					} else {
 						params["useOtherSchema"] = true;
-						params["columns"] = $('#src_file_schema').val().split(params["datasetDelimiter"]);
+						params["columns"] = $('#src_file_schema').val().split(',');
 					}
 				} else if (format == "JDBC") {
 					if ($("#src_url").val() == '') {
