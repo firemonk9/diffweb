@@ -942,7 +942,7 @@ function getInputData(compareCommon) {
             srcFile["useOtherSchema"] = true;
         else {
             srcFile["useOtherSchema"] = false;
-            srcFile["columns"] = $('#src_file_schema').val().split(srcFile["datasetDelimiter"]);
+            srcFile["columns"] = $('#src_file_schema').val().split(',');
         }
     } else if (srcFile["datasetFormat"] == "JDBC") {
         /*
@@ -1000,7 +1000,7 @@ function getInputData(compareCommon) {
             distFile["useOtherSchema"] = true;
         else {
             distFile["useOtherSchema"] = false;
-            distFile["columns"] = $('#dist_file_schema').val().split(distFile["datasetDelimiter"]);
+            distFile["columns"] = $('#dist_file_schema').val().split(',');
         }
     } else if (distFile["datasetFormat"] == "JDBC") {
         /*
