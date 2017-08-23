@@ -748,7 +748,7 @@
 						params["useOtherSchema"] = false;
 					} else {
 						params["useOtherSchema"] = true;
-						params["columns"] = $('#dist_file_schema').val().split(params["datasetDelimiter"]);
+						params["columns"] = $('#dist_file_schema').val().split(',');
 					}
 				} else if (format == "JDBC") {
 					if ($("#dist_url").val() == '') {
