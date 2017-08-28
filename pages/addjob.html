@@ -356,7 +356,7 @@
 							$('.src_alert-danger').hide();
 							return;
 						}
-						$('#src_heading').html('('+response.fileSource.datasetFormat+')'+ ' '+response.fileSource.datasetPath+'');
+						$('#src_heading').html('<p>'+response.fileSource.datasetFormat+', '+ ' '+response.fileSource.datasetPath+'</p>');
 						srcColumns = response.schema;
 						createSrcTableHeader();
 
@@ -438,7 +438,7 @@
 							$('.dest_alert-danger').hide();
 							return;
 						}
-						$('#dist_heading').html('('+response.fileSource.datasetFormat+')'+ ' '+response.fileSource.datasetPath+'');
+						$('#dist_heading').html('<p>'+response.fileSource.datasetFormat+', '+ ' '+response.fileSource.datasetPath+'</p>');
 						distColumns = response.schema;
 						createDistTableHeader();
 						/*
@@ -1551,7 +1551,7 @@
 		</div>
 		<!-- /#page-wrapper -->
 		<footer>
-			<p class="copyright">� DiffTool, 2017</p>
+			<p class="copyright">© DiffTool, 2017</p>
 		</footer>
 	</div>
 	<!-- /#wrapper -->
