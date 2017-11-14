@@ -21,7 +21,7 @@ gulp.task('less', function() {
     return gulp.src('less/sb-admin-2.less')
         .pipe(less())
         .pipe(header(banner, { pkg: pkg }))
-        .pipe(gulp.dest('dist/css'))
+        .pipe(gulp.dest('dest/css'))
         .pipe(browserSync.reload({
             stream: true
         }))
@@ -29,20 +29,20 @@ gulp.task('less', function() {
 
 // Minify compiled CSS
 gulp.task('minify-css', ['less'], function() {
-    return gulp.src('dist/css/sb-admin-2.css')
+    return gulp.src('dest/css/sb-admin-2.css')
         .pipe(cleanCSS({ compatibility: 'ie8' }))
         .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('dist/css'))
+        .pipe(gulp.dest('dest/css'))
         .pipe(browserSync.reload({
             stream: true
         }))
 });
 
-// Copy JS to dist
+// Copy JS to dest
 gulp.task('js', function() {
     return gulp.src(['js/sb-admin-2.js'])
         .pipe(header(banner, { pkg: pkg }))
-        .pipe(gulp.dest('dist/js'))
+        .pipe(gulp.dest('dest/js'))
         .pipe(browserSync.reload({
             stream: true
         }))
@@ -54,7 +54,7 @@ gulp.task('minify-js', ['js'], function() {
         .pipe(uglify())
         .pipe(header(banner, { pkg: pkg }))
         .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('dist/js'))
+        .pipe(gulp.dest('dest/js'))
         .pipe(browserSync.reload({
             stream: true
         }))
@@ -62,7 +62,7 @@ gulp.task('minify-js', ['js'], function() {
 
 // Copy vendor libraries from /bower_components into /vendor
 gulp.task('copy', function() {
-    gulp.src(['bower_components/bootstrap/dist/**/*', '!**/npm.js', '!**/bootstrap-theme.*', '!**/*.map'])
+    gulp.src(['bower_components/bootstrap/dest/**/*', '!**/npm.js', '!**/bootstrap-theme.*', '!**/*.map'])
         .pipe(gulp.dest('vendor/bootstrap'))
 
     gulp.src(['bower_components/bootstrap-social/*.css', 'bower_components/bootstrap-social/*.less', 'bower_components/bootstrap-social/*.scss'])
@@ -86,10 +86,10 @@ gulp.task('copy', function() {
     gulp.src(['bower_components/font-awesome/**/*', '!bower_components/font-awesome/*.json', '!bower_components/font-awesome/.*'])
         .pipe(gulp.dest('vendor/font-awesome'))
 
-    gulp.src(['bower_components/jquery/dist/jquery.js', 'bower_components/jquery/dist/jquery.min.js'])
+    gulp.src(['bower_components/jquery/dest/jquery.js', 'bower_components/jquery/dest/jquery.min.js'])
         .pipe(gulp.dest('vendor/jquery'))
 
-    gulp.src(['bower_components/metisMenu/dist/*'])
+    gulp.src(['bower_components/metisMenu/dest/*'])
         .pipe(gulp.dest('vendor/metisMenu'))
 
     gulp.src(['bower_components/morrisjs/*.js', 'bower_components/morrisjs/*.css', '!bower_components/morrisjs/Gruntfile.js'])
@@ -115,9 +115,9 @@ gulp.task('browserSync', function() {
 // Dev task with browserSync
 gulp.task('dev', ['browserSync', 'less', 'minify-css', 'js', 'minify-js'], function() {
     gulp.watch('less/*.less', ['less']);
-    gulp.watch('dist/css/*.css', ['minify-css']);
+    gulp.watch('dest/css/*.css', ['minify-css']);
     gulp.watch('js/*.js', ['minify-js']);
     // Reloads the browser whenever HTML or JS files change
     gulp.watch('pages/*.html', browserSync.reload);
-    gulp.watch('dist/js/*.js', browserSync.reload);
+    gulp.watch('dest/js/*.js', browserSync.reload);
 });

@@ -70,8 +70,8 @@
                     ]
                 }
             ],
-            "dist": [],
-            "distRecordsCount": 0,
+            "dest": [],
+            "destRecordsCount": 0,
             "key": [
                 {
                     "col": "first_name",
@@ -95,7 +95,7 @@
             "computedUnmatchPair": [
                 {
                     "badCols": [],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -159,10 +159,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Rozella \t , last_name:Ostrosky \t , phone1:805-832-6163 \t , city:Camarillo \t , zip:93012 \t , company_name:Parkway Company \t , email:rozella.ostrosky@ostrosky.com \t , state:CA \t , county:Ventura \t , web:http://www.parkwaycompany.com \t , address:17 Morena Blvd \t , phone2:805-609-1531 \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "first_name",
@@ -313,10 +313,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Cammy \t , last_name:Albares \t , phone1:956-537-6195 \t , city:Laredo \t , zip:78045 \t , company_name:Rousseaux, Michael Esq \t , email:calbares@gmail.com \t , state:TX \t , county:Webb \t , web:http://www.rousseauxmichaelesq.com \t , address:56 E Morehead St \t , phone2:956-841-7216 \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "first_name",
@@ -342,7 +342,7 @@
             "computedUnmatchPair": [
                 {
                     "badCols": [],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -406,10 +406,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Minna \t , last_name:Amigon \t , phone1:215-874-1229 \t , city:Kulpsvilleqwe \t , zip:19443 \t , company_name:Dorl, James J Esq \t , email:minna_amigon@yahoo.com \t , state:PA \t , county:Montgomer12y \t , web:http://www.dorljamesjesq.com \t , address:2371 Jerrold Ave \t , phone2:215-422-8694 \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "first_name",
@@ -431,7 +431,7 @@
             "computedUnmatchPair": [
                 {
                     "badCols": [],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -495,10 +495,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Solange \t , last_name:Shinko \t , phone1:504-979-9175 \t , city:Metairie \t , zip:70002 \t , company_name:Mosocco, Ronald A \t , email:solange@shinko.com \t , state:LA \t , county:Jefferson \t , web:http://www.mosoccoronalda.com \t , address:426 Wolf St \t , phone2:504-265-8174 \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "first_name",
@@ -526,7 +526,7 @@
                         "city",
                         "zip"
                     ],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -652,10 +652,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Mitsue \t , last_name:Tollner \t , phone1:773-573-6914 \t , city:Chicago \t , zip:60632 \t , company_name:Morlong Associates \t , email:mitsue_tollner@yahoo.com \t , state:IL \t , county:Cook \t , web:http://www.morlongassociates.com \t , address:7 Eads St \t , phone2:773-924-8565 \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "first_name",
@@ -687,7 +687,7 @@
                         "email",
                         "state"
                     ],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -813,10 +813,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Gladys \t , last_name:Rim \t , phone1:414-661-9598 \t , city:Milwaukee \t , zip:532017 \t , company_name:T M Byxbee Company Pc \t , email:gladys.rim@rim.org_1 \t , state:WZ \t , county:Milwaukee \t , web:http://www.tmbyxbeecompanypc.com \t , address:322 New Horizon Blvd \t , phone2:414-377-2880 \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "first_name",
@@ -904,10 +904,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Leota \t , last_name:Dilliard \t , phone1:408-752-3500 \t , city:San Jose \t , zip:95111 \t , company_name:Commercial Press \t , email:leota@hotmail.com \t , state:CA \t , county:Santa Clara \t , web:http://www.commercialpress.com \t , address:7 W Jackson Blvd \t , phone2:408-813-1105 \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "first_name",
@@ -938,7 +938,7 @@
                         "zip",
                         "state"
                     ],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -1064,10 +1064,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Fletcher \t , last_name:Flosi \t , phone1:815-828-2147 \t , city:Rockford \t , zip:61109 \t , company_name:Post Box Services Plus \t , email:fletcher.flosi@yahoo.com \t , state:IL \t , county:Winnebago \t , web:http://www.postboxservicesplus.com \t , address:394 Manchester Blvd \t , phone2:815-426-5657 \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "first_name",
@@ -1097,7 +1097,7 @@
                         "city",
                         "address"
                     ],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -1223,10 +1223,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Lenna \t , last_name:Paprocki \t , phone1:907-385-4412 \t , city:Anchorage \t , zip:99501 \t , company_name:Feltz Printing Service \t , email:lpaprocki@hotmail.com \t , state:AK \t , county:Anchorage \t , web:http://www.feltzprintingservice.com \t , address:639 Main St \t , phone2:907-921-2010 \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "first_name",
@@ -1250,7 +1250,7 @@
             "computedUnmatchPair": [
                 {
                     "badCols": [],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -1314,10 +1314,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Yuki \t , last_name:Whobrey \t , phone1:313-288-7937 \t , city:Taylor \t , zip:48180 \t , company_name:Farmers Insurance Group \t , email:yuki_whobrey@aol.com \t , state:MI \t , county:Wayne \t , web:http://www.farmersinsurancegroup.com \t , address:1 State Route 27 \t , phone2:313-341-4470 \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "first_name",
@@ -1339,7 +1339,7 @@
             "computedUnmatchPair": [
                 {
                     "badCols": [],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -1403,10 +1403,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Jose \t , last_name:Stockham \t , phone1:212-675-8570 \t , city:New York \t , zip:10011 \t , company_name:Tri State Refueler Co \t , email:jose@yahoo.com \t , state:NY \t , county:New York \t , web:http://www.tristaterefuelerco.com \t , address:128 Bransten Rd \t , phone2:212-569-4233 \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "first_name",
@@ -1428,7 +1428,7 @@
             "computedUnmatchPair": [
                 {
                     "badCols": [],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -1492,10 +1492,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Abel \t , last_name:Maclead \t , phone1:631-335-3414 \t , city:Middle Island \t , zip:11953 \t , company_name:Rangoni Of Florence \t , email:amaclead@gmail.com \t , state:NY \t , county:Suffolk \t , web:http://www.rangoniofflorence.com \t , address:37275 St  Rt 17m M \t , phone2:631-677-3675 \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "first_name",
@@ -1523,7 +1523,7 @@
                         "city",
                         "county"
                     ],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -1653,7 +1653,7 @@
                         "city",
                         "county"
                     ],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -1783,7 +1783,7 @@
                         "city",
                         "county"
                     ],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "first_name",
                             "colType": "string",
@@ -1909,12 +1909,12 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(first_name:Kris \t , last_name:Marrier \t , phone1:410-655-8723 \t , city:Baltimore12312 \t , zip:21224 \t , company_name:King, Christopher A Esq \t , email:kris@gmail.com \t , state:MD \t , county:Baltimore City1213 \t , web:http://www.kingchristopheraesq.com \t , address:228 Runamuck Pl #2808 \t , phone2:410-804-4694 \t )\n",
                 "Vector(first_name:Kris \t , last_name:Marrier \t , phone1:410-655-8723 \t , city:Baltimore123 \t , zip:1221224 \t , company_name:King, Christopher A Esq \t , email:kris@gmail.com12 \t , state:MD \t , county:Baltimore City123 \t , web:http://www.kingchristopheraesq.com \t , address:228 Runamuck Pl #2808 \t , phone2:410-804-4694 \t )\n",
                 "Vector(first_name:Kris \t , last_name:Marrier \t , phone1:410-655-8723 \t , city:Baltimore123 \t , zip:21224 \t , company_name:King, Christopher A Esq12 \t , email:kris@gmail.com \t , state:MD \t , county:Baltimore City123 \t , web:http://www.kingchristopheraesq.com \t , address:228 Runamuck Pl #2808 \t , phone2:410-804-4694 \t )\n"
             ],
-            "distRecordsCount": 3,
+            "destRecordsCount": 3,
             "key": [
                 {
                     "col": "first_name",
@@ -2004,8 +2004,8 @@
                     ]
                 }
             ],
-            "dist": [],
-            "distRecordsCount": 0,
+            "dest": [],
+            "destRecordsCount": 0,
             "key": [
                 {
                     "col": "first_name",
@@ -2025,12 +2025,12 @@
             "totalRecordsMatched": 0
         }
     ],
-    "distPath": "/data/input/us-500.csv",
-    "distRowCount": 38,
+    "destPath": "/data/input/us-500.csv",
+    "destRowCount": 38,
     "inputData": {
         "compareColumns": false,
         "compareCommonColumnsOnly": false,
-        "distFile": {
+        "destFile": {
             "excludeColmns": [],
             "header": true,
             "srcDelimiter": ",",
@@ -2077,14 +2077,14 @@
             "zip####email####state": 1,
             "zip####state": 1
         },
-        "distDuplicateRecords": -1,
-        "distKeyCount": 30,
-        "distRecordsCount": 38,
+        "destDuplicateRecords": -1,
+        "destKeyCount": 30,
+        "destRecordsCount": 38,
         "srcDuplicateRecords": -1,
         "srcKeyCount": 30,
         "srcRecordsCount": 37,
-        "totalDistRecordsMatching": 25,
-        "totalDistRecordsNotMatching": 13,
+        "totalDestRecordsMatching": 25,
+        "totalDestRecordsNotMatching": 13,
         "totalSrcRecordsMatching": 25,
         "totalSrcRecordsNotMatching": 12
     }

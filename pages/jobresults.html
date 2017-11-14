@@ -13,10 +13,10 @@
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 
-		<link rel="stylesheet" href="../dist/css/sb-admin-2.css">
-		<link rel="stylesheet" href="../dist/css/bootstrap-tagsinput.css">
-		<link rel="stylesheet" href="../dist/css/custom.css">
-		<link rel="stylesheet" href="../dist/css/sweetalert.css">
+		<link rel="stylesheet" href="../dest/css/sb-admin-2.css">
+		<link rel="stylesheet" href="../dest/css/bootstrap-tagsinput.css">
+		<link rel="stylesheet" href="../dest/css/custom.css">
+		<link rel="stylesheet" href="../dest/css/sweetalert.css">
 		<link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -28,18 +28,18 @@
 		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
-		<script src="../dist/js/bootstrap-tagsinput.min.js"></script>
-		<script src="../dist/js/bootstrap-tagsinput-angular.min.js"></script>
+		<script src="../dest/js/bootstrap-tagsinput.min.js"></script>
+		<script src="../dest/js/bootstrap-tagsinput-angular.min.js"></script>
 		
 		<!-- Select JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 		
-		<script src="../dist/js/bootstrap-table-export.js"></script>
+		<script src="../dest/js/bootstrap-table-export.js"></script>
 		<script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 
 		<script src="https://code.highcharts.com/highcharts.js"></script>
-		<script src="../dist/js/sweetalert-dev.js"></script>
-		<script src="../dist/js/app.js"></script>
+		<script src="../dest/js/sweetalert-dev.js"></script>
+		<script src="../dest/js/app.js"></script>
 
 		<script>
 			$(document).ready(function(){
@@ -116,7 +116,7 @@
 			left: 50%;
 			margin-left: -50px;
 			margin-top: -50px;
-			background: url('../dist/img/loading.gif');
+			background: url('../dest/img/loading.gif');
 			background-size: 100%;
 			}
 			
@@ -151,7 +151,7 @@
 			var jobId = "";
 			var edit = "";
 			
-			var srcRecordCnt = 0, distRecordCnt = 0;
+			var srcRecordCnt = 0, destRecordCnt = 0;
 			
 			var info;
 			
@@ -222,7 +222,7 @@
 					mergeVal["count"] = 0;
 					for (var c = 0; c < response.differencessForKey[i].computedUnmatchPair.length; c++) {
 						var sarr = response.differencessForKey[i].computedUnmatchPair[c].srcFormatted;
-						var darr = response.differencessForKey[i].computedUnmatchPair[c].distFormatted;
+						var darr = response.differencessForKey[i].computedUnmatchPair[c].destFormatted;
 						var badcolsarr = response.differencessForKey[i].computedUnmatchPair[c].badCols;
 						
 						var key = response.differencessForKey[i].key
@@ -291,7 +291,7 @@
 					mergeArray.push(mergeVal);
 				}
 				
-				setStatsTable(response.stats, response.inputData.srcFile, response.inputData.distFile);
+				setStatsTable(response.stats, response.inputData.srcFile, response.inputData.destFile);
 				
 				// Get HeaderArray
 				if (newData.length > 0) {
@@ -349,21 +349,21 @@
 			}
 			
 			function createAdvancedRulePage(response) {
-				//make src and dist transformation column inputs to typeahead
+				//make src and dest transformation column inputs to typeahead
 				if (response.exception != null)
 				return;
 				createTypeahead($('.src_trans_column'), makeSrcColumn(response.srcSchema), 'name');
-				createTypeahead($('.dist_trans_column'), makeDistColumn(response.distSchema), 'name');
+				createTypeahead($('.dest_trans_column'), makedestColumn(response.destSchema), 'name');
 				
 				srcRecordCnt = response.srcRowCount;
-				distRecordCnt = response.distRowCount;
+				destRecordCnt = response.destRowCount;
 				
 				prepareAdvancedRule(true, response.inputData.name, response.srcSchema, response.inputData.srcFile.excludeColmns,
-                response.distSchema, response.inputData.distFile.excludeColmns,
+                response.destSchema, response.inputData.destFile.excludeColmns,
                 response.inputData.compareKey,
-                response.inputData.srcFile.transformations, response.inputData.distFile.transformations,
-                response.inputData.srcFile.filterSql, response.inputData.distFile.filterSql,
-                response.inputData.matchBoth, response.srcRowCount != response.distRowCount, response.inputData.randomSample, response.inputData.columnMapping
+                response.inputData.srcFile.transformations, response.inputData.destFile.transformations,
+                response.inputData.srcFile.filterSql, response.inputData.destFile.filterSql,
+                response.inputData.matchBoth, response.srcRowCount != response.destRowCount, response.inputData.randomSample, response.inputData.columnMapping
 				);
 				//$('#advancedRulesmodal').show();
 				$('#advancedRulesModal').show();
@@ -417,7 +417,7 @@
 			
 			function submitJobJson() {
 
-				var data = getInputData(srcRecordCnt != distRecordCnt);
+				var data = getInputData(srcRecordCnt != destRecordCnt);
 				
 				if (data.compareKey.length <= 0) {
 					swal("Validation Error", "Atleast one column should be selectd as Compare Key.", "error");
@@ -429,7 +429,7 @@
 				}
 				
 				/*
-					$count = $("#mapper > div img[src='../dist/img/tick.png']").length;
+					$count = $("#mapper > div img[src='../dest/img/tick.png']").length;
 					if($count <= 0){
 					alert("You should set at least one tick.");
 					return;
@@ -438,7 +438,7 @@
 
 				//data.sql= true;
 				//data.srcFile.sql= true;
-				//data.distFile.sql= true;
+				//data.destFile.sql= true;
 				
 				//data.jobname = info.inputData.name;
 				//data.compareCommonColumnsOnly = info.inputData.compareCommonColumnsOnly;
@@ -463,24 +463,24 @@
 					}
 				}
 				
-				//data.distFile.filterSql = info.inputData.distFile.filterSql;
-				data.distFile.datasetPath = info.inputData.distFile.datasetPath;
-				data.distFile.datasetFormat = info.inputData.distFile.datasetFormat;
-				if (data.distFile.datasetFormat == "CSV") {
-					data.distFile.header = info.inputData.distFile.header;
-					data.distFile.datasetDelimiter = info.inputData.distFile.datasetDelimiter;
-					data.distFile.useOtherSchema = info.inputData.distFile.useOtherSchema;
-					if (!data.distFile.useOtherSchema) {
-						data.distFile.columns = info.inputData.distFile.columns;
+				//data.destFile.filterSql = info.inputData.destFile.filterSql;
+				data.destFile.datasetPath = info.inputData.destFile.datasetPath;
+				data.destFile.datasetFormat = info.inputData.destFile.datasetFormat;
+				if (data.destFile.datasetFormat == "CSV") {
+					data.destFile.header = info.inputData.destFile.header;
+					data.destFile.datasetDelimiter = info.inputData.destFile.datasetDelimiter;
+					data.destFile.useOtherSchema = info.inputData.destFile.useOtherSchema;
+					if (!data.destFile.useOtherSchema) {
+						data.destFile.columns = info.inputData.destFile.columns;
 					}
 				}
 				
 				//alert(data.sql);
-				//console.log(data.distFile);
+				//console.log(data.destFile);
 				
 				var jsonStr = makeInputJson(data.jobname,data.compareCommonColumnsOnly,
                 data.validateRowsCount,data.randomSample,data.matchBoth,true,
-                data.columnMapping,data.srcFile,data.distFile,data.compareKey);
+                data.columnMapping,data.srcFile,data.destFile,data.compareKey);
 				
 				//console.log(jsonStr);
 				//alert(jsonStr);
@@ -546,12 +546,12 @@
 			}
 			
 			// Show Stats Table
-			function setStatsTable(stats, srcPath, distPath) {
+			function setStatsTable(stats, srcPath, destPath) {
 				$('#src_path').html(srcPath.datasetPath + "  ("+srcPath.datasetFormat+")");
-				$('#dist_path').html(distPath.datasetPath + "  ("+distPath.datasetFormat+")");
+				$('#dest_path').html(destPath.datasetPath + "  ("+destPath.datasetFormat+")");
 
 				stats["srcRecordsNotMatching"] =  stats.srcRecordsCount -  stats.totalSrcRecordsMatching
-                stats["destRecordsNotMatching"] = stats.distRecordsCount - stats.totalDistRecordsMatching
+                stats["destRecordsNotMatching"] = stats.destRecordsCount - stats.totalDestRecordsMatching
 
 				columnNotMatching = stats.columnsNotMatching;
 
@@ -681,10 +681,10 @@
 					}]
 				});
 
-				var dist_percent = (stats.totalDistRecordsMatching / stats.distRecordsCount) * 100;
-				$('#dist_percent').html(parseInt(dist_percent) + "%");
-				$('#dist_count').html("(" + stats.totalDistRecordsMatching + " / " + stats.distRecordsCount + ")");
-				Highcharts.chart('dist_record', {
+				var dest_percent = (stats.totalDestRecordsMatching / stats.destRecordsCount) * 100;
+				$('#dest_percent').html(parseInt(dest_percent) + "%");
+				$('#dest_count').html("(" + stats.totalDestRecordsMatching + " / " + stats.destRecordsCount + ")");
+				Highcharts.chart('dest_record', {
 					chart: {
 						type: 'bar',
 						height: 60,
@@ -742,7 +742,7 @@
                         showInLegend: false,
                         name: 'Destination Record Matching',
 						color:'#5cb85c',
-                        data: [stats.totalDistRecordsMatching]
+                        data: [stats.totalDestRecordsMatching]
                     }]
 				});
 
@@ -816,11 +816,11 @@
                         data: [stats.srcKeyMatchBrodcast]
 					}]
 				});
-                $('#dist_total_keys').html(stats.distKeyCount);
-				$('#dist_matched').html(stats.distKeyMatchBrodcast);
-				$('#dist_partial').html(stats.distKeyMatchPartial);
-				$('#dist_not').html(stats.distKeyNoMatch);
-				Highcharts.chart('dist_total', {
+                $('#dest_total_keys').html(stats.destKeyCount);
+				$('#dest_matched').html(stats.destKeyMatchBrodcast);
+				$('#dest_partial').html(stats.destKeyMatchPartial);
+				$('#dest_not').html(stats.destKeyNoMatch);
+				Highcharts.chart('dest_total', {
 					chart: {
 						type: 'bar',
 						height: 100,
@@ -871,19 +871,19 @@
                         color:'#5bc0de',
 						//showInLegend: false,
                         name: 'Orphan Keys',
-                        data: [stats.distKeyNoMatch]
+                        data: [stats.destKeyNoMatch]
 					}, {
 						maxPointWidth: 20,
                         color:'#d9534f',
 						//showInLegend: false,
 						name: 'Mismatch keys',
-						data: [stats.distKeyMatchPartial]
+						data: [stats.destKeyMatchPartial]
 					}, {
 						maxPointWidth: 20,
                         color:'#5cb85c',
 						//showInLegend: false,
                         name: 'Matched',
-                        data: [stats.distKeyMatchBrodcast]
+                        data: [stats.destKeyMatchBrodcast]
 					}]
 				});
 			}
@@ -913,10 +913,10 @@
 					for (var i = 0; i < count; i++) {
 						var arr = value.split("__");
 						if (arr[0] == result[i]) {
-							tr += '<img src="../dist/img/key.jpg" width="20px" height="20px"></th>';
+							tr += '<img src="../dest/img/key.jpg" width="20px" height="20px"></th>';
 						} else {
 							if (arr.length > 1 && arr[1] == result[i]) {
-								tr += '<img src="../dist/img/key.jpg" width="20px" height="20px"></th>';
+								tr += '<img src="../dest/img/key.jpg" width="20px" height="20px"></th>';
 							}
 						}
 					}
@@ -934,7 +934,7 @@
 							if(value == result[i] || value == name){
 								//alert(result[i]);
 								var name= value;
-								tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '<img src="../dist/img/key.jpg" width="20px" height="20px"></th>');
+								tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '<img src="../dest/img/key.jpg" width="20px" height="20px"></th>');
 								} else {
 								tr = $('<th data-field="' + value + '" data-formatter="stateFormatter">' + value + '</th>');
 							}
@@ -1146,14 +1146,14 @@
 					removeRule($('.src-rule-extra'));
 				});
 
-				$('#dist_trans_plus').on('click', function(e) {
-					var srcNext = document.getElementById("dist_trans_next");
-					insertRule(srcNext, "dist");
-					createTypeahead($('.dist_trans_column'), info.distSchema, 'name');
+				$('#dest_trans_plus').on('click', function(e) {
+					var srcNext = document.getElementById("dest_trans_next");
+					insertRule(srcNext, "dest");
+					createTypeahead($('.dest_trans_column'), info.destSchema, 'name');
 				});
 
-				$('#dist_trans_minus').on('click', function(e) {
-					removeRule($('.dist-rule-extra'));
+				$('#dest_trans_minus').on('click', function(e) {
+					removeRule($('.dest-rule-extra'));
 				});
 
 				$('#close1').on('click', function(e) {
@@ -1249,7 +1249,7 @@
 
 				});
 
-				$( "#dist_column" ).sortable({
+				$( "#dest_column" ).sortable({
 					connectWith: ".connectedSortable2",
 					placeholder: "ui-state-highlight"
 				});
@@ -1410,7 +1410,7 @@
 										<tr>
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Data Path  : </td>
 											<td class="col-md-9 row">
-												<small id="dist_path" style="font-size: 11pt;"></small>
+												<small id="dest_path" style="font-size: 11pt;"></small>
 											</td>
 										</tr>
 										<tr>
@@ -1426,13 +1426,13 @@
 											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Records Matching (Matched/Total) % : </td>
 											<td class="col-md-9" row>
 												<div class="col-md-2" style="top: 15px; padding-left: 0px;">
-													<small id="dist_percent" style="font-size: 15pt;">0%</small><small id="dist_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
+													<small id="dest_percent" style="font-size: 15pt;">0%</small><small id="dest_count" style="position: relative;bottom: 2px;margin-left: 10px;">(0 / 0)</small>
 												</div>
-												<div class="col-md-10" id="dist_record" style="padding-left:0px;padding-right:0px;"></div>
+												<div class="col-md-10" id="dest_record" style="padding-left:0px;padding-right:0px;"></div>
 											</td>
 										</tr>
 										<tr style="height: 100px;">
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Source Keys Distribution:</td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Source Keys destribution:</td>
 											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0; ">
 												<div class="col-md-2" style="top: 10px;padding-right: 0px; padding-left: 0; padding-right: 10px;">
 													<div>
@@ -1452,23 +1452,23 @@
 											</td>
 										</tr>
 										<tr style="height: 100px;">
-											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Keys Distribution:</td>
+											<td class="col-md-3" style="text-align: right;vertical-align: middle;">Destination Keys destribution:</td>
 											<td class="col-md-9" row style="padding-bottom: 0;padding-top: 0;">
 												<div class="col-md-2" style="top: 10px;padding-right: 0px; padding-left: 0; padding-right: 10px;">
 													<div>
-														<span>Total keys: </span><span id="dist_total_keys" style="float:right;">0</span>
+														<span>Total keys: </span><span id="dest_total_keys" style="float:right;">0</span>
 													</div>
 													<div>
-														<span>Matched keys: </span><span id="dist_matched" style="float:right;">0</span>
+														<span>Matched keys: </span><span id="dest_matched" style="float:right;">0</span>
 													</div>
 													<div>
-														<span>Mismatch keys: </span><span id="dist_partial" style="float:right;">0</span>
+														<span>Mismatch keys: </span><span id="dest_partial" style="float:right;">0</span>
 													</div>
 													<div>
-														<span>Orphan keys: </span><span id="dist_not" style="float:right;">0</span>
+														<span>Orphan keys: </span><span id="dest_not" style="float:right;">0</span>
 													</div>
 												</div>
-												<div class="col-md-10" id="dist_total" style="padding-left:0px;padding-right:0px;"></div>
+												<div class="col-md-10" id="dest_total" style="padding-left:0px;padding-right:0px;"></div>
 											</td>
 										</tr>
 										<tr>
@@ -1562,7 +1562,7 @@
 						<div class="tab-content" style="margin-top: 40px;">
 							
 							<div class="row tab-pane fade active in" id="column_map">
-								<!--<img src="../dist/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="colMapHelp()" />-->
+								<!--<img src="../dest/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="colMapHelp()" />-->
 								<div class="accordion">
 									<div class="panel-group" id="accordion">
 										<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
@@ -1595,7 +1595,7 @@
 														<div class="form-group">
 															<label class="col-sm-4">Destination Filter Sql</label>
 															<div class="col-sm-8">
-																<input type="text" placeholder="Insert sql here to filter Destination Dataset..." class="form-control" id="dist_filter_sql">
+																<input type="text" placeholder="Insert sql here to filter Destination Dataset..." class="form-control" id="dest_filter_sql">
 															</div>
 															<br><br>
 														</div>
@@ -1611,7 +1611,7 @@
 																		<p><b>Run on sample of:</b>To run the data comparision on a sample(random) of records instead of the whole data. Accepts a number between 1 to 100,000.</p>
 																		
 																		<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
-																		<p><b>Src Filter Sql/Dist Filter Sql :</b> To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
+																		<p><b>Src Filter Sql/dest Filter Sql :</b> To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
 																		
 																		<p>Note :  You can refer to the dataset as my_data.</p>
 																		
@@ -1625,7 +1625,7 @@
 													
 													<div class="col-md-12">
 														<!--<button class="btn btn-danger" data-toggle="modal" data-target="#what" id="btn_delete">What is this</button>-->
-														<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what1" />
+														<img src="../dest/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what1" />
 													</div>
 												</div>
 											</div>
@@ -1660,7 +1660,7 @@
 													</div>
 													<div class="col-md-12">
 														
-														<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what" />
+														<img src="../dest/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what" />
 													</div>
 												</div>
 											</div>
@@ -1702,23 +1702,23 @@
 														
 														<div class="col-md-6">
 															<label>Destination Dataset</label>
-															<div class="form-group row" style="margin-top: 15px;" id="dist_trans_first">
+															<div class="form-group row" style="margin-top: 15px;" id="dest_trans_first">
 																<!--<label class="col-sm-3">Column</label>-->
 																<div class="col-sm-9 desti_dataset">
-																	<div class="dist_trans_column">
+																	<div class="dest_trans_column">
 																		<input type="text" class="form-control" value="">
 																	</div>
 																</div>
 																<label class="col-sm-3">SQL</label>
 																<div class="col-sm-9">
-																	<input type="text" placeholder="Enter transformation SQL" class="form-control dist_trans_rule">
+																	<input type="text" placeholder="Enter transformation SQL" class="form-control dest_trans_rule">
 																</div>
 															</div>
-															<!--<div class="form-group row" id="dist_trans_next">
-																<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dist_trans_plus">
+															<!--<div class="form-group row" id="dest_trans_next">
+																<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dest_trans_plus">
 																	<span class="glyphicon glyphicon-plus"></span>
 																</button>
-																<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dist_trans_minus">
+																<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dest_trans_minus">
 																	<span class="glyphicon glyphicon-minus"></span>
 																</button>
 															</div>-->
@@ -1786,7 +1786,7 @@ Note : column “name” should already exist and be marked for comparision.</td
 														</div>
 													</div>
 													<div class="col-md-12">
-														<img src="../dist/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what2" />
+														<img src="../dest/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what2" />
 													</div>
 												</div>
 											</div>
@@ -1866,7 +1866,7 @@ Note : column “name” should already exist and be marked for comparision.</td
 									
 									<div class="col-md-12">
 										
-										<img src="../dist/img/question.png" width="30px" height="30px" style="float: right" data-toggle="modal" data-target="#what3" />
+										<img src="../dest/img/question.png" width="30px" height="30px" style="float: right" data-toggle="modal" data-target="#what3" />
 									</div>
 								</div>
 								
@@ -1900,7 +1900,7 @@ Note : column “name” should already exist and be marked for comparision.</td
 										<ul style="padding-right: 0px;margin-right: 30px;">
 											<label style="font-weight: bold;color: #000000;margin-left:-17%">Destination Columns</label>
 										</ul>
-										<ul class="list-group connectedSortable2" style="padding-right: 0px;margin-right: 30px;" id="dist_column">
+										<ul class="list-group connectedSortable2" style="padding-right: 0px;margin-right: 30px;" id="dest_column">
 											
 										</ul>
 									</div>

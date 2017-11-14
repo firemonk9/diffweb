@@ -522,7 +522,7 @@ Licensed under the MIT license.
                     labelBoxBorderColor: "#ccc", // border color for the little label boxes
                     container: null, // container (as jQuery object) to put legend in, null means default on top of graph
                     position: "ne", // position of default legend container within plot
-                    margin: 5, // distance from grid edge to default legend container within plot
+                    margin: 5, // destance from grid edge to default legend container within plot
                     backgroundColor: null, // null means auto-detect
                     backgroundOpacity: 0.85, // set to 0 to avoid background
                     sorted: null    // default to no legend sorting
@@ -595,7 +595,7 @@ Licensed under the MIT license.
                     backgroundColor: null, // null for transparent, else color
                     borderColor: null, // set if different from the grid color
                     tickColor: null, // color for the ticks, e.g. "rgba(0,0,0,0.15)"
-                    margin: 0, // distance from the canvas edge to the grid
+                    margin: 0, // destance from the canvas edge to the grid
                     labelMargin: 5, // in pixels
                     axisMargin: 8, // in pixels
                     borderWidth: 2, // in pixels
@@ -2827,8 +2827,8 @@ Licensed under the MIT license.
 
         // returns the data item the mouse is over, or null if none is found
         function findNearbyItem(mouseX, mouseY, seriesFilter) {
-            var maxDistance = options.grid.mouseActiveRadius,
-                smallestDistance = maxDistance * maxDistance + 1,
+            var maxdestance = options.grid.mouseActiveRadius,
+                smallestdestance = maxdestance * maxdestance + 1,
                 item = null, foundPoint = false, i, j, ps;
 
             for (i = series.length - 1; i >= 0; --i) {
@@ -2841,8 +2841,8 @@ Licensed under the MIT license.
                     points = s.datapoints.points,
                     mx = axisx.c2p(mouseX), // precompute some stuff to make the loop faster
                     my = axisy.c2p(mouseY),
-                    maxx = maxDistance / axisx.scale,
-                    maxy = maxDistance / axisy.scale;
+                    maxx = maxdestance / axisx.scale,
+                    maxy = maxdestance / axisy.scale;
 
                 ps = s.datapoints.pointsize;
                 // with inverse transforms, we can't use the maxx/maxy
@@ -2859,21 +2859,21 @@ Licensed under the MIT license.
                             continue;
 
                         // For points and lines, the cursor must be within a
-                        // certain distance to the data point
+                        // certain destance to the data point
                         if (x - mx > maxx || x - mx < -maxx ||
                             y - my > maxy || y - my < -maxy)
                             continue;
 
-                        // We have to calculate distances in pixels, not in
+                        // We have to calculate destances in pixels, not in
                         // data units, because the scales of the axes may be different
                         var dx = Math.abs(axisx.p2c(x) - mouseX),
                             dy = Math.abs(axisy.p2c(y) - mouseY),
-                            dist = dx * dx + dy * dy; // we save the sqrt
+                            dest = dx * dx + dy * dy; // we save the sqrt
 
                         // use <= to ensure last point takes precedence
                         // (last generally means on top of)
-                        if (dist < smallestDistance) {
-                            smallestDistance = dist;
+                        if (dest < smallestdestance) {
+                            smallestdestance = dest;
                             item = [i, j / ps];
                         }
                     }

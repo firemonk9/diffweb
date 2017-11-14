@@ -1,27 +1,27 @@
 {
     "beginTime": 1486739996086,
     "dataMatch": false,
-    "distPath": "",
+    "destPath": "",
     "endTime": 1486739997691,
     "exception": "Input path does not exist: hdfs://quickstart.cloudera:8020/user/cloudera/input/golden_src.csv",
     "inputData": {
         "columnMapping": [
             {
-                "distColumn": "phone",
+                "destColumn": "phone",
                 "srcColumn": "phone"
             },
             {
-                "distColumn": "date",
+                "destColumn": "date",
                 "srcColumn": "date"
             }
         ],
         "compareCommonColumnsOnly": false,
-        "distFile": {
+        "destFile": {
             "excludeColmns": [],
             "header": true,
             "srcDelimiter": ",",
             "srcFormat": "CSV",
-            "srcPath": "/user/cloudera/input/golden_dist.csv",
+            "srcPath": "/user/cloudera/input/golden_dest.csv",
             "transformations": []
         },
         "matchBoth": true,

@@ -144,12 +144,12 @@
         }
 
         function plothover(event, pos, item) {
-            // Simple distance formula.
-            var lineDistance = function (p1x, p1y, p2x, p2y) {
+            // Simple destance formula.
+            var linedestance = function (p1x, p1y, p2x, p2y) {
                 return Math.sqrt((p2x - p1x) * (p2x - p1x) + (p2y - p1y) * (p2y - p1y));
             };
 
-            // Here is some voodoo magic for determining the distance to a line form a given point {x, y}.
+            // Here is some voodoo magic for determining the destance to a line form a given point {x, y}.
             var dotLineLength = function (x, y, x0, y0, x1, y1, o) {
                 if (o && !(o =
                     function (x, y, x0, y0, x1, y1) {
@@ -166,7 +166,7 @@
                     } (x, y, x0, y0, x1, y1),
                     o.x >= Math.min(x0, x1) && o.x <= Math.max(x0, x1) && o.y >= Math.min(y0, y1) && o.y <= Math.max(y0, y1))
                 ) {
-                    var l1 = lineDistance(x, y, x0, y0), l2 = lineDistance(x, y, x1, y1);
+                    var l1 = linedestance(x, y, x0, y0), l2 = linedestance(x, y, x1, y1);
                     return l1 > l2 ? l2 : l1;
                 } else {
                     var a = y0 - y1, b = x1 - x0, c = x0 * y1 - y0 * x1;
@@ -177,10 +177,10 @@
             if (item) {
                 plot.showTooltip(item, that.tooltipOptions.snap ? item : pos);
             } else if (that.plotOptions.series.lines.show && that.tooltipOptions.lines === true) {
-                var maxDistance = that.plotOptions.grid.mouseActiveRadius;
+                var maxdestance = that.plotOptions.grid.mouseActiveRadius;
 
                 var closestTrace = {
-                    distance: maxDistance + 1
+                    destance: maxdestance + 1
                 };
 
                 var ttPos = pos;
@@ -206,13 +206,13 @@
                     var pointPrev = { x: series.data[xBeforeIndex][0], y: series.data[xBeforeIndex][1] },
                         pointNext = { x: series.data[xAfterIndex][0], y: series.data[xAfterIndex][1] };
 
-                    var distToLine = dotLineLength(series.xaxis.p2c(pos.x), series.yaxis.p2c(pos.y), series.xaxis.p2c(pointPrev.x),
+                    var destToLine = dotLineLength(series.xaxis.p2c(pos.x), series.yaxis.p2c(pos.y), series.xaxis.p2c(pointPrev.x),
                         series.yaxis.p2c(pointPrev.y), series.xaxis.p2c(pointNext.x), series.yaxis.p2c(pointNext.y), false);
 
-                    if (distToLine < closestTrace.distance) {
+                    if (destToLine < closestTrace.destance) {
 
-                        var closestIndex = lineDistance(pointPrev.x, pointPrev.y, pos.x, pos.y) <
-                            lineDistance(pos.x, pos.y, pointNext.x, pointNext.y) ? xBeforeIndex : xAfterIndex;
+                        var closestIndex = linedestance(pointPrev.x, pointPrev.y, pos.x, pos.y) <
+                            linedestance(pos.x, pos.y, pointNext.x, pointNext.y) ? xBeforeIndex : xAfterIndex;
 
                         var pointSize = series.datapoints.pointsize;
 
@@ -230,7 +230,7 @@
                         };
 
                         closestTrace = {
-                            distance: distToLine,
+                            destance: destToLine,
                             item: item
                         };
 
@@ -243,7 +243,7 @@
                     }
                 });
 
-                if (closestTrace.distance < maxDistance + 1)
+                if (closestTrace.destance < maxdestance + 1)
                     plot.showTooltip(closestTrace.item, ttPos);
                 else
                     plot.hideTooltip();

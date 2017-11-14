@@ -201,7 +201,7 @@ function insertCheckLi(ul, text, type) {
     li.setAttribute("class", "list-group-item");
     /*
     var img = document.createElement("img");
-    img.setAttribute("src", "../dist/img/" + type + ".png");
+    img.setAttribute("src", "../dest/img/" + type + ".png");
     img.setAttribute("style", "width:12px; height:12px; margin-top:4px; float:left;");
     li.appendChild(img);
     */
@@ -258,9 +258,9 @@ function insertMapper(mapper, mapped) {
 
     var img = document.createElement("img");
     if (mapped)
-        var imgSrc = "../dist/img/tick.png";
+        var imgSrc = "../dest/img/tick.png";
     else
-        var imgSrc = "../dist/img/cross54_33.png";
+        var imgSrc = "../dest/img/cross54_33.png";
     img.setAttribute("src", imgSrc);
     //img.setAttribute("style", "width: 100px; height:36px; margin-top: 2px;");
 
@@ -289,24 +289,24 @@ function createTypeahead(target, values, key) {
 
 function resetRuleData() {
     $('ul#src_column li').remove();
-    $('ul#dist_column li').remove();
+    $('ul#dest_column li').remove();
 
     $('ul#src_excluded li').remove();
-    $('ul#dist_excluded li').remove();
+    $('ul#dest_excluded li').remove();
 
     while ($('.src-rule-extra').length > 0) {
         $('.src-rule-extra')[0].remove();
     }
 
-    while ($('.dist-rule-extra').length > 0) {
-        $('.dist-rule-extra')[0].remove();
+    while ($('.dest-rule-extra').length > 0) {
+        $('.dest-rule-extra')[0].remove();
     }
 
     $('.src_trans_column').tagsinput('removeAll');
-    $('.dist_trans_column').tagsinput('removeAll');
+    $('.dest_trans_column').tagsinput('removeAll');
 
     $('.src_trans_rule').val('');
-    $('.dist_trans_rule').val('');
+    $('.dest_trans_rule').val('');
 }
 
 function insertRule(nextEl, tag) {
@@ -375,8 +375,8 @@ function makeSrcColumn(srcColumns) {
     return cols;
 }
 
-function makeDistColumn(distColumns) {
-    var cols = distColumns;
+function makedestColumn(destColumns) {
+    var cols = destColumns;
     for (var i = 0; i < cols.length; i++){
         if (cols[i].name.indexOf('__') > 0) {
             cols[i].name = cols[i].name.split('__')[1];
@@ -395,7 +395,7 @@ function concatExclude(srcColumns, srcExcluded) {
     return srcColumns.concat(tmp);
 }
 
-function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColumns, distExcluded, primaryKeys, srcTransformations, distTransformations, srcFiterSql, distFilterSql, matchBoth, columnMaps, randomSample) {
+function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, destColumns, destExcluded, primaryKeys, srcTransformations, destTransformations, srcFiterSql, destFilterSql, matchBoth, columnMaps, randomSample) {
     if (reload == true) {   //determine to create or show
         resetRuleData();
 
@@ -404,33 +404,33 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
         /******************************Generate Column Map Tab *******************************************/
         /*************************************************************************************************/
         var srcUl = document.getElementById("src_column");
-        var distUl = document.getElementById("dist_column");
+        var destUl = document.getElementById("dest_column");
 
         var mapper = document.getElementById("mapper");
 
         var srcExUl = document.getElementById("src_excluded");
-        var distExUl = document.getElementById("dist_excluded");
+        var destExUl = document.getElementById("dest_excluded");
 
-        //When src or dist column not exist, return;
-        if (srcColumns == null || distColumns == null) {
+        //When src or dest column not exist, return;
+        if (srcColumns == null || destColumns == null) {
             document.getElementById("danger-msg").innerHTML = "Source or Destination columns don't exist in the job.";
             $('.alert-danger').show();
             return;
         }
 
-        var remainSrcColumns = {}, remainDistColumns = {};
+        var remainSrcColumns = {}, remaindestColumns = {};
 
         //Write src columns to the list.
         for (var i = 0; i < srcColumns.length; i++){
 			alert('1');
-            //When src column mapped to dist column, extract src column name.
+            //When src column mapped to dest column, extract src column name.
             if (srcColumns[i].name.indexOf('__') > 0) {
                 var vals = srcColumns[i].name.split('__');
                 insertCheckLi(srcUl, vals[0], srcColumns[i].dataType);
-                insertLi(distUl, vals[1], srcColumns[i].dataType);
+                insertLi(destUl, vals[1], srcColumns[i].dataType);
                 insertMapper(mapper, true);
                 remainSrcColumns[srcColumns[i].name] = true;
-                remainDistColumns[srcColumns[i].name] = true;
+                remaindestColumns[srcColumns[i].name] = true;
             } else {    // when src column contains excluded column, don't include to src list.
                 if (srcExcluded.length > 0) {
                     var srcNotExcluded = true;
@@ -441,59 +441,59 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                         }
                     }
                     if (srcNotExcluded) {
-                        for (var j = 0; j < distColumns.length; j++) {
-                            if (distExcluded.length > 0) {
-                                var distNotExcluded = true;
-                                for (var k = 0; k < distExcluded.length; k++) {
-                                    if (distColumns[j].name == distExcluded[k]) {
-                                        distNotExcluded = false;
+                        for (var j = 0; j < destColumns.length; j++) {
+                            if (destExcluded.length > 0) {
+                                var destNotExcluded = true;
+                                for (var k = 0; k < destExcluded.length; k++) {
+                                    if (destColumns[j].name == destExcluded[k]) {
+                                        destNotExcluded = false;
                                         break;
                                     }
                                 }
-                                if (distNotExcluded) {
-                                    if (srcColumns[i].name == distColumns[j].name) {
+                                if (destNotExcluded) {
+                                    if (srcColumns[i].name == destColumns[j].name) {
                                         insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType);
                                         remainSrcColumns[srcColumns[i].name] = true;
-                                        insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
-                                        remainDistColumns[distColumns[j].name] = true;
+                                        insertLi(destUl, destColumns[j].name, destColumns[j].dataType);
+                                        remaindestColumns[destColumns[j].name] = true;
                                         insertMapper(mapper, true);
                                         break;
                                     }
                                 }
-                            } else if (srcColumns[i].name == distColumns[j].name) {
+                            } else if (srcColumns[i].name == destColumns[j].name) {
                                 insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType);
                                 remainSrcColumns[srcColumns[i].name] = true;
-                                insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
-                                remainDistColumns[distColumns[j].name] = true;
+                                insertLi(destUl, destColumns[j].name, destColumns[j].dataType);
+                                remaindestColumns[destColumns[j].name] = true;
                                 insertMapper(mapper, true);
                             }
                         }
                     }
                 } else { //when src column doesn't contain excluded column include to src list.
-                    for (var j = 0; j < distColumns.length; j++) {
-                        if (distExcluded.length > 0) {
-                            var distNotExcluded = true;
-                            for (var k = 0; k < distExcluded.length; k++) {
-                                if (distColumns[j].name == distExcluded[k]) {
-                                    distNotExcluded = false;
+                    for (var j = 0; j < destColumns.length; j++) {
+                        if (destExcluded.length > 0) {
+                            var destNotExcluded = true;
+                            for (var k = 0; k < destExcluded.length; k++) {
+                                if (destColumns[j].name == destExcluded[k]) {
+                                    destNotExcluded = false;
                                     break;
                                 }
                             }
-                            if (distNotExcluded) {
-                                if (srcColumns[i].name == distColumns[j].name) {
+                            if (destNotExcluded) {
+                                if (srcColumns[i].name == destColumns[j].name) {
                                     li = insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType);
                                     remainSrcColumns[srcColumns[i].name] = true;
-                                    insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
-                                    remainDistColumns[distColumns[j].name] = true;
+                                    insertLi(destUl, destColumns[j].name, destColumns[j].dataType);
+                                    remaindestColumns[destColumns[j].name] = true;
                                     insertMapper(mapper, true);
                                     break;
                                 }
                             }
-                        } else if (srcColumns[i].name == distColumns[j].name) {
+                        } else if (srcColumns[i].name == destColumns[j].name) {
                             li = insertCheckLi(srcUl, srcColumns[i].name, srcColumns[i].dataType);
                             remainSrcColumns[srcColumns[i].name] = true;
-                            insertLi(distUl, distColumns[j].name, distColumns[j].dataType);
-                            remainDistColumns[distColumns[j].name] = true;
+                            insertLi(destUl, destColumns[j].name, destColumns[j].dataType);
+                            remaindestColumns[destColumns[j].name] = true;
                             insertMapper(mapper, true);
                         }
                     }
@@ -516,7 +516,7 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                         var map = insertMapper(mapper, false);
                         for (var j = 0; j < columnMaps.length; j++) {
                             if (columnMaps[j].srcColumn == srcColumns[i]) {
-                                map.children[0].setAttribute("src", "../dist/img/green_arrow.png");
+                                map.children[0].setAttribute("src", "../dest/img/green_arrow.png");
                                 break;
                             }
                         }
@@ -526,7 +526,7 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
                     var map = insertMapper(mapper, false);
                     for (var j = 0; j < columnMaps.length; j++) {
                         if (columnMaps[j].srcColumn == srcColumns[i].name) {
-                            map.children[0].setAttribute("src", "../dist/img/green_arrow.png");
+                            map.children[0].setAttribute("src", "../dest/img/green_arrow.png");
                             break;
                         }
                     }
@@ -534,21 +534,21 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
             }
         }
 
-        for (var i = 0; i < distColumns.length; i++) {
-            if (remainDistColumns[distColumns[i].name] != true) {
+        for (var i = 0; i < destColumns.length; i++) {
+            if (remaindestColumns[destColumns[i].name] != true) {
                 if (srcExcluded.length > 0) {
-                    var distNotExcluded = true;
-                    for (var j = 0; j < distExcluded.length; j++) {
-                        if (distExcluded[j] == distColumns[i].name) {
-                            distNotExcluded = false;
+                    var destNotExcluded = true;
+                    for (var j = 0; j < destExcluded.length; j++) {
+                        if (destExcluded[j] == destColumns[i].name) {
+                            destNotExcluded = false;
                             break;
                         }
                     }
-                    if (distNotExcluded) {
-                        insertLi(distUl, distColumns[i].name, distColumns[i].dataType);
+                    if (destNotExcluded) {
+                        insertLi(destUl, destColumns[i].name, destColumns[i].dataType);
                     }
                 } else {
-                    insertLi(distUl, distColumns[i].name, distColumns[i].dataType);
+                    insertLi(destUl, destColumns[i].name, destColumns[i].dataType);
                 }
             }
         }
@@ -573,11 +573,11 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
             }
         }
 
-        //Write dist excluded columns to list
-        for (var i = 0; i < distExcluded.length; i++) {
-            for (var j = 0; j < distColumns.length; j++) {
-                if (distExcluded[i] == distColumns[j].name) {
-                    insertLi(distUl, distColumns[j].name, distColumns[j].dataType == null ? 'no' : distColumns[j].dataType);
+        //Write dest excluded columns to list
+        for (var i = 0; i < destExcluded.length; i++) {
+            for (var j = 0; j < destColumns.length; j++) {
+                if (destExcluded[i] == destColumns[j].name) {
+                    insertLi(destUl, destColumns[j].name, destColumns[j].dataType == null ? 'no' : destColumns[j].dataType);
                 }
             }
         }
@@ -614,21 +614,21 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
         }
 
         //when transformations exist put the values to proper form
-        if (distTransformations.length > 1) {
-            for (var i = 0; i < distTransformations.length - 1; i++) {
-                var srcNext = document.getElementById("dist_trans_next");
-                insertRule(srcNext, "dist");
-                createTypeahead($('.dist_trans_column'), concatExclude(distColumns, distExcluded), 'name');
+        if (destTransformations.length > 1) {
+            for (var i = 0; i < destTransformations.length - 1; i++) {
+                var srcNext = document.getElementById("dest_trans_next");
+                insertRule(srcNext, "dest");
+                createTypeahead($('.dest_trans_column'), concatExclude(destColumns, destExcluded), 'name');
             }
         }
-        if (distTransformations.length > 0) {
-            $('.dist_trans_column').each(function(index){
-                for (var i = 0; i < distTransformations[index].column.length; i++) {
-                    $(this).tagsinput('add', {"name":distTransformations[index].column[i]});
+        if (destTransformations.length > 0) {
+            $('.dest_trans_column').each(function(index){
+                for (var i = 0; i < destTransformations[index].column.length; i++) {
+                    $(this).tagsinput('add', {"name":destTransformations[index].column[i]});
                 }
             });
-            $('.dist_trans_rule').each(function(index){
-                $(this).val(Base64.decode(distTransformations[index].rule));
+            $('.dest_trans_rule').each(function(index){
+                $(this).val(Base64.decode(destTransformations[index].rule));
             });
         }
         /***********************************End Generating Transformations Tab***********************************/
@@ -637,8 +637,8 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
         if (srcFiterSql != null) {
             $('#src_filter_sql input').val(srcFiterSql);
         }
-        if (distFilterSql != null) {
-            $('#dist_filter_sql input').val(distFilterSql);
+        if (destFilterSql != null) {
+            $('#dest_filter_sql input').val(destFilterSql);
         }
 
         setMapperListener();
@@ -648,13 +648,13 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, distColum
 function setMoveDownListener() {
     $('.move-down').on('click', function(e) {
         var actives = '';
-        actives = $('ul#dist_column li.active');
+        actives = $('ul#dest_column li.active');
         if (actives[0] == null)
             return;
-        var index = $('ul#dist_column li').index(actives[0]);
-        var li = $("ul#dist_column li:eq("+index+")");
+        var index = $('ul#dest_column li').index(actives[0]);
+        var li = $("ul#dest_column li:eq("+index+")");
         index += 1;
-        var liAfter = $("ul#dist_column li:eq("+index+")");
+        var liAfter = $("ul#dest_column li:eq("+index+")");
         liAfter.after(li);
     });
 }
@@ -662,24 +662,24 @@ function setMoveDownListener() {
 function setMoveUpListener() {
     $('.move-up').on('click', function(e) {
         var actives = '';
-        actives = $('ul#dist_column li.active');
+        actives = $('ul#dest_column li.active');
         if (actives[0] == null)
             return;
-        var index = $('ul#dist_column li').index(actives[0]);
+        var index = $('ul#dest_column li').index(actives[0]);
         if (index <= 0)
             return;
-        var li = $("ul#dist_column li:eq("+index+")");
+        var li = $("ul#dest_column li:eq("+index+")");
         index -= 1;
-        var liBefore = $("ul#dist_column li:eq("+index+")");
+        var liBefore = $("ul#dest_column li:eq("+index+")");
         liBefore.before(li);
     });
 }
 
 function setIncludeListener() {
     $('.include').on('click', function(e) 	{
-        var srcExcludeActives = '', distExcludeActives = '';
+        var srcExcludeActives = '', destExcludeActives = '';
         srcExcludeActives = $('ul#src_excluded li.active');
-        distExcludeActives = $('ul#dist_excluded li.active');
+        destExcludeActives = $('ul#dest_excluded li.active');
 
         if (srcExcludeActives.length > 0)  {
             for (var i = 0; i < srcExcludeActives.length; i++) {
@@ -697,17 +697,17 @@ function setIncludeListener() {
             }
         }
 
-        if (distExcludeActives.length > 0) {
-            for (var i = 0; i < distExcludeActives.length; i++) {
-                var index = $('ul#dist_excluded li').index(distExcludeActives[i]);
-                var liDist = $("ul#dist_excluded li:eq("+index+")");
-                liDist.remove();
+        if (destExcludeActives.length > 0) {
+            for (var i = 0; i < destExcludeActives.length; i++) {
+                var index = $('ul#dest_excluded li').index(destExcludeActives[i]);
+                var lidest = $("ul#dest_excluded li:eq("+index+")");
+                lidest.remove();
 
-                insertLi(document.getElementById("dist_column"), liDist[0].innerText);
+                insertLi(document.getElementById("dest_column"), lidest[0].innerText);
 
                 /*
-                 distExcluded = distExcluded.filter(function(el){
-                 return el !== liDist[0].innerText;
+                 destExcluded = destExcluded.filter(function(el){
+                 return el !== lidest[0].innerText;
                  });
                  */
             }
@@ -717,9 +717,9 @@ function setIncludeListener() {
 
 function setExcludeListener() {
     $('.exclude').on('click', function(e) {
-        var srcActives = '', distActives = '';
+        var srcActives = '', destActives = '';
         srcActives = $('ul#src_column li.active');
-        distActives = $('ul#dist_column li.active');
+        destActives = $('ul#dest_column li.active');
 
         if (srcActives.length > 0) {
             for (var i = 0; i < srcActives.length; i++) {
@@ -731,15 +731,15 @@ function setExcludeListener() {
             }
         }
 
-        if (distActives.length > 0) {
-            for (var i = 0; i < distActives.length; i++) {
-                var index = $('ul#dist_column li').index(distActives[i]);
-                var liDist = $("ul#dist_column li:eq("+index+")");
-                liDist.remove();
+        if (destActives.length > 0) {
+            for (var i = 0; i < destActives.length; i++) {
+                var index = $('ul#dest_column li').index(destActives[i]);
+                var lidest = $("ul#dest_column li:eq("+index+")");
+                lidest.remove();
 
-                insertLi(document.getElementById("dist_excluded"), liDist[0].innerText);
+                insertLi(document.getElementById("dest_excluded"), lidest[0].innerText);
 
-                //distExcluded.push(liDist[0].innerText);
+                //destExcluded.push(lidest[0].innerText);
             }
         }
     });
@@ -752,9 +752,9 @@ function setMapperListener() {
 			
             if (img[0].src.indexOf("tick") > 0) {
 	
-                img[0].src = "../dist/img/cross54_33.png";
+                img[0].src = "../dest/img/cross54_33.png";
             } else {
-                img[0].src = "../dist/img/tick.png";
+                img[0].src = "../dest/img/tick.png";
             }
         });
     });
@@ -776,21 +776,21 @@ function getInputData(compareCommon) {
     var columnMapping = new Array;
 
     var srcExcludeColmns = new Array;
-    var distExcludeColmns = new Array;
+    var destExcludeColmns = new Array;
 
     for (var i = 0; i < $('ul#src_column li').length; i++) {
         var colMap = {};
         if ($('#mapper img')[i].src.indexOf('green_arrow.png') > 0) {
-            if ($('ul#src_column li div')[i].innerText != $('ul#dist_column li div')[i].innerText && $('ul#dist_column li')[i] != null) {
+            if ($('ul#src_column li div')[i].innerText != $('ul#dest_column li div')[i].innerText && $('ul#dest_column li')[i] != null) {
                 colMap["srcColumn"] = $('ul#src_column li div')[i].innerText;
-                colMap["distColumn"] = $('ul#dist_column li div')[i].innerText;
+                colMap["destColumn"] = $('ul#dest_column li div')[i].innerText;
                 columnMapping.push(colMap);
             }
         } else if ($('#mapper img')[i].src.indexOf('yellow_arrow.png') > 0) {
             if ($('ul#src_column li')[i] != null)
                 srcExcludeColmns.push($('ul#src_column li div')[i].innerText);
-            if ($('ul#dist_column li')[i] != null) {
-                distExcludeColmns.push($('ul#dist_column li div')[i].innerText);
+            if ($('ul#dest_column li')[i] != null) {
+                destExcludeColmns.push($('ul#dest_column li div')[i].innerText);
             }
         }
     }
@@ -844,39 +844,39 @@ function getInputData(compareCommon) {
     result["srcFile"] = srcFile;
     /***********************************End src Input********************************/
 
-    /**********************************Make dist Input*******************************/
-    var distFile = {};
+    /**********************************Make dest Input*******************************/
+    var destFile = {};
     /*
-    for (var i = 0; i < $('ul#dist_excluded li').length; i++) {
-        distExcludeColmns.push($('ul#dist_excluded li div')[i].innerText);
+    for (var i = 0; i < $('ul#dest_excluded li').length; i++) {
+        destExcludeColmns.push($('ul#dest_excluded li div')[i].innerText);
     }
     */
-    if ($('#dist_filter_sql').val() != '') {
-        distFile["filterSql"] = $('#dist_filter_sql').val();
+    if ($('#dest_filter_sql').val() != '') {
+        destFile["filterSql"] = $('#dest_filter_sql').val();
     }
-    distFile["excludeColmns"] = distExcludeColmns;
-    distFile["datasetPath"] = $('#dist_path').val();
-    distFile["datasetFormat"] = $('#select_dist_type').val();
-    if (distFile["datasetFormat"] == "CSV") {
-        distFile["header"] = $('#dist_header').val() == "True" ? true : false;
-        distFile["datasetDelimiter"] = $('#dist_delimiter').val();
-        if (distFile["header"])
-            distFile["useOtherSchema"] = true;
+    destFile["excludeColmns"] = destExcludeColmns;
+    destFile["datasetPath"] = $('#dest_path').val();
+    destFile["datasetFormat"] = $('#select_dest_type').val();
+    if (destFile["datasetFormat"] == "CSV") {
+        destFile["header"] = $('#dest_header').val() == "True" ? true : false;
+        destFile["datasetDelimiter"] = $('#dest_delimiter').val();
+        if (destFile["header"])
+            destFile["useOtherSchema"] = true;
         else {
-            distFile["useOtherSchema"] = false;
-            distFile["columns"] = $('#dist_file_schema').val().split(distFile["datasetDelimiter"]);
+            destFile["useOtherSchema"] = false;
+            destFile["columns"] = $('#dest_file_schema').val().split(destFile["datasetDelimiter"]);
         }
-    } else if (distFile["datasetFormat"] == "JDBC") {
+    } else if (destFile["datasetFormat"] == "JDBC") {
         var jdbcData = {};
-        jdbcData["jdbcUrl"] = $('#dist_url').val();
-        jdbcData["jdbcUser"] = $('#dist_user').val();
-        jdbcData["jdbcPassword"] = $('#dist_pass').val();
-        jdbcData["jdbcDriverPath"] = $('#dist_driver').val();
-        distFile["jdbcData"] = jdbcData;
+        jdbcData["jdbcUrl"] = $('#dest_url').val();
+        jdbcData["jdbcUser"] = $('#dest_user').val();
+        jdbcData["jdbcPassword"] = $('#dest_pass').val();
+        jdbcData["jdbcDriverPath"] = $('#dest_driver').val();
+        destFile["jdbcData"] = jdbcData;
     }
     transformations = [];
-    if ($('.dist_trans_column').tagsinput('items').length > 0) {
-        $('.dist_trans_column').each(function(index){
+    if ($('.dest_trans_column').tagsinput('items').length > 0) {
+        $('.dest_trans_column').each(function(index){
             var transform = {};
             transform["base64"] = true;
             var column = new Array;
@@ -884,13 +884,13 @@ function getInputData(compareCommon) {
                 column.push($(this).tagsinput('items')[i].name);
             }
             transform["column"] = column;
-            transform["rule"] = Base64.encode($('.dist_trans_rule')[index].value);
+            transform["rule"] = Base64.encode($('.dest_trans_rule')[index].value);
             transformations.push(transform);
         });
     }
-    distFile["transformations"] = transformations;
-    result["distFile"] = distFile;
-    /*******************************End dist Input*********************************/
+    destFile["transformations"] = transformations;
+    result["destFile"] = destFile;
+    /*******************************End dest Input*********************************/
 
     var compareKey = new Array;
     for (var i = 0; i < $('ul#src_column li span.glyphicon-check').length; i++) {
@@ -901,7 +901,7 @@ function getInputData(compareCommon) {
 }
 
 function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, randomSample, matchBoth, process,
-                       columnMapping, srcInput, distInput, compareKey ) {
+                       columnMapping, srcInput, destInput, compareKey ) {
 
     var jsonTree = {};
     var filesCompareList = new Array;
@@ -921,29 +921,29 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
     */
     filesCompareData["columnMapping"] = columnMapping;
 
-    var distFile = {};
-    distFile["filterSql"] = distInput.filterSql;
-    distFile["excludeColmns"] = distInput.excludeColmns;
-    distFile["datasetPath"] = distInput.datasetPath;
-    distFile["datasetFormat"] = distInput.datasetFormat;
-    if (distFile["datasetFormat"] == "CSV") {
-        distFile["header"] = distInput.header;
-        distFile["datasetDelimiter"] = distInput.datasetDelimiter;
-        distFile["useOtherSchema"] = false;
-        if (!distFile["header"]) {
-            distFile["columns"] = distInput.columns;
+    var destFile = {};
+    destFile["filterSql"] = destInput.filterSql;
+    destFile["excludeColmns"] = destInput.excludeColmns;
+    destFile["datasetPath"] = destInput.datasetPath;
+    destFile["datasetFormat"] = destInput.datasetFormat;
+    if (destFile["datasetFormat"] == "CSV") {
+        destFile["header"] = destInput.header;
+        destFile["datasetDelimiter"] = destInput.datasetDelimiter;
+        destFile["useOtherSchema"] = false;
+        if (!destFile["header"]) {
+            destFile["columns"] = destInput.columns;
         }
-    } else if (distFile["datasetFormat"] == "JSON") {
+    } else if (destFile["datasetFormat"] == "JSON") {
         var jdbcData = {};
-        jdbcData["jdbcUrl"] = distInput.jdbcUrl;
-        jdbcData["jdbcUser"] = distInput.jdbcUser;
-        jdbcData["jdbcPassword"] = distInput.jdbcPassword;
-        jdbcData["jdbcDriverPath"] = distInput.jdbcDriverPath;
-        distFile["jdbcData"] = jdbcData;
+        jdbcData["jdbcUrl"] = destInput.jdbcUrl;
+        jdbcData["jdbcUser"] = destInput.jdbcUser;
+        jdbcData["jdbcPassword"] = destInput.jdbcPassword;
+        jdbcData["jdbcDriverPath"] = destInput.jdbcDriverPath;
+        destFile["jdbcData"] = jdbcData;
     }
 
-    distFile["transformations"] = distInput.transformations;
-    filesCompareData["distFile"] = distFile;
+    destFile["transformations"] = destInput.transformations;
+    filesCompareData["destFile"] = destFile;
 
     filesCompareData["matchBoth"] = matchBoth;
 

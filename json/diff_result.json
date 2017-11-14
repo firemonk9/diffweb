@@ -10,7 +10,7 @@
                     "badCols": [
                         "age"
                     ],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "name",
                             "colType": "string",
@@ -56,10 +56,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(name:david \t , age:29 \t , zip:2311 \t , location:NC \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "name",
@@ -78,7 +78,7 @@
             "computedUnmatchPair": [
                 {
                     "badCols": [],
-                    "distFormatted": [
+                    "destFormatted": [
                         {
                             "col": "name",
                             "colType": "string",
@@ -102,10 +102,10 @@
                     ]
                 }
             ],
-            "dist": [
+            "dest": [
                 "Vector(name:don \t , age:25 \t , zip:2311 \t , location:SC \t )\n"
             ],
-            "distRecordsCount": 1,
+            "destRecordsCount": 1,
             "key": [
                 {
                     "col": "name",
@@ -118,12 +118,12 @@
             "totalRecordsMatched": 0
         }
     ],
-    "distPath": "/data/input/person.csv",
-    "distRowCount": 4,
+    "destPath": "/data/input/person.csv",
+    "destRowCount": 4,
     "inputData": {
         "compareColumns": false,
         "compareCommonColumnsOnly": false,
-        "distFile": {
+        "destFile": {
             "excludeColmns": [],
             "header": true,
             "srcDelimiter": ",",
@@ -159,14 +159,14 @@
         "columnsNotMatchingMap": {
             "age": 1
         },
-        "distDuplicateRecords": -1,
-        "distKeyCount": 3,
-        "distRecordsCount": 4,
+        "destDuplicateRecords": -1,
+        "destKeyCount": 3,
+        "destRecordsCount": 4,
         "srcDuplicateRecords": -1,
         "srcKeyCount": 3,
         "srcRecordsCount": 4,
-        "totalDistRecordsMatching": 2,
-        "totalDistRecordsNotMatching": 2,
+        "totalDestRecordsMatching": 2,
+        "totalDestRecordsNotMatching": 2,
         "totalSrcRecordsMatching": 2,
         "totalSrcRecordsNotMatching": 1
     }

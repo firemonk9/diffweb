@@ -14,9 +14,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
 
-    <link rel="stylesheet" href="../dist/css/sb-admin-2.css">
-    <link rel="stylesheet" href="../dist/css/bootstrap-tagsinput.css">
-    <link rel="stylesheet" href="../dist/css/custom.css">
+    <link rel="stylesheet" href="../dest/css/sb-admin-2.css">
+    <link rel="stylesheet" href="../dest/css/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="../dest/css/custom.css">
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- Select CSS -->
@@ -32,16 +32,16 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
-    <script src="../dist/js/bootstrap-tagsinput.min.js"></script>
-    <script src="../dist/js/bootstrap-tagsinput-angular.min.js"></script>
+    <script src="../dest/js/bootstrap-tagsinput.min.js"></script>
+    <script src="../dest/js/bootstrap-tagsinput-angular.min.js"></script>
 
     <!-- Select JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
-    <script src="../dist/js/bootstrap-table-export.js"></script>
+    <script src="../dest/js/bootstrap-table-export.js"></script>
     <script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 
-    <script src="../dist/js/app.js"></script>
+    <script src="../dest/js/app.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -62,7 +62,7 @@
             left: 50%;
             margin-left: -50px;
             margin-top: -50px;
-            background: url('../dist/img/loading.gif');
+            background: url('../dest/img/loading.gif');
             background-size: 100%;
         }
     </style>
@@ -73,7 +73,7 @@
         var interval = 10000;
 
         // Class Job
-        function Job(name, src, dest, submitTime, BeginTime,EndTime,Status,Result,jobId, input, srcColumns, distColumns) {
+        function Job(name, src, dest, submitTime, BeginTime,EndTime,Status,Result,jobId, input, srcColumns, destColumns) {
             this.name = name;
             this.src = src;
             this.dest = dest;
@@ -85,7 +85,7 @@
             this.jobId = jobId;
             this.input = input;
             this.srcColumns = srcColumns;
-            this.distColumns = distColumns;
+            this.destColumns = destColumns;
         }
 
         // -- Table Functions -- //
@@ -231,7 +231,7 @@
                         var eTime = new Date(tmp.endTime);
                         //tmp.endTime = eTime.toLocaleString('en-GB');
                         tmp.endTime = eTime.getFullYear() + "/" + ("0" + (eTime.getMonth() + 1)).slice(-2) + "/" + ("0" + eTime.getDate()).slice(-2) + " " + ("0" + eTime.getHours()).slice(-2) + ":" + ("0" + eTime.getMinutes()).slice(-2) + ":" + ("0" + eTime.getSeconds()).slice(-2);
-                        var tdData=new Job(tmp.input.name == null ? "No name" : tmp.input.name,tmp.input.srcFile.datasetPath, tmp.input.distFile.datasetPath, tmp.submittedTime, tmp.beginTime, tmp.endTime,tmp.status == "" ? "RUNNING" : tmp.status, tmp.dataMatch, tmp.jobId, tmp.input, tmp.srcColumns, tmp.distColumns);
+                        var tdData=new Job(tmp.input.name == null ? "No name" : tmp.input.name,tmp.input.srcFile.datasetPath, tmp.input.destFile.datasetPath, tmp.submittedTime, tmp.beginTime, tmp.endTime,tmp.status == "" ? "RUNNING" : tmp.status, tmp.dataMatch, tmp.jobId, tmp.input, tmp.srcColumns, tmp.destColumns);
                         tableData.push(tdData);
                     }
                     setTable(tableData);

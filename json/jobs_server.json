@@ -4,7 +4,7 @@
     "sourceCount": 20,
     "beginTime": 1486872379172,
     "endTime": 1486872395272,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "458876543527334-DIFF-0",
     "submittedTime": 1486872357293,
     "input": {
@@ -13,10 +13,10 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -37,7 +37,7 @@
     "sourceCount": 20,
     "beginTime": 1486871418180,
     "endTime": 1486871434408,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "457910795369094-DIFF-0",
     "submittedTime": 1486871391541,
     "input": {
@@ -46,10 +46,10 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -70,7 +70,7 @@
     "sourceCount": 20,
     "beginTime": 1486871371170,
     "endTime": 1486871387785,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "457868118414506-DIFF-0",
     "submittedTime": 1486871348881,
     "input": {
@@ -79,10 +79,10 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -103,7 +103,7 @@
     "sourceCount": 20,
     "beginTime": 1486872610473,
     "endTime": 1486872625501,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "459077728782021-DIFF-0",
     "submittedTime": 1486872586768,
     "input": {
@@ -112,10 +112,10 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -136,7 +136,7 @@
     "sourceCount": 20,
     "beginTime": 1486589920763,
     "endTime": 1486589939155,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "176319690482718-DIFF-0",
     "submittedTime": 0,
     "input": {
@@ -145,9 +145,9 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -171,10 +171,10 @@
       },
       "columnMapping": [{
         "srcColumn": "phone",
-        "distColumn": "phone"
+        "destColumn": "phone"
       }, {
         "srcColumn": "date",
-        "distColumn": "date"
+        "destColumn": "date"
       }]
     }
   }, {
@@ -182,7 +182,7 @@
     "sourceCount": 20,
     "beginTime": 1486589873634,
     "endTime": 1486589892083,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "176314769628095-DIFF-0",
     "submittedTime": 0,
     "input": {
@@ -191,9 +191,9 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -217,10 +217,10 @@
       },
       "columnMapping": [{
         "srcColumn": "phone",
-        "distColumn": "phone"
+        "destColumn": "phone"
       }, {
         "srcColumn": "date",
-        "distColumn": "date"
+        "destColumn": "date"
       }]
     }
   }, {
@@ -228,7 +228,7 @@
     "sourceCount": 20,
     "beginTime": 1486872651889,
     "endTime": 1486872667543,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "459115108230547-DIFF-0",
     "submittedTime": 1486872626134,
     "input": {
@@ -237,10 +237,10 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -261,7 +261,7 @@
     "sourceCount": 20,
     "beginTime": 1486872792760,
     "endTime": 1486872808322,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "459288739139661-DIFF-0",
     "submittedTime": 1486872769485,
     "input": {
@@ -270,10 +270,10 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -294,7 +294,7 @@
     "sourceCount": 20,
     "beginTime": 1486769358835,
     "endTime": 1486769374195,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "355812103650623-DIFF-0",
     "submittedTime": 1486769334843,
     "input": {
@@ -303,9 +303,9 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -329,10 +329,10 @@
       },
       "columnMapping": [{
         "srcColumn": "phone",
-        "distColumn": "phone"
+        "destColumn": "phone"
       }, {
         "srcColumn": "date",
-        "distColumn": "date"
+        "destColumn": "date"
       }]
     }
   }, {
@@ -340,7 +340,7 @@
     "sourceCount": 20,
     "beginTime": 1486604975933,
     "endTime": 1486604992288,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "191472966021392-DIFF-0",
     "submittedTime": 0,
     "input": {
@@ -349,9 +349,9 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -375,10 +375,10 @@
       },
       "columnMapping": [{
         "srcColumn": "phone",
-        "distColumn": "phone"
+        "destColumn": "phone"
       }, {
         "srcColumn": "date",
-        "distColumn": "date"
+        "destColumn": "date"
       }]
     }
   }, {
@@ -386,7 +386,7 @@
     "sourceCount": 20,
     "beginTime": 1486589818327,
     "endTime": 1486589838237,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "176311019072302-DIFF-0",
     "submittedTime": 0,
     "input": {
@@ -395,9 +395,9 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -421,14 +421,14 @@
       },
       "columnMapping": [{
         "srcColumn": "phone",
-        "distColumn": "phone"
+        "destColumn": "phone"
       }, {
         "srcColumn": "date",
-        "distColumn": "date"
+        "destColumn": "date"
       }]
     }
   }, {
-    "errorMsg": "Input path does not exist: hdfs://quickstart.cloudera:8020/user/cloudera/input/golden_dist123.csv",
+    "errorMsg": "Input path does not exist: hdfs://quickstart.cloudera:8020/user/cloudera/input/golden_dest123.csv",
     "result": false,
     "beginTime": 1486769603672,
     "endTime": 1486769608153,
@@ -440,9 +440,9 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist123.csv",
+        "srcPath": "/user/cloudera/input/golden_dest123.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -466,10 +466,10 @@
       },
       "columnMapping": [{
         "srcColumn": "phone",
-        "distColumn": "phone"
+        "destColumn": "phone"
       }, {
         "srcColumn": "date",
-        "distColumn": "date"
+        "destColumn": "date"
       }]
     }
   }, {
@@ -477,7 +477,7 @@
     "sourceCount": 20,
     "beginTime": 1486872693409,
     "endTime": 1486872708981,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "459158816655505-DIFF-0",
     "submittedTime": 1486872668226,
     "input": {
@@ -486,10 +486,10 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -510,7 +510,7 @@
     "sourceCount": 20,
     "beginTime": 1486769316664,
     "endTime": 1486769333193,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "355810173300463-DIFF-0",
     "submittedTime": 1486769291178,
     "input": {
@@ -519,9 +519,9 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -545,10 +545,10 @@
       },
       "columnMapping": [{
         "srcColumn": "phone",
-        "distColumn": "phone"
+        "destColumn": "phone"
       }, {
         "srcColumn": "date",
-        "distColumn": "date"
+        "destColumn": "date"
       }]
     }
   }, {
@@ -556,7 +556,7 @@
     "sourceCount": 20,
     "beginTime": 1486947608465,
     "endTime": 1486947624163,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "534105556613010-DIFF-0",
     "submittedTime": 1486947586310,
     "input": {
@@ -565,10 +565,10 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -589,7 +589,7 @@
     "sourceCount": 20,
     "beginTime": 1486872570568,
     "endTime": 1486872585634,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "459058203708158-DIFF-0",
     "submittedTime": 1486872545007,
     "input": {
@@ -598,10 +598,10 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -622,7 +622,7 @@
     "sourceCount": 20,
     "beginTime": 1486871702783,
     "endTime": 1486871718888,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "458197534134853-DIFF-0",
     "submittedTime": 1486871678291,
     "input": {
@@ -631,10 +631,10 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -655,7 +655,7 @@
     "sourceCount": 20,
     "beginTime": 1486872527455,
     "endTime": 1486872544244,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "459022366693240-DIFF-0",
     "submittedTime": 1486872503124,
     "input": {
@@ -664,10 +664,10 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -688,7 +688,7 @@
     "sourceCount": 20,
     "beginTime": 1486609216243,
     "endTime": 1486609233717,
-    "distCount": 19,
+    "destCount": 19,
     "jobId": "195710771758976-DIFF-0",
     "submittedTime": 1486609191705,
     "input": {
@@ -697,9 +697,9 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": false,
-      "distFile": {
+      "destFile": {
         "excludeColmns": [],
-        "srcPath": "/user/cloudera/input/golden_dist.csv",
+        "srcPath": "/user/cloudera/input/golden_dest.csv",
         "transformations": [],
         "header": true,
         "srcFormat": "CSV",
@@ -723,10 +723,10 @@
       },
       "columnMapping": [{
         "srcColumn": "phone",
-        "distColumn": "phone"
+        "destColumn": "phone"
       }, {
         "srcColumn": "date",
-        "distColumn": "date"
+        "destColumn": "date"
       }]
     }
   }]

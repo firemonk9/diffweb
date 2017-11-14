@@ -5,7 +5,7 @@
     "sourceCount": 3,
     "beginTime": 0,
     "endTime": 0,
-    "distCount": 3,
+    "destCount": 3,
     "jobId": "564321384828190-DIFF-0",
     "submittedTime": 0,
     "input": {
@@ -15,7 +15,7 @@
       "matchBoth": true,
       "primaryKey": ["A"],
       "validateRowsCount": true,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
         "srcPath": "/data/input/a.csv",
@@ -39,7 +39,7 @@
     "sourceCount": 4,
     "beginTime": 0,
     "endTime": 0,
-    "distCount": 4,
+    "destCount": 4,
     "jobId": "564585240108384-DIFF-0",
     "submittedTime": 0,
     "input": {
@@ -49,7 +49,7 @@
       "matchBoth": true,
       "primaryKey": ["name"],
       "validateRowsCount": true,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
         "srcPath": "/data/input/person.csv",
@@ -73,7 +73,7 @@
     "sourceCount": 3,
     "beginTime": 0,
     "endTime": 0,
-    "distCount": 3,
+    "destCount": 3,
     "jobId": "125394724530082-DIFF-1",
     "submittedTime": 0,
     "input": {
@@ -82,7 +82,7 @@
       "process": true,
       "matchBoth": true,
       "validateRowsCount": true,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
         "srcPath": "/data/input/a.csv",
@@ -106,7 +106,7 @@
     "sourceCount": 3,
     "beginTime": 0,
     "endTime": 0,
-    "distCount": 3,
+    "destCount": 3,
     "jobId": "156087644312846-DIFF-0",
     "submittedTime": 0,
     "input": {
@@ -116,7 +116,7 @@
       "matchBoth": true,
       "primaryKey": ["A"],
       "validateRowsCount": true,
-      "distFile": {
+      "destFile": {
         "useOtherSchema": false,
         "excludeColmns": [],
         "srcPath": "/data/input/a.csv",
