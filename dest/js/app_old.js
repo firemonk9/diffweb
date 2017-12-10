@@ -1,7 +1,7 @@
 var server = "127.0.0.1";
 //var server = "35.187.200.200";
 
-var toolname = "DiffTool";
+var toolname = "DataQ";
 
 var Base64 = {
     _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
