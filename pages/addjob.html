@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-	
+
 <head>
 
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">
-	<meta name="author" content="">
+	<meta name="author" content="Vikas" >
 
 	<title>Add Job</title>
 	<link rel="shortcut icon" href="https://static.wixstatic.com/media/9815c9_642c9beb50dd45339ddfa02bba2a1182%7Emv2.png/v1/fill/w_32%2Ch_32%2Clg_1%2Cusm_0.66_1.00_0.01/9815c9_642c9beb50dd45339ddfa02bba2a1182%7Emv2.png" type="image/png">
@@ -115,7 +115,7 @@
 		}
 	</style>
 </head>
-	
+
 <body>
 	<script type="text/javascript">
 		$(document).on('mouseenter', ".datapath-tiff", function () {
@@ -164,7 +164,10 @@
 				$('#src_jdbc_pass').hide();
 				$('#src_jdbc_table').hide();
 				$('#src_jdbc_driver').hide();
-
+				$('#src_jdbc_pcolumn').hide();
+				$('#src_jdbc_pthread').hide();
+				$('#src_jdbc_minValue').hide();
+				$('#src_jdbc_maxValue').hide();
 				$('#src_progress').hide();
 				$('#src_table_panel').hide();
 				$('#src_form_panel').show();
@@ -178,7 +181,10 @@
 				$('#dest_jdbc_pass').hide();
 				$('#dest_jdbc_table').hide();
 				$('#dest_jdbc_driver').hide();
-
+				$('#dest_jdbc_pcolumn').hide();
+				$('#dest_jdbc_pthread').hide();
+				$('#dest_jdbc_minValue').hide();
+				$('#dest_jdbc_maxValue').hide();
 				$('#dest_progress').hide();
 				$('#dest_table_panel').hide();
 				$('#dest_form_panel').show();
@@ -195,7 +201,10 @@
 				$('#src_jdbc_pass').hide();
 				$('#src_jdbc_table').hide();
 				$('#src_jdbc_driver').hide();
-
+				$('#src_jdbc_pcolumn').hide();
+				$('#src_jdbc_pthread').hide();
+				$('#src_jdbc_minValue').hide();
+				$('#src_jdbc_maxValue').hide();
 				$('#src_progress').hide();
 				$('#src_table_panel').hide();
 			} else if (type === 2) {
@@ -211,7 +220,10 @@
 				$('#dest_jdbc_pass').hide();
 				$('#dest_jdbc_table').hide();
 				$('#dest_jdbc_driver').hide();
-
+				$('#dest_jdbc_pcolumn').hide();
+				$('#dest_jdbc_pthread').hide();
+				$('#dest_jdbc_minValue').hide();
+				$('#dest_jdbc_maxValue').hide();
 				$('#dest_progress').hide();
 				$('#dest_table_panel').hide();
 			}
@@ -280,7 +292,18 @@
 				);
 			}
 		}
-
+	function enableDisableJobResource(){
+		if (getCookie("localMode") == "true" || getCookie("localMode") == '')
+		{
+		$("#jobResourceId").show();
+		$("#numExecutorsId").val(2);
+		$("#executorCoresId").val(2);
+		$("#executorMemoryId").val(4);
+			}
+		else {
+	$("#jobResourceId").show();
+			}
+		}
 		function submitJobJson() {
 			var data = getInputData(srcRecordCnt != destRecordCnt);
 			if (data.compareKey.length <= 0) {
@@ -563,6 +586,7 @@
 			$('#dest_file_path').show();
 			$('#dest_file_format').show();
 			$('#dest_form_panel').show();
+
 		}
 
 		function resetData() {
@@ -670,6 +694,32 @@
 						swal("Validation Error", "You should input table.", "error");
 						return;
 					}
+					var minValue=$('#src_minValue').val();
+					var maxValue=$('#src_maxValue').val();
+					var partitionColumn=$('#src_partitionColumn').val();
+					var numPartitions=$('#src_numPartitions').val();
+			 if((minValue==""|| maxValue==""||partitionColumn==""||numPartitions!="")||
+								(minValue==""|| maxValue==""||partitionColumn!=""||numPartitions=="")||
+								(minValue==""|| maxValue!=""||partitionColumn==""||numPartitions=="")||
+								(minValue!=""|| maxValue==""||partitionColumn==""||numPartitions==""))
+					{
+						swal("Validation Error", "You should input fields value for Partition Column,Parallel Threads , Column Min Value and Column Max Value , .", "error");
+						return;
+					}else if((minValue==""|| maxValue==""||partitionColumn!=""||numPartitions!="")||
+								(minValue!=""|| maxValue!=""||partitionColumn==""||numPartitions=="")||
+								(minValue==""|| maxValue!=""||partitionColumn!=""||numPartitions=="")||
+								(minValue!=""|| maxValue==""||partitionColumn==""||numPartitions!=""))
+					{
+					swal("Validation Error", "You should input fields value for Partition Column,Parallel Threads , Column Min Value and Column Max Value , .", "error");
+						return;
+					}else if((minValue!=""|| maxValue!=""||partitionColumn!=""||numPartitions=="")||
+					(minValue!=""|| maxValue!=""||partitionColumn==""||numPartitions!="")||
+					(minValue!=""|| maxValue==""||partitionColumn!=""||numPartitions!="")||
+					(minValue==""|| maxValue!=""||partitionColumn!=""||numPartitions!=""))
+					{
+					swal("Validation Error", "You should input fields value for Partition Column,Parallel Threads , Column Min Value and Column Max Value , .", "error");
+						return;
+					}
 					var jdbcData = {};
 					if (getCookie("localMode") != "true") {
 						if ($('#src_driver').val() == '') {
@@ -683,9 +733,48 @@
 					jdbcData["jdbcUrl"] = $('#src_url').val();
 					jdbcData["jdbcUser"] = $('#src_user').val();
 					jdbcData["jdbcPassword"] = $('#src_pass').val();
+					jdbcData["min"] = $('#src_minValue').val();
+					jdbcData["max"] = $('#src_maxValue').val();
+					jdbcData["partitionColumn"] = $('#src_partitionColumn').val();
+					jdbcData["numPartitions"] = $('#src_numPartitions').val();
 					params["jdbcData"] = jdbcData;
 					params["datasetPath"] = $('#src_jtable').val();
-				} else {
+				} else if(format=="HIVE"){
+
+				var dataTransformRule={};
+
+			if ($("#src_radio_table").is(':checked')) {
+
+					if($("#src_table_path").val()=='')
+					{
+						swal("Validation Error", "You should input table Details.", "error");
+						return;
+					}
+					else {
+					params["datasetPath"]=$("#src_table_path").val();
+				}
+			}
+				else if($("#src_radio_sql").is(':checked')){
+					if ($("#src_sql_path").val()=='') {
+							swal("Validation Error", "You should input sql details.", "error");
+							return;
+						}
+
+			else {
+
+
+				params["dataSetPath"]=$("#src_sql_path").val();
+				params["transformSQL"]=true;
+
+			}
+				//alert("hiveData "+JSON.stringify(params));
+				}
+				else {
+					swal("Validation Error", "You should select radio.", "error");
+					return;
+				}
+				}
+				else {
 					params["datasetPath"] = $('#src_path').val();
 					if (params["datasetPath"] == '') {
 						swal("Validation Error", "You should input data path.", "error");
@@ -694,7 +783,7 @@
 				}
 
 				var jsonStr = JSON.stringify(params);
-
+				//alert(jsonStr);
 				$('#src_form_panel').hide();
 				$('#src_progress').show();
 				srcAjax = $.ajax({
@@ -764,6 +853,32 @@
 						swal("Validation Error", "You should input table.", "error");
 						return;
 					}
+					var minValue=$('#dest_minValue').val();
+					var maxValue=$('#dest_maxValue').val();
+					var partitionColumn=$('#dest_partitionColumn').val();
+					var numPartitions=$('#dest_numPartitions').val();
+			if((minValue==""|| maxValue==""||partitionColumn==""||numPartitions!="")||
+								(minValue==""|| maxValue==""||partitionColumn!=""||numPartitions=="")||
+								(minValue==""|| maxValue!=""||partitionColumn==""||numPartitions=="")||
+								(minValue!=""|| maxValue==""||partitionColumn==""||numPartitions==""))
+					{
+						swal("Validation Error", "You should input fields value for Partition Column,Parallel Threads , Column Min Value and Column Max Value , .", "error");
+						return;
+					}else if((minValue==""|| maxValue==""||partitionColumn!=""||numPartitions!="")||
+								(minValue!=""|| maxValue!=""||partitionColumn==""||numPartitions=="")||
+								(minValue==""|| maxValue!=""||partitionColumn!=""||numPartitions=="")||
+								(minValue!=""|| maxValue==""||partitionColumn==""||numPartitions!=""))
+					{
+					swal("Validation Error", "You should input fields value for Partition Column,Parallel Threads , Column Min Value and Column Max Value , .", "error");
+						return;
+					}else if((minValue!=""|| maxValue!=""||partitionColumn!=""||numPartitions=="")||
+					(minValue!=""|| maxValue!=""||partitionColumn==""||numPartitions!="")||
+					(minValue!=""|| maxValue==""||partitionColumn!=""||numPartitions!="")||
+					(minValue==""|| maxValue!=""||partitionColumn!=""||numPartitions!=""))
+					{
+					swal("Validation Error", "You should input fields value for Partition Column,Parallel Threads , Column Min Value and Column Max Value , .", "error");
+						return;
+					}
 					var jdbcData = {};
 					if (getCookie("localMode") != "true") {
 						if ($('#dest_driver').val() == '') {
@@ -777,9 +892,52 @@
 					jdbcData["jdbcUrl"] = $('#dest_url').val();
 					jdbcData["jdbcUser"] = $('#dest_user').val();
 					jdbcData["jdbcPassword"] = $('#dest_pass').val();
+					jdbcData["min"] = $('#dest_minValue').val();
+					jdbcData["max"] = $('#dest_maxValue').val();
+					jdbcData["partitionColumn"] = $('#dest_partitionColumn').val();
+					jdbcData["numPartitions"] = $('#dest_numPartitions').val();
+
 					params["jdbcData"] = jdbcData;
+
 					params["datasetPath"] = $('#dest_jtable').val();
-				} else {
+				}
+				else if(format=="HIVE"){
+
+				var dataTransformRule={};
+
+			if ($("#dest_radio_table").is(':checked')) {
+
+					if($("#dest_table_path").val()=='')
+					{
+						swal("Validation Error", "You should input table Details.", "error");
+						return;
+					}
+					else {
+					params["datasetPath"]=$("#dest_table_path").val();
+				}
+			}
+				else if($("#dest_radio_sql").is(':checked')){
+					if ($("#dest_sql_path").val()=='') {
+							swal("Validation Error", "You should input sql details.", "error");
+							return;
+						}
+
+			else {
+
+
+				params["dataSetPath"]=$("#dest_sql_path").val();
+				params["transformSQL"]=true;
+
+			}
+				//alert("hiveData "+JSON.stringify(params));
+				}
+				else {
+					swal("Validation Error", "You should select radio.", "error");
+					return;
+				}
+				}
+
+				 else {
 					params["datasetPath"] = $('#dest_path').val();
 					if (params["datasetPath"] == '') {
 						swal("Validation Error", "You should input data path.", "error");
@@ -878,6 +1036,10 @@
 					$('#src_jdbc_pass').hide();
 					$('#src_jdbc_table').hide();
 					$('#src_jdbc_driver').hide();
+					$('#src_jdbc_pcolumn').hide();
+					$('#src_jdbc_pthread').hide();
+					$('#src_jdbc_minValue').hide();
+					$('#src_jdbc_maxValue').hide();
 
 				} else if (selected === "JDBC") {
 					$('#src_file_path').hide();
@@ -890,6 +1052,10 @@
 					$('#src_jdbc_user').show();
 					$('#src_jdbc_pass').show();
 					$('#src_jdbc_table').show();
+					$('#src_jdbc_pcolumn').show();
+					$('#src_jdbc_pthread').show();
+					$('#src_jdbc_minValue').show();
+					$('#src_jdbc_maxValue').show();
 					if (getCookie("localMode") == "true")
 						$('#src_jdbc_driver').hide();
 					else
@@ -916,6 +1082,10 @@
 					$('#dest_jdbc_pass').hide();
 					$('#dest_jdbc_table').hide();
 					$('#dest_jdbc_driver').hide();
+					$('#dest_jdbc_pcolumn').hide();
+					$('#dest_jdbc_pthread').hide();
+					$('#dest_jdbc_minValue').hide();
+					$('#dest_jdbc_maxValue').hide();
 
 				} else if (selected === "JDBC") {
 					$('#dest_file_path').hide();
@@ -928,6 +1098,10 @@
 					$('#dest_jdbc_user').show();
 					$('#dest_jdbc_pass').show();
 					$('#dest_jdbc_table').show();
+					$('#dest_jdbc_pcolumn').show();
+					$('#dest_jdbc_pthread').show();
+					$('#dest_jdbc_minValue').show();
+					$('#dest_jdbc_maxValue').show();
 					if (getCookie("localMode") == "true")
 						$('#dest_jdbc_driver').hide();
 					else
@@ -939,6 +1113,7 @@
 
 			$('#btn_advanced_rules').on('click', function (e) {
 				createListData();
+				enableDisableJobResource();
 				$('#advancedRulesModal').show();
 			});
 
@@ -1259,7 +1434,7 @@
 						</button>
 						<strong>ERROR</strong> <span id="dest_error-msg">Error occures while loading dataaa.</span>
 					</div>
-					
+
 					<div class="alert alert-danger alert-dismissible dest_alert-danger" role="alert" style="display:none;">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -1287,10 +1462,35 @@
 									<!-- CSV -->
 									<div class="form-group required" id="src_file_path">
 										<label class="col-sm-3" id="table">Dataset path</label>
-										<div class="col-sm-6">
+										<div class="col-sm-6" id="src_path_Text">
 										<input type="text" placeholder="Path..." class="form-control" name="src_path" id="src_path"></div>
-									</div>
 									<br><br>
+									</div>
+
+									<!-- Hive -->
+									<form>
+									<div id="src_radio_block" class="form-group" style="display:none" >
+									<div id="src_input_radio" class="radio" style="margin-bottom: 30px;display: inline-block;margin-left: 50px;">
+  									<label id="src_input_label" style="margin-right: 70px"><input id="src_radio_table" type="radio" name="optradio" value="Table" >Table</label>
+										</div>
+									<div id="src_input_radio" class="radio" style="margin-bottom: 30px;display: inline-block;margin-left: 50px;">
+  									<label id="src_input_label" style="margin-right: 70px"><input id="src_radio_sql" type="radio" name="optradio" value="SQL">Sql</label>
+									</div>
+
+									<div class="col-sm-6" style="display:none;margin-left:40px" id="src_table_text">
+										<input type="text" placeholder="Plese Enter Table Details..." class="form-control" name="src_path" id="src_table_path">
+
+										</div>
+
+									<div class="col-sm-6" style="display:none;margin-left:40px" id="src_sql_text">
+										<input type="text" placeholder="Please Enter SQL..." class="form-control" name="src_path" id="src_sql_path">
+
+									</div>
+									<br><br><br>
+									</div>
+								</form>
+									<!-- /#Hive -->
+
 									<div class="form-group" id="src_file_format">
 										<label class="col-sm-3">Dataset Format</label>
 										<div class="col-sm-6">
@@ -1304,8 +1504,9 @@
 												<option>AVRO</option>
 											</select>
 										</div>
+										<br><br>
 									</div>
-									<br><br>
+
 									<!-- CSV -->
 									<div class="form-group required" id="src_file_delimiter">
 										<div class="col-sm-3 tooltipd">
@@ -1372,8 +1573,41 @@
 										<div class="col-sm-6">
 											<input type="text" placeholder="JDBC driver path" class="form-control" name="src_driver" id="src_driver">
 										</div>
-										<br>
+										<br><br>
 									</div>
+
+									<div class="form-group " style="display:none"  id="src_jdbc_pcolumn">
+										<label class="col-sm-3" style="width:23%">Partition Column</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Partition Column..." class="form-control" name="src_driver" id="src_partitionColumn">
+										</div>
+										<br><br>
+									</div>
+
+									<div class="form-group  " style="display:none" id="src_jdbc_pthread">
+										<label class="col-sm-3" style="width:23%">Number of parallel threads</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Number of parallel threads..." class="form-control" name="src_driver" id="src_numPartitions">
+										</div>
+										<br><br><br>
+									</div>
+
+									<div class="form-group  " style="display:none" id="src_jdbc_minValue">
+										<label class="col-sm-3" style="width:23%">Column Minimum value</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Column Minimum value..." class="form-control" name="src_driver" id="src_minValue">
+										</div>
+										<br><br><br>
+									</div>
+
+									<div class="form-group " style="display:none"  id="src_jdbc_maxValue">
+										<label class="col-sm-3" style="width:23%">Column Maximum value</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Column Maximum value..." class="form-control" name="src_driver" id="src_maxValue">
+										</div>
+										<br><br><br>
+									</div>
+
 									<!-- /#JDBC -->
 									<div class="form-group" id="src_validate">
 										<label class="col-sm-3"> </label>
@@ -1405,7 +1639,7 @@
 				</div>
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset:<div id="dest_heading" class="datapath-tiff" style="width:77%; margin-left: 5px"></div></div>
+						<div class="panel-heading" style="font-size: 14px; font-weight: bold;">Destination Dataset:<div id="dest_heading" class="datapath-tiff" style="width:73%; margin-left: 5px"></div></div>
 						<!-- /.panel-heading -->
 						<div class="panel-body" id="dest_form_panel">
 							<div class="row">
@@ -1413,11 +1647,34 @@
 									<!-- CSV -->
 									<div class="form-group required" id="dest_file_path">
 										<label class="col-sm-3" id="table_dest">Dataset path</label>
-										<div class="col-sm-6">
+										<div class="col-sm-6" id="dest_path_Text">
 											<input type="text" placeholder="Path..." class="form-control" name="dest_path" id="dest_path">
 										</div>
+										<br><br>
 									</div>
-									<br><br>
+
+									<!-- Hive -->
+									<form>
+									<div id="dest_radio_block" class="form-group" style="display:none" >
+									<div id="dest_input_radio" class="radio" style="margin-bottom: 30px;display: inline-block;margin-left: 50px;">
+  									<label id="dest_input_label" style="margin-right: 70px"><input id="dest_radio_table" type="radio" name="optradio" value="Table" >Table</label>
+										</div>
+									<div id="dest_input_radio" class="radio" style="margin-bottom: 30px;display: inline-block;margin-left: 50px;">
+  									<label id="dest_input_label" style="margin-right: 70px"><input id="dest_radio_sql" type="radio" name="optradio" value="SQL">Sql</label>
+									</div>
+
+									<div class="col-sm-6" style="display:none;margin-left:40px" id="dest_table_text">
+										<input type="text" placeholder="Plese Enter Table Details..." class="form-control" name="src_path" id="dest_table_path">
+										</div>
+
+									<div class="col-sm-6" style="display:none;margin-left:40px" id="dest_sql_text">
+										<input type="text" placeholder="Please Enter SQL..." class="form-control" name="src_path" id="dest_sql_path">
+									</div>
+									<br><br><br>
+									</div>
+								</form>
+									<!-- /#Hive -->
+
 									<div class="form-group" id="dest_file_format">
 										<label class="col-sm-3">Dataset Format</label>
 										<div class="col-sm-6">
@@ -1431,8 +1688,9 @@
 												<option>AVRO</option>
 											</select>
 										</div>
+										<br><br>
 									</div>
-									<br><br>
+
 									<!-- CSV -->
 									<div class="form-group required" id="dest_file_delimiter">
 									<div class="col-sm-3 tooltipd">
@@ -1497,8 +1755,41 @@
 										<div class="col-sm-6">
 											<input type="text" placeholder="JDBC driver path..." class="form-control" name="dest_driver" id="dest_driver">
 										</div>
-										<br>
+										<br><br>
 									</div>
+
+									<div class="form-group" style="display:none"  id="dest_jdbc_pcolumn">
+										<label class="col-sm-3" style="width:23%">Partition Column</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Partition Column..." class="form-control" name="dest_driver" id="dest_partitionColumn">
+										</div>
+										<br><br>
+									</div>
+
+									<div class="form-group" style="display:none"  id="dest_jdbc_pthread">
+										<label class="col-sm-3" style="width:23%">Number of parallel threads</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Number of parallel threads..." class="form-control" name="dest_driver" id="dest_numPartitions">
+										</div>
+										<br><br><br>
+									</div>
+
+									<div class="form-group" style="display:none"  id="dest_jdbc_minValue">
+										<label class="col-sm-3" style="width:23%">Column Minimum value</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Column Minimum value..." class="form-control" name="dest_driver" id="dest_minValue">
+										</div>
+										<br><br><br><br>
+									</div>
+
+									<div class="form-group" style="display:none" id="dest_jdbc_maxValue">
+										<label class="col-sm-3" style="width:23%">Column Maximum value</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Column Maximum value..." class="form-control" name="dest_driver" id="dest_maxValue">
+										</div>
+										<br><br>
+									</div>
+
 									<!-- /#JDBC -->
 									<div class="form-group" id="dest_validate">
 										<label class="col-sm-3"> </label>
@@ -1744,7 +2035,7 @@
 															</div>
 																																		<div class="modal-body">
 																		<p>	<b>Transformations</b> : DiffTool provides ability to transform the columns before comparing. Transformation rule can be applied to one or more columns. The transformations can be applied using SQL functions. Below are some examples :</p>
-																		
+
 																		<table class="table2" style="width:100%">
 																			<th>Example Transformations</th>
 																			<th>SQL Functions</th>
@@ -1780,14 +2071,14 @@ Note : column “name” should already exist and be marked for comparision.</td
 																				</td>
 																			</tr>
 																		</table>
-																		
+
 																		<style>
 																			table.table2 tr {
 																			text-transform: none;
 																			}
 																			table.table2 th{border: 1px solid black;
 																			border-collapse: collapse;padding: 6px;}
-																			
+
 																			table.table2 td{border: 1px solid black;
 																			border-collapse: collapse;padding: 6px;}
 																		</style>
@@ -1805,9 +2096,64 @@ Note : column “name” should already exist and be marked for comparision.</td
 
 										</div>
 									</div>
+
 								</div>
+								<div class="panel panel-default" id="jobResourceId"style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
+								<div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSix">
+										<h3 class="panel-title accordion-toggle">Job Resources</h3>
+									</div>
+									<div id="collapseSix" class="panel-collapse collapse">
+										<div class="panel-body">
+											<div class="col-md-12">
+												<div class="col-md-6">
+
+													<div class="form-group row" style="margin-top: 15px;">
+
+														<div>
+														<label class="col-sm-4">Number of Java process to run in parallel</label>
+															<div class="col-sm-8">
+																<input type="number" min="1" step="1"  id="numExecutorsId" class="form-control " placeholder="Enter Java process to run in parallel" >
+															</div>
+
+														</div>
+
+
+													</div>
+											</div>
+												<div class="col-md-6">
+
+													<div class="form-group row" style="margin-top: 15px;">
+
+														<div>
+														<label class="col-sm-4">Number of threads in each java process</label>
+														<div class="col-sm-8">
+															<input type="number" min="1" step="1"  id="executorCoresId" class="form-control " placeholder="Enter Number of threads" >
+														</div>
+
+														</div>
+
+													</div>
+											</div>
+												<div class="col-md-6">
+
+													<div class="form-group row" style="margin-top: 15px;">
+
+														<div>
+														<label class="col-sm-4">Memory for each java process (GB)</label>
+														<div class="col-sm-8">
+															<input type="number" min="1" step="1"  id="executorMemoryId" class="form-control src_trans_rule" placeholder="Please Enter Memory for each java process" >
+														</div>
+
+														</div>
+													</div>
+											</div>
+											</div>
+											</div>
+											</div>
 							</div>
-							
+
+							</div>
+
 							<!--changes-->
 					<!-- 			<div id ="cluster_resources" class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
 								<div class="panel-heading" data-toggle="collapse" data-parent="#accordion"data-target="#cluster">
@@ -1815,7 +2161,7 @@ Note : column “name” should already exist and be marked for comparision.</td
 									</div>
 									<div id="cluster" class="panel-collapse collapse">
 										<div class="panel-body">
-									
+
 									 <div class="col-md-12" style="margin-bottom: 25px;">
 												<div class="form-group">
 													<label class="col-sm-4">Number of Executors</label>
@@ -1824,7 +2170,7 @@ Note : column “name” should already exist and be marked for comparision.</td
 													</div>
 												</div>
 											</div><br><br>
-											
+
 											<div class="col-md-12">
 												<div class="form-group">
 													<label class="col-sm-4">Executor Memory</label>
@@ -1834,7 +2180,7 @@ Note : column “name” should already exist and be marked for comparision.</td
 													<br><br>
 												</div>
 											</div>
-											
+
 											<div class="col-md-12" style="margin-bottom: 25px;">
 												<div class="form-group">
 													<label class="col-sm-4">Number of cores per executor</label>
@@ -1843,16 +2189,16 @@ Note : column “name” should already exist and be marked for comparision.</td
 													</div>
 												</div>
 											</div>
-									
-									
+
+
 										</div>
-									
+
 									</div>
 								</div> -->
-								
-									
-											
-								
+
+
+
+
 								<!--end changes-->
 							<div class="panel-body">
 								<div class="col-md-12">
@@ -1996,8 +2342,8 @@ Note : column “name” should already exist and be marked for comparision.</td
 	//alert(getCookie("localMode"));
 	/* to hide hive on localhost for SRC*/
 	if (getCookie("localMode") == "true" || getCookie("localMode") == ''){
-		$('#select_src_type #src_orc').hide();
-		$('#select_src_type #src_hive').hide();
+		$('#select_src_type #src_orc').show();
+		$('#select_src_type #src_hive').show();
 	}else{
 		$('#select_src_type #src_orc').show();
 		$('#select_src_type #src_hive').show();
@@ -2005,8 +2351,8 @@ Note : column “name” should already exist and be marked for comparision.</td
 
 	/* to hide hive on localhost for dest*/
 	if (getCookie("localMode") == "true" || getCookie("localMode") == ''){
-		$('#select_dest_type #dest_orc').hide();
-		$('#select_dest_type #dest_hive').hide();
+		$('#select_dest_type #dest_orc').show();
+		$('#select_dest_type #dest_hive').show();
 	}else{
 		$('#select_dest_type #dest_orc').show();
 		$('#select_dest_type #dest_hive').show();
@@ -2016,22 +2362,94 @@ Note : column “name” should already exist and be marked for comparision.</td
 
 	$('select#select_src_type').on('change', function() {
 		if( this.value == 'HIVE' ){
-			$('#table').text('Table');
+			$('#table').text('Dataset Input');
+			$('#src_radio_block').show();
+			$("#src_path_Text").hide();
+
 		}
 		else{
 			$('#table').text('Dataset path');
+			$("#src_path_Text").show();
+			$('#src_radio_block').hide();
+			$("#src_table_text").hide();
+			$("#src_sql_text").hide();
+			$("#src_table_path").hide();
+			$("#src_sql_path").hide();
 		}
 	})
+
+$('#src_radio_table').on('change', function() {
+//alert("test==>"+$("#src_radio_value").val());
+if($("#src_radio_table").val()=="Table")
+			{
+			$("#src_table_text").show();
+			$("#src_sql_text").hide();
+			$("#src_table_path").show();
+			$("#src_sql_path").hide();
+			$("#src_sql_path").val("");
+			}
+
+
+})
+
+$('#src_radio_sql').on('change', function() {
+//alert("test==>"+$("#src_radio_sql").val());
+if($("#src_radio_sql").val()=="SQL")
+			{
+
+			$("#src_table_text").hide();
+			$("#src_sql_text").show();
+			$("#src_table_path").hide();
+			$("#src_sql_path").show();
+			$("#src_table_path").val("");
+			}
+
+})
 
 	$('select#select_dest_type').on('change', function() {
 		if( this.value == 'HIVE' ){
-			$('#table_dest').text('Table');
+			$('#table_dest').text('Dataset Input');
+         $('#dest_radio_block').show();
+			$("#dest_path_Text").hide();
+
+
 		}
 		else{
 			$('#table_dest').text('Dataset path');
+			$("#dest_path_Text").show();
+			$('#dest_radio_block').hide();
+			$("#dest_table_text").hide();
+			$("#dest_sql_text").hide();
+			$("#dest_table_path").hide();
+			$("#dest_sql_path").hide();
 		}
 	})
 
+$('#dest_radio_table').on('change', function() {
+//alert("test==>"+$("#src_radio_value").val());
+if($("#dest_radio_table").val()=="Table")
+			{
+			$("#dest_table_text").show();
+			$("#dest_sql_text").hide();
+			$("#dest_table_path").show();
+			$("#dest_sql_path").hide();
+			}
+
+
+})
+
+$('#dest_radio_sql').on('change', function() {
+//alert("test==>"+$("#src_radio_value2").val());
+if($("#dest_radio_sql").val()=="SQL")
+			{
+
+			$("#dest_table_text").hide();
+			$("#dest_sql_text").show();
+			$("#dest_table_path").hide();
+			$("#dest_sql_path").show();
+			}
+
+})
 	/* close the model*/
 	$("button[data-dismiss-modal=modal2]").click(function () {
 		$('#what1').modal('hide');
@@ -2067,10 +2485,10 @@ Note : column “name” should already exist and be marked for comparision.</td
 	width: 52% !important;
 	}
 	.modal { overflow: auto !important; }
-	
+
 	.ui-state-highlight { background: #A9A9A9 !important; border-color: #A9A9A9 !important }
 	.accordion-toggle:after {
-	
+
 	font-family:'FontAwesome';
 	content:"\f077";
 	float: right;
@@ -2078,11 +2496,11 @@ Note : column “name” should already exist and be marked for comparision.</td
 	}
 	.accordion-toggle:after {
 	font-family: 'FontAwesome';
-	content: "\f078";    
+	content: "\f078";
 	float: right;
 	}
-	.accordion-opened-addjob .accordion-toggle:after {    
-	content: "\f077";    
+	.accordion-opened-addjob .accordion-toggle:after {
+	content: "\f077";
 	}
 	.panel-heading {
 	cursor: pointer;
@@ -2094,7 +2512,7 @@ Note : column “name” should already exist and be marked for comparision.</td
 	.tooltipd {
     position: relative;
     display: inline-block;
-    
+
 }
 
 .tooltipd .tooltiptext {
@@ -2138,7 +2556,7 @@ Note : column “name” should already exist and be marked for comparision.</td
 
 
 
-	
+
 </style>
 
 </html>

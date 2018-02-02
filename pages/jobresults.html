@@ -53,16 +53,33 @@
 				}
 				
 				$("#btn_edit_job").click(function() {
+				
 					var uri = window.location.href;
 					var add = "&edit=true";
 					window.location.href = uri + add;
+					
 					$('#advancedRulesModal').show();
+					
 				});	
 				
 				$("#btn_edit").click(function() {
 					$('#advancedRulesModal').show();
+					
+					
 				});	
+				if (getCookie("localMode") == "true" || getCookie("localMode") == '')
+				{		
+					$('#jobResourceId').show();
+					$('#numExecutorsId').val(2);
+					$('#executorCoresId').val(2);
+					$('#executorMemoryId').val(4);
+					}
+				else {
+					$('#jobResourceId').show();
+					}
+					
 			});
+			
 		</script>
 		
 		<style>
@@ -1785,12 +1802,68 @@ Note : column “name” should already exist and be marked for comparision.</td
 															</div>
 														</div>
 													</div>
+							
+													
 													<div class="col-md-12">
 														<img src="../dest/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what2" />
 													</div>
 												</div>
 											</div>
 										</div>
+										<div class="panel panel-default" id="jobResourceId" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
+								<div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseSix">
+										<h3 class="panel-title accordion-toggle">Job Resources</h3>
+									</div>
+									<div id="collapseSix" class="panel-collapse collapse">
+										<div class="panel-body">
+											<div class="col-md-12">
+												<div class="col-md-6">
+												
+													<div class="form-group row" style="margin-top: 15px;">
+														
+														<div>
+														<label class="col-sm-4">Number of Java process to run in parallel</label>
+															<div class="col-sm-8">
+																<input type="number" min="1" step="1" id="numExecutorsId" class="form-control dest_trans_rule" placeholder="Enter Number of Java process " >
+															</div>
+															
+														</div>
+														
+														
+													</div>
+											</div>
+												<div class="col-md-6">
+												
+													<div class="form-group row" style="margin-top: 15px;">
+																				
+														<div>
+														<label class="col-sm-4">Number of threads in each java process</label>
+														<div class="col-sm-8">
+															<input type="number" min="1" step="1" id="executorCoresId" class="form-control dest_trans_rule" placeholder="Enter number of threads " >
+														</div>
+														
+														</div>
+														
+													</div>
+											</div>
+												<div class="col-md-6">
+												
+													<div class="form-group row" style="margin-top: 15px;">
+															
+														<div>
+														<label class="col-sm-4">Memory for each java process (GB)</label>
+														<div class="col-sm-8">
+															<input type="number" min="1" step="1" id="executorMemoryId" class="form-control src_trans_rule" placeholder=" Enter Memory Details" >
+														</div>
+														
+														</div>
+													</div>
+											</div>
+											</div>	
+											</div>	
+											</div>
+							</div>
+							
 									</div>
 								</div>
 								<!--changes-->
@@ -2037,4 +2110,3 @@ Note : column “name” should already exist and be marked for comparision.</td
 	</style>
 	
 </html>
-

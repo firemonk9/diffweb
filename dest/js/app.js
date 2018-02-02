@@ -898,7 +898,9 @@ function getInputData(compareCommon) {
         result["randomSample"] = parseInt($('#rule_randomsample').val());
     result["matchBoth"] = $('#rule_matchboth')[0].checked;
     result["process"] = true;
-
+    result["numExecutors"]=$('#numExecutorsId').val();
+    result["executorCores"]=$('#executorCoresId').val();
+	result["executorMemory"]=$('#executorMemoryId').val();
     var columnMapping = new Array;
 
     var srcExcludeColmns = new Array;
@@ -957,6 +959,10 @@ function getInputData(compareCommon) {
         srcFile["jdbcUser"] = $('#src_user').val();
         srcFile["jdbcPassword"] = $('#src_pass').val();
         srcFile["jdbcDriverPath"] = $('#src_driver').val();
+        srcFile["min"] = $('#src_minValue').val();
+        srcFile["max"] = $('#src_maxValue').val();
+        srcFile["partitionColumn"] = $('#src_partitionColumn').val();
+        srcFile["numPartitions"] = $('#src_numPartitions').val();
         srcFile["datasetPath"] = $('#src_jtable').val();
     }
     var transformations = new Array;
@@ -1015,6 +1021,10 @@ function getInputData(compareCommon) {
         destFile["jdbcUser"] = $('#dest_user').val();
         destFile["jdbcPassword"] = $('#dest_pass').val();
         destFile["jdbcDriverPath"] = $('#dest_driver').val();
+        destFile["min"] = $('#dest_minValue').val();
+        destFile["max"] = $('#dest_maxValue').val();
+        destFile["partitionColumn"] = $('#dest_partitionColumn').val();
+        destFile["numPartitions"] = $('#dest_numPartitions').val();
         destFile["datasetPath"] = $('#dest_jtable').val();
     }
     transformations = [];
@@ -1084,6 +1094,10 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         jdbcData["jdbcUrl"] = destInput.jdbcUrl;
         jdbcData["jdbcUser"] = destInput.jdbcUser;
         jdbcData["jdbcPassword"] = destInput.jdbcPassword;
+        jdbcData["min"] = destInput.min;
+		jdbcData["max"] = destInput.max;
+		jdbcData["partitionColumn"] = destInput.partitionColumn;
+		jdbcData["numPartitions"] = destInput.numPartitions;
         if (getCookie("localMode") == "true")
             jdbcData["jdbcDriverPath"] = "";
         else
@@ -1118,6 +1132,10 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         jdbcData["jdbcUrl"] = srcInput.jdbcUrl;
         jdbcData["jdbcUser"] = srcInput.jdbcUser;
         jdbcData["jdbcPassword"] = srcInput.jdbcPassword;
+        jdbcData["min"] = srcInput.min;
+		jdbcData["max"] = srcInput.max;
+		jdbcData["partitionColumn"] = srcInput.partitionColumn;
+		jdbcData["numPartitions"] = srcInput.numPartitions;
         if (getCookie("localMode") == "true")
             jdbcData["jdbcDriverPath"] = "";
         else
