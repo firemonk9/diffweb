@@ -263,12 +263,12 @@ function insertLi(ul, text, type) {
 function insertMapper(mapper, mapped,i = '') {
 	//alert(i);
 	//alert(mapper);
-	
+
     var div = document.createElement("div");
 	div.setAttribute("class", "list_"+i);
-	
+
 	//alert("list_"+i);
-	
+
     var img = document.createElement("img");
 	img.setAttribute("rel", i);
 	img.setAttribute("class", "uncheck");
@@ -438,9 +438,9 @@ function concatExclude(srcColumns, srcExcluded) {
 function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, destColumns, destExcluded, primaryKeys, srcTransformations, destTransformations, srcFiterSql, destFilterSql, matchBoth, columnMaps, randomSample, columnMapping) {
     if (reload == true) {   //determine to create or show
         resetRuleData();
-		
+
         var n= $('#job_name').val(jobname);
-		
+
         /******************************Generate Column Map Tab *******************************************/
         /*************************************************************************************************/
         var srcUl = document.getElementById("src_column");
@@ -841,18 +841,18 @@ function setExcludeListener() {
 }
 
 function setMapperListener() {
-	
+
 	$('.uncheck').on('click', function(e){
 		var rel_old= $(this).attr('rel');
 		var new_id= "[new-div-id="+rel_old+"]";
 		//alert(new_id);
 		var rel= $(new_id).attr('id');
 		var source= $(this).attr('src');
-		
+
 		//alert(rel_old);
 		//alert(rel);
 		var id= '#'+rel;
-		
+
 		if(source == '../dest/img/cross54_33.png'){
 			//$(id).removeClass();
 			//$(id).addClass('glyphicon glyphicon-check');
@@ -862,12 +862,12 @@ function setMapperListener() {
 		}
 		//alert(source);
 	 });
-	
-	
+
+
     $('#mapper img').each(function(index){
         var img = $(this);
         img.on('click', function(e){
-			
+
             if (img[0].src.indexOf("tick") > 0) {
                 img[0].src = "../dest/img/cross54_33.png";
             } else {
@@ -881,7 +881,7 @@ function uncheckbox(){
   $('#mapper img.uncheck').on('click', function(e){
 	  var page = $('#mapper img.uncheck').attr('rel');
 			alert(page);
-			
+
 		 });
 }
 
@@ -965,6 +965,15 @@ function getInputData(compareCommon) {
         srcFile["numPartitions"] = $('#src_numPartitions').val();
         srcFile["datasetPath"] = $('#src_jtable').val();
     }
+    else if (srcFile["datasetFormat"] == "HIVE") {
+      if ($("#src_radio_table").is(':checked')) {
+        srcFile["datasetPath"] = $("#src_table_path").val();
+        }
+        else if($("#src_radio_sql").is(':checked')) {
+            srcFile["datasetPath"] = $("#src_sql_path").val();
+            srcFile["transformSQL"] = true;
+        }
+    }
     var transformations = new Array;
     // if ($('.src_trans_column').tagsinput('items').length > 0) {
     //     $('.src_trans_column').each(function(index){
@@ -1026,6 +1035,15 @@ function getInputData(compareCommon) {
         destFile["partitionColumn"] = $('#dest_partitionColumn').val();
         destFile["numPartitions"] = $('#dest_numPartitions').val();
         destFile["datasetPath"] = $('#dest_jtable').val();
+    }
+    else if (destFile["datasetFormat"] == "HIVE") {
+      if ($("#dest_radio_table").is(':checked')) {
+        destFile["datasetPath"] = $("#dest_table_path").val();
+        }
+        else if($("#dest_radio_sql").is(':checked')) {
+            destFile["datasetPath"] = $("#dest_sql_path").val();
+            destFile["transformSQL"] = true;
+        }
     }
     transformations = [];
     // if ($('.dest_trans_column').tagsinput('items').length > 0) {
@@ -1160,4 +1178,3 @@ function transHelp() {
     //window.location.href = "https://tobymcdowell.wixsite.com/difftool/documentation";
     window.open("https://tobymcdowell.wixsite.com/difftool/documentation", '_blank', 'location=yes,scrollbars=yes,status=yes');
 }
-
