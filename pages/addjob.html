@@ -295,7 +295,7 @@
 	function enableDisableJobResource(){
 		if (getCookie("localMode") == "true" || getCookie("localMode") == '')
 		{
-		$("#jobResourceId").show();
+		$("#jobResourceId").hide();
 		$("#numExecutorsId").val(2);
 		$("#executorCoresId").val(2);
 		$("#executorMemoryId").val(4);
@@ -2342,8 +2342,8 @@ Note : column “name” should already exist and be marked for comparision.</td
 	//alert(getCookie("localMode"));
 	/* to hide hive on localhost for SRC*/
 	if (getCookie("localMode") == "true" || getCookie("localMode") == ''){
-		$('#select_src_type #src_orc').show();
-		$('#select_src_type #src_hive').show();
+		$('#select_src_type #src_orc').hide();
+		$('#select_src_type #src_hive').hide();
 	}else{
 		$('#select_src_type #src_orc').show();
 		$('#select_src_type #src_hive').show();
@@ -2351,8 +2351,8 @@ Note : column “name” should already exist and be marked for comparision.</td
 
 	/* to hide hive on localhost for dest*/
 	if (getCookie("localMode") == "true" || getCookie("localMode") == ''){
-		$('#select_dest_type #dest_orc').show();
-		$('#select_dest_type #dest_hive').show();
+		$('#select_dest_type #dest_orc').hide();
+		$('#select_dest_type #dest_hive').hide();
 	}else{
 		$('#select_dest_type #dest_orc').show();
 		$('#select_dest_type #dest_hive').show();
