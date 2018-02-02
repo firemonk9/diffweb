@@ -971,7 +971,7 @@ function getInputData(compareCommon) {
         }
         else if($("#src_radio_sql").is(':checked')) {
             srcFile["datasetPath"] = $("#src_sql_path").val();
-            srcFile["transformSQL"] = true;
+            srcFile["transformationSQL"] = true;
         }
     }
     var transformations = new Array;
@@ -1042,7 +1042,7 @@ function getInputData(compareCommon) {
         }
         else if($("#dest_radio_sql").is(':checked')) {
             destFile["datasetPath"] = $("#dest_sql_path").val();
-            destFile["transformSQL"] = true;
+            destFile["transformationSQL"] = true;
         }
     }
     transformations = [];
@@ -1122,6 +1122,15 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
             jdbcData["jdbcDriverPath"] = destInput.jdbcDriverPath;
         destFile["jdbcData"] = jdbcData;
     }
+    else if (destFile["datasetFormat"] == "HIVE") {
+        if ($("#dest_radio_table").is(':checked')) {
+          destFile["datasetPath"] = $("#dest_table_path").val();
+          }
+          else if($("#dest_radio_sql").is(':checked')) {
+              destFile["datasetPath"] = $("#dest_sql_path").val();
+              destFile["transformationSQL"] = true;
+          }
+      }
 
     destFile["transformations"] = destInput.transformations;
     filesCompareData["destFile"] = destFile;
@@ -1160,7 +1169,15 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
             jdbcData["jdbcDriverPath"] = srcInput.jdbcDriverPath;
         srcFile["jdbcData"] = jdbcData;
     }
-
+    else if (srcFile["datasetFormat"] == "HIVE") {
+        if ($("#src_radio_table").is(':checked')) {
+          srcFile["datasetPath"] = $("#src_table_path").val();
+          }
+          else if($("#src_radio_sql").is(':checked')) {
+              srcFile["datasetPath"] = $("#src_sql_path").val();
+              srcFile["transformationSQL"] = true;
+          }
+      }
     srcFile["transformations"] = srcInput.transformations;
 
     filesCompareData["srcFile"] = srcFile;

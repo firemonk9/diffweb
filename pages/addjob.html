@@ -764,7 +764,7 @@
 
 
 				params["dataSetPath"]=$("#src_sql_path").val();
-				params["transformSQL"]=true;
+				params["transformationSQL"]=true;
 
 			}
 				//alert("hiveData "+JSON.stringify(params));
@@ -926,7 +926,7 @@
 
 
 				params["dataSetPath"]=$("#dest_sql_path").val();
-				params["transformSQL"]=true;
+				params["transformationSQL"]=true;
 
 			}
 				//alert("hiveData "+JSON.stringify(params));
@@ -2343,7 +2343,7 @@ Note : column “name” should already exist and be marked for comparision.</td
 	/* to hide hive on localhost for SRC*/
 	if (getCookie("localMode") == "true" || getCookie("localMode") == ''){
 		$('#select_src_type #src_orc').hide();
-		$('#select_src_type #src_hive').hide();
+		$('#select_src_type #src_hive').show();
 	}else{
 		$('#select_src_type #src_orc').show();
 		$('#select_src_type #src_hive').show();
@@ -2352,7 +2352,7 @@ Note : column “name” should already exist and be marked for comparision.</td
 	/* to hide hive on localhost for dest*/
 	if (getCookie("localMode") == "true" || getCookie("localMode") == ''){
 		$('#select_dest_type #dest_orc').hide();
-		$('#select_dest_type #dest_hive').hide();
+		$('#select_dest_type #dest_hive').show();
 	}else{
 		$('#select_dest_type #dest_orc').show();
 		$('#select_dest_type #dest_hive').show();
