@@ -957,6 +957,7 @@ function getInputData(compareCommon) {
         srcFile["jdbcUser"] = $('#src_user').val();
         srcFile["jdbcPassword"] = $('#src_pass').val();
         srcFile["jdbcDriverPath"] = $('#src_driver').val();
+        srcFile["jdbcDriverClass"] = $('#src_driver_class').val();
         srcFile["datasetPath"] = $('#src_jtable').val();
     }
     var transformations = new Array;
@@ -1015,6 +1016,7 @@ function getInputData(compareCommon) {
         destFile["jdbcUser"] = $('#dest_user').val();
         destFile["jdbcPassword"] = $('#dest_pass').val();
         destFile["jdbcDriverPath"] = $('#dest_driver').val();
+        destFile["jdbcDriverClass"] = $('#dest_driver_class').val();
         destFile["datasetPath"] = $('#dest_jtable').val();
     }
     transformations = [];
@@ -1088,6 +1090,7 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
             jdbcData["jdbcDriverPath"] = "";
         else
             jdbcData["jdbcDriverPath"] = destInput.jdbcDriverPath;
+        jdbcData["jdbcDriverClass"] = destInput.jdbcDriverClass;
         destFile["jdbcData"] = jdbcData;
     }
 
@@ -1122,6 +1125,8 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
             jdbcData["jdbcDriverPath"] = "";
         else
             jdbcData["jdbcDriverPath"] = srcInput.jdbcDriverPath;
+
+        jdbcData["jdbcDriverClass"] = srcInput.jdbcDriverClass;
         srcFile["jdbcData"] = jdbcData;
     }
 

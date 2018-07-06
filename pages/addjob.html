@@ -164,6 +164,7 @@
 				$('#src_jdbc_pass').hide();
 				$('#src_jdbc_table').hide();
 				$('#src_jdbc_driver').hide();
+                $('#src_jdbc_driver_class').hide();
 
 				$('#src_progress').hide();
 				$('#src_table_panel').hide();
@@ -178,6 +179,7 @@
 				$('#dest_jdbc_pass').hide();
 				$('#dest_jdbc_table').hide();
 				$('#dest_jdbc_driver').hide();
+                $('#dest_jdbc_driver_class').hide();
 
 				$('#dest_progress').hide();
 				$('#dest_table_panel').hide();
@@ -195,6 +197,7 @@
 				$('#src_jdbc_pass').hide();
 				$('#src_jdbc_table').hide();
 				$('#src_jdbc_driver').hide();
+                $('#dest_jdbc_driver_class').hide();
 
 				$('#src_progress').hide();
 				$('#src_table_panel').hide();
@@ -211,6 +214,7 @@
 				$('#dest_jdbc_pass').hide();
 				$('#dest_jdbc_table').hide();
 				$('#dest_jdbc_driver').hide();
+                $('#dest_jdbc_driver_class').hide();
 
 				$('#dest_progress').hide();
 				$('#dest_table_panel').hide();
@@ -514,6 +518,7 @@
 			$('#src_jdbc_pass input').val("");
 			$('#src_jdbc_table input').val("");
 			$('#src_jdbc_driver input').val("");
+            $('#src_jdbc_driver_class input').val("");
 
 			$('#dest_file_path input').val("");
 			$("#select_dest_type").prop("selectedIndex", 0);
@@ -525,6 +530,7 @@
 			$('#dest_jdbc_pass input').val("");
 			$('#dest_jdbc_table input').val("");
 			$('#dest_jdbc_driver input').val("");
+            $('#dest_jdbc_driver_class input').val("");
 
 			initForm(0);
 		}
@@ -540,7 +546,8 @@
 			$('#src_jdbc_pass input').val("");
 			$('#src_jdbc_table input').val("");
 			$('#src_jdbc_driver input').val("");
-
+            $('#src_jdbc_driver_class input').val("");
+            
 			initForm(1);
 			$('#src_file_path').show();
 			$('#src_file_format').show();
@@ -558,6 +565,7 @@
 			$('#dest_jdbc_pass input').val("");
 			$('#dest_jdbc_table input').val("");
 			$('#dest_jdbc_driver input').val("");
+            $('#dest_jdbc_driver_class input').val("");
 
 			initForm(2);
 			$('#dest_file_path').show();
@@ -666,6 +674,9 @@
 					} else if ($("#src_pass").val() == '') {
 						swal("Validation Error", "You should input password.", "error");
 						return;
+                    } else if ($("#src_driver_class").val() == '') {
+                        swal("Validation Error", "You should input Driver Class Name.", "error");
+                        return;
 					} else if ($('#src_jtable').val() == '') {
 						swal("Validation Error", "You should input table.", "error");
 						return;
@@ -685,6 +696,7 @@
 					jdbcData["jdbcPassword"] = $('#src_pass').val();
 					params["jdbcData"] = jdbcData;
 					params["datasetPath"] = $('#src_jtable').val();
+                    jdbcData["jdbcDriverClass"] = $('#src_driver_class').val();
 				} else {
 					params["datasetPath"] = $('#src_path').val();
 					if (params["datasetPath"] == '') {
@@ -763,7 +775,10 @@
 					} else if ($('#dest_jtable').val() == '') {
 						swal("Validation Error", "You should input table.", "error");
 						return;
-					}
+					}else if ($('#dest_driver_class').val() == '') {
+                        swal("Validation Error", "You should input Driver Class Name.", "error");
+                        return;
+                    }
 					var jdbcData = {};
 					if (getCookie("localMode") != "true") {
 						if ($('#dest_driver').val() == '') {
@@ -779,6 +794,7 @@
 					jdbcData["jdbcPassword"] = $('#dest_pass').val();
 					params["jdbcData"] = jdbcData;
 					params["datasetPath"] = $('#dest_jtable').val();
+                    jdbcData["jdbcDriverClass"] = $('#dest_driver_class').val();
 				} else {
 					params["datasetPath"] = $('#dest_path').val();
 					if (params["datasetPath"] == '') {
@@ -878,6 +894,8 @@
 					$('#src_jdbc_pass').hide();
 					$('#src_jdbc_table').hide();
 					$('#src_jdbc_driver').hide();
+                    $('#src_jdbc_driver_class').hide();
+					
 
 				} else if (selected === "JDBC") {
 					$('#src_file_path').hide();
@@ -890,6 +908,8 @@
 					$('#src_jdbc_user').show();
 					$('#src_jdbc_pass').show();
 					$('#src_jdbc_table').show();
+                    $('#src_jdbc_driver_class').show();
+                    
 					if (getCookie("localMode") == "true")
 						$('#src_jdbc_driver').hide();
 					else
@@ -916,6 +936,7 @@
 					$('#dest_jdbc_pass').hide();
 					$('#dest_jdbc_table').hide();
 					$('#dest_jdbc_driver').hide();
+                    $('#dest_jdbc_driver_class').hide();
 
 				} else if (selected === "JDBC") {
 					$('#dest_file_path').hide();
@@ -928,6 +949,8 @@
 					$('#dest_jdbc_user').show();
 					$('#dest_jdbc_pass').show();
 					$('#dest_jdbc_table').show();
+                    $('#dest_jdbc_driver_class').show();
+					
 					if (getCookie("localMode") == "true")
 						$('#dest_jdbc_driver').hide();
 					else
@@ -1361,7 +1384,7 @@
 										<br><br>
 									</div>
 									<div class="form-group required" id="src_jdbc_table">
-										<label class="col-sm-3">Table</label>
+										<label class="col-sm-3">Table Name/SQL</label>
 										<div class="col-sm-6">
 											<input type="text" placeholder="Table..." class="form-control" name="src_table" id="src_jtable">
 										</div>
@@ -1374,6 +1397,13 @@
 										</div>
 										<br>
 									</div>
+                                    <div class="form-group required " id="src_jdbc_driver_class">
+                                        <label class="col-sm-3">Driver Class Name</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="e.g. Mysql : com.mysql.jdbc.Driver" class="form-control" name="src_driver_class" id="src_driver_class">
+                                        </div>
+                                        <br>
+                                    </div>                                        
 									<!-- /#JDBC -->
 									<div class="form-group" id="src_validate">
 										<label class="col-sm-3"> </label>
@@ -1486,7 +1516,7 @@
 										<br><br>
 									</div>
 									<div class="form-group required "  id="dest_jdbc_table">
-										<label class="col-sm-3">Table</label>
+										<label class="col-sm-3">Table Name/SQL</label>
 										<div class="col-sm-6">
 											<input type="text" placeholder="Table..." class="form-control" name="dest_table" id="dest_jtable">
 										</div>
@@ -1496,6 +1526,13 @@
 										<label class="col-sm-3">Driver Path</label>
 										<div class="col-sm-6">
 											<input type="text" placeholder="JDBC driver path..." class="form-control" name="dest_driver" id="dest_driver">
+										</div>
+										<br>
+									</div>
+									<div class="form-group required " id="dest_jdbc_driver_class">
+										<label class="col-sm-3">Driver Class Name</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="e.g. Mysql : com.mysql.jdbc.Driver" class="form-control" name="dest_driver_class" id="dest_driver_class">
 										</div>
 										<br>
 									</div>
@@ -1551,7 +1588,7 @@
 		</div>
 		<!-- /#page-wrapper -->
 		<footer>
-			<p class="copyright">© DataQ, 2017</p>
+			<p class="copyright">© DataQ, 2018</p>
 		</footer>
 	</div>
 	<!-- /#wrapper -->
