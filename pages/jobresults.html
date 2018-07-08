@@ -461,6 +461,8 @@
 					if (!data.srcFile.useOtherSchema) {
 						data.srcFile.columns = info.inputData.srcFile.columns;
 					}
+				}else if(data.srcFile.datasetFormat == "JDBC"){
+				    data.srcFile["jdbcData"] = info.inputData.srcFile.jdbcData
 				}
 				
 				//data.destFile.filterSql = info.inputData.destFile.filterSql;
@@ -473,7 +475,10 @@
 					if (!data.destFile.useOtherSchema) {
 						data.destFile.columns = info.inputData.destFile.columns;
 					}
-				}
+				}else if(data.destFile.datasetFormat == "JDBC"){
+                    data.destFile["jdbcData"] = info.inputData.destFile.jdbcData
+                }
+
 				
 				//alert(data.sql);
 				//console.log(data.destFile);

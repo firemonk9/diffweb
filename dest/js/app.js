@@ -1083,14 +1083,14 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         }
     } else if (destFile["datasetFormat"] == "JDBC") {
         var jdbcData = {};
-        jdbcData["jdbcUrl"] = destInput.jdbcUrl;
-        jdbcData["jdbcUser"] = destInput.jdbcUser;
-        jdbcData["jdbcPassword"] = destInput.jdbcPassword;
+        jdbcData["jdbcUrl"] = destInput.jdbcData.jdbcUrl;
+        jdbcData["jdbcUser"] = destInput.jdbcData.jdbcUser;
+        jdbcData["jdbcPassword"] = destInput.jdbcData.jdbcPassword;
         if (getCookie("localMode") == "true")
             jdbcData["jdbcDriverPath"] = "";
         else
-            jdbcData["jdbcDriverPath"] = destInput.jdbcDriverPath;
-        jdbcData["jdbcDriverClass"] = destInput.jdbcDriverClass;
+            jdbcData["jdbcDriverPath"] = destInput.jdbcData.jdbcDriverPath;
+        jdbcData["jdbcDriverClass"] = destInput.jdbcData.jdbcDriverClass;
         destFile["jdbcData"] = jdbcData;
     }
 
@@ -1118,15 +1118,15 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         }
     } else if (srcFile["datasetFormat"] == "JDBC") {
         var jdbcData = {};
-        jdbcData["jdbcUrl"] = srcInput.jdbcUrl;
-        jdbcData["jdbcUser"] = srcInput.jdbcUser;
-        jdbcData["jdbcPassword"] = srcInput.jdbcPassword;
+        jdbcData["jdbcUrl"] = srcInput.jdbcData.jdbcUrl;
+        jdbcData["jdbcUser"] = srcInput.jdbcData.jdbcUser;
+        jdbcData["jdbcPassword"] = srcInput.jdbcData.jdbcPassword;
         if (getCookie("localMode") == "true")
             jdbcData["jdbcDriverPath"] = "";
         else
-            jdbcData["jdbcDriverPath"] = srcInput.jdbcDriverPath;
+            jdbcData["jdbcDriverPath"] = srcInput.jdbcData.jdbcDriverPath;
 
-        jdbcData["jdbcDriverClass"] = srcInput.jdbcDriverClass;
+        jdbcData["jdbcDriverClass"] = srcInput.jdbcData.jdbcDriverClass;
         srcFile["jdbcData"] = jdbcData;
     }
 
