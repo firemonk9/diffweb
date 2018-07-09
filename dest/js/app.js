@@ -953,12 +953,14 @@ function getInputData(compareCommon) {
         jdbcData["jdbcDriverPath"] = $('#src_driver').val();
         srcFile["jdbcData"] = jdbcData;
         */
-        srcFile["jdbcUrl"] = $('#src_url').val();
-        srcFile["jdbcUser"] = $('#src_user').val();
-        srcFile["jdbcPassword"] = $('#src_pass').val();
-        srcFile["jdbcDriverPath"] = $('#src_driver').val();
-        srcFile["jdbcDriverClass"] = $('#src_driver_class').val();
+        jdbcData={}
+        jdbcData["jdbcUrl"] = $('#src_url').val();
+        jdbcData["jdbcUser"] = $('#src_user').val();
+        jdbcData["jdbcPassword"] = $('#src_pass').val();
+        jdbcData["jdbcDriverPath"] = $('#src_driver').val();
+        jdbcData["jdbcDriverClass"] = $('#src_driver_class').val();
         srcFile["datasetPath"] = $('#src_jtable').val();
+        srcFile["jdbcData"]=jdbcData
     }
     var transformations = new Array;
     // if ($('.src_trans_column').tagsinput('items').length > 0) {
@@ -1012,12 +1014,15 @@ function getInputData(compareCommon) {
         jdbcData["jdbcDriverPath"] = $('#dest_driver').val();
         destFile["jdbcData"] = jdbcData;
         */
-        destFile["jdbcUrl"] = $('#dest_url').val();
-        destFile["jdbcUser"] = $('#dest_user').val();
-        destFile["jdbcPassword"] = $('#dest_pass').val();
-        destFile["jdbcDriverPath"] = $('#dest_driver').val();
-        destFile["jdbcDriverClass"] = $('#dest_driver_class').val();
+
+        jdbcData={}
+        jdbcData["jdbcUrl"] = $('#dest_url').val();
+        jdbcData["jdbcUser"] = $('#dest_user').val();
+        jdbcData["jdbcPassword"] = $('#dest_pass').val();
+        jdbcData["jdbcDriverPath"] = $('#dest_driver').val();
+        jdbcData["jdbcDriverClass"] = $('#dest_driver_class').val();
         destFile["datasetPath"] = $('#dest_jtable').val();
+        destFile["jdbcData"]=jdbcData
     }
     transformations = [];
     // if ($('.dest_trans_column').tagsinput('items').length > 0) {
