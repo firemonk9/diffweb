@@ -73,7 +73,7 @@
         var interval = 10000;
 
         // Class Job
-        function Job(name, src, dest, submitTime, BeginTime,EndTime,Status,Result,jobId, input, srcColumns, destColumns) {
+        function Job(name, src, dest, submitTime, BeginTime,EndTime,Status,Result,jobId, input, srcColumns, destColumns, jobStatus, validationStatus) {
             this.name = name;
             this.src = src;
             this.dest = dest;
@@ -86,6 +86,8 @@
             this.input = input;
             this.srcColumns = srcColumns;
             this.destColumns = destColumns;
+            this.jobStatus = jobStatus;
+            this.validationStatus = validationStatus;
         }
 
         // -- Table Functions -- //
@@ -185,7 +187,10 @@
             if (row.Result ==true) {
                 return "<a href='./jobresults.html?jobId="+ row.jobId + "'>Data Match</a>";
             } else {
-                return "<a href='./jobresults.html?jobId="+ row.jobId + "'>Data Mismatch</a>";
+                if (row.validationStatus == 'Data Validation Fail')
+                    return "<a href='./validationresult.html?jobId="+ row.jobId + "'>" + row.validationStatus + "</a>";
+                else
+                    return "<a href='./jobresults.html?jobId="+ row.jobId + "'>Data Mismatch</a>";
                 //return "Data Not Match";
             }
         }
@@ -231,7 +236,7 @@
                         var eTime = new Date(tmp.endTime);
                         //tmp.endTime = eTime.toLocaleString('en-GB');
                         tmp.endTime = eTime.getFullYear() + "/" + ("0" + (eTime.getMonth() + 1)).slice(-2) + "/" + ("0" + eTime.getDate()).slice(-2) + " " + ("0" + eTime.getHours()).slice(-2) + ":" + ("0" + eTime.getMinutes()).slice(-2) + ":" + ("0" + eTime.getSeconds()).slice(-2);
-                        var tdData=new Job(tmp.input.name == null ? "No name" : tmp.input.name,tmp.input.srcFile.datasetPath, tmp.input.destFile.datasetPath, tmp.submittedTime, tmp.beginTime, tmp.endTime,tmp.status == "" ? "RUNNING" : tmp.status, tmp.dataMatch, tmp.jobId, tmp.input, tmp.srcColumns, tmp.destColumns);
+                        var tdData=new Job(tmp.input.name == null ? "No name" : tmp.input.name,tmp.input.srcFile.datasetPath, tmp.input.destFile.datasetPath, tmp.submittedTime, tmp.beginTime, tmp.endTime,tmp.status == "" ? "RUNNING" : tmp.status, tmp.dataMatch, tmp.jobId, tmp.input, tmp.srcColumns, tmp.destColumns, tmp.jobStatus, tmp.validationStatus);
                         tableData.push(tdData);
                     }
                     setTable(tableData);
@@ -617,6 +622,7 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li><a href="addjob.html">Add Job</a></li>
+                                        <li><a href="addvalidationjob.html">Add Validation Job</a></li>
                                         <li role="separator" class="divider"></li>
                                         <li><a href="" id="filehref">Import JSON</a></li>
                                     </ul>
@@ -633,7 +639,7 @@
         </div>
         <!-- /#page-wrapper -->
         <footer>
-            <p class="copyright">© DataQ, 2017</p>
+            <p class="copyright">© Cygnet Infotech LLC, 2018</p>
         </footer>
     </div>
     <!-- /#wrapper -->

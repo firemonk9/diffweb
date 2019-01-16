@@ -1,7 +1,7 @@
 var server = "127.0.0.1";
 //var server = "35.187.200.200";
 
-var toolname = "DataQ";
+var toolname = "Cygnet Infotech LLC";
 
 var Base64 = {
     _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
@@ -263,12 +263,12 @@ function insertLi(ul, text, type) {
 function insertMapper(mapper, mapped,i = '') {
 	//alert(i);
 	//alert(mapper);
-
+	
     var div = document.createElement("div");
 	div.setAttribute("class", "list_"+i);
-
+	
 	//alert("list_"+i);
-
+	
     var img = document.createElement("img");
 	img.setAttribute("rel", i);
 	img.setAttribute("class", "uncheck");
@@ -407,6 +407,7 @@ function makeDataToColumn(data) {
 
 function makeSrcColumn(srcColumns) {
     var cols = srcColumns;
+    if (cols)
     for (var i = 0; i < cols.length; i++){
         if (cols[i].name.indexOf('__') > 0) {
             cols[i].name = cols[i].name.split('__')[0];
@@ -417,6 +418,7 @@ function makeSrcColumn(srcColumns) {
 
 function makedestColumn(destColumns) {
     var cols = destColumns;
+    if (cols)
     for (var i = 0; i < cols.length; i++){
         if (cols[i].name.indexOf('__') > 0) {
             cols[i].name = cols[i].name.split('__')[1];
@@ -438,9 +440,9 @@ function concatExclude(srcColumns, srcExcluded) {
 function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, destColumns, destExcluded, primaryKeys, srcTransformations, destTransformations, srcFiterSql, destFilterSql, matchBoth, columnMaps, randomSample, columnMapping) {
     if (reload == true) {   //determine to create or show
         resetRuleData();
-
+		
         var n= $('#job_name').val(jobname);
-
+		
         /******************************Generate Column Map Tab *******************************************/
         /*************************************************************************************************/
         var srcUl = document.getElementById("src_column");
@@ -841,18 +843,18 @@ function setExcludeListener() {
 }
 
 function setMapperListener() {
-
+	
 	$('.uncheck').on('click', function(e){
 		var rel_old= $(this).attr('rel');
 		var new_id= "[new-div-id="+rel_old+"]";
 		//alert(new_id);
 		var rel= $(new_id).attr('id');
 		var source= $(this).attr('src');
-
+		
 		//alert(rel_old);
 		//alert(rel);
 		var id= '#'+rel;
-
+		
 		if(source == '../dest/img/cross54_33.png'){
 			//$(id).removeClass();
 			//$(id).addClass('glyphicon glyphicon-check');
@@ -862,12 +864,12 @@ function setMapperListener() {
 		}
 		//alert(source);
 	 });
-
-
+	
+	
     $('#mapper img').each(function(index){
         var img = $(this);
         img.on('click', function(e){
-
+			
             if (img[0].src.indexOf("tick") > 0) {
                 img[0].src = "../dest/img/cross54_33.png";
             } else {
@@ -881,7 +883,7 @@ function uncheckbox(){
   $('#mapper img.uncheck').on('click', function(e){
 	  var page = $('#mapper img.uncheck').attr('rel');
 			alert(page);
-
+			
 		 });
 }
 
@@ -898,9 +900,7 @@ function getInputData(compareCommon) {
         result["randomSample"] = parseInt($('#rule_randomsample').val());
     result["matchBoth"] = $('#rule_matchboth')[0].checked;
     result["process"] = true;
-    result["numExecutors"]=$('#numExecutorsId').val();
-    result["executorCores"]=$('#executorCoresId').val();
-	result["executorMemory"]=$('#executorMemoryId').val();
+
     var columnMapping = new Array;
 
     var srcExcludeColmns = new Array;
@@ -955,24 +955,14 @@ function getInputData(compareCommon) {
         jdbcData["jdbcDriverPath"] = $('#src_driver').val();
         srcFile["jdbcData"] = jdbcData;
         */
-        srcFile["jdbcUrl"] = $('#src_url').val();
-        srcFile["jdbcUser"] = $('#src_user').val();
-        srcFile["jdbcPassword"] = $('#src_pass').val();
-        srcFile["jdbcDriverPath"] = $('#src_driver').val();
-        srcFile["min"] = $('#src_minValue').val();
-        srcFile["max"] = $('#src_maxValue').val();
-        srcFile["partitionColumn"] = $('#src_partitionColumn').val();
-        srcFile["numPartitions"] = $('#src_numPartitions').val();
+        jdbcData={}
+        jdbcData["jdbcUrl"] = $('#src_url').val();
+        jdbcData["jdbcUser"] = $('#src_user').val();
+        jdbcData["jdbcPassword"] = $('#src_pass').val();
+        jdbcData["jdbcDriverPath"] = $('#src_driver').val();
+        jdbcData["jdbcDriverClass"] = $('#src_driver_class').val();
         srcFile["datasetPath"] = $('#src_jtable').val();
-    }
-    else if (srcFile["datasetFormat"] == "HIVE") {
-      if ($("#src_radio_table").is(':checked')) {
-        srcFile["datasetPath"] = $("#src_table_path").val();
-        }
-        else if($("#src_radio_sql").is(':checked')) {
-            srcFile["datasetPath"] = $("#src_sql_path").val();
-            srcFile["transformationSQL"] = true;
-        }
+        srcFile["jdbcData"]=jdbcData
     }
     var transformations = new Array;
     // if ($('.src_trans_column').tagsinput('items').length > 0) {
@@ -991,12 +981,29 @@ function getInputData(compareCommon) {
             transformations.push(transform);
     //     });
      }
+
     srcFile["transformations"] = transformations;
+
+    /*validation*/
+    srcFile["validation_src_sql"] = $("#validation_src_sql").val();
+    srcFile["validation_src_sql_value_min"] = $("#validation_src_sql_value_min").val();
+    srcFile["validation_src_sql_value_max"] = $("#validation_src_sql_value_max").val();
+    srcFile["validation_src_unique_cols"] = $("#validation_src_unique_cols").val();
+    srcFile["validation_src_column_name"] = $("#validation_src_column_name").val();
+    srcFile["validation_src_column_min"] = $("#validation_src_column_min").val();
+    srcFile["validation_src_column_max"] = $("#validation_src_column_max").val();
+    srcFile["validation_src_notnull_cols"] = $("#validation_src_notnull_cols").val();
+    
     result["srcFile"] = srcFile;
     /***********************************End src Input********************************/
 
     /**********************************Make dest Input*******************************/
     var destFile = {};
+
+    /*validation*/
+    destFile["dest_validate_sql"] = $("#dest_validate_sql").val();
+    destFile["dest_validate_value"] = $("#dest_validate_value").val();
+
     /*
     for (var i = 0; i < $('ul#dest_excluded li').length; i++) {
         destExcludeColmns.push($('ul#dest_excluded li div')[i].innerText);
@@ -1026,24 +1033,15 @@ function getInputData(compareCommon) {
         jdbcData["jdbcDriverPath"] = $('#dest_driver').val();
         destFile["jdbcData"] = jdbcData;
         */
-        destFile["jdbcUrl"] = $('#dest_url').val();
-        destFile["jdbcUser"] = $('#dest_user').val();
-        destFile["jdbcPassword"] = $('#dest_pass').val();
-        destFile["jdbcDriverPath"] = $('#dest_driver').val();
-        destFile["min"] = $('#dest_minValue').val();
-        destFile["max"] = $('#dest_maxValue').val();
-        destFile["partitionColumn"] = $('#dest_partitionColumn').val();
-        destFile["numPartitions"] = $('#dest_numPartitions').val();
+
+        jdbcData={}
+        jdbcData["jdbcUrl"] = $('#dest_url').val();
+        jdbcData["jdbcUser"] = $('#dest_user').val();
+        jdbcData["jdbcPassword"] = $('#dest_pass').val();
+        jdbcData["jdbcDriverPath"] = $('#dest_driver').val();
+        jdbcData["jdbcDriverClass"] = $('#dest_driver_class').val();
         destFile["datasetPath"] = $('#dest_jtable').val();
-    }
-    else if (destFile["datasetFormat"] == "HIVE") {
-      if ($("#dest_radio_table").is(':checked')) {
-        destFile["datasetPath"] = $("#dest_table_path").val();
-        }
-        else if($("#dest_radio_sql").is(':checked')) {
-            destFile["datasetPath"] = $("#dest_sql_path").val();
-            destFile["transformationSQL"] = true;
-        }
+        destFile["jdbcData"]=jdbcData
     }
     transformations = [];
     // if ($('.dest_trans_column').tagsinput('items').length > 0) {
@@ -1063,6 +1061,17 @@ function getInputData(compareCommon) {
         // }
     }
     destFile["transformations"] = transformations;
+
+    /*validation*/
+    destFile["validation_dest_sql"] = $("#validation_dest_sql").val();
+    destFile["validation_dest_sql_value_min"] = $("#validation_dest_sql_value_min").val();
+    destFile["validation_dest_sql_value_max"] = $("#validation_dest_sql_value_max").val();
+    destFile["validation_dest_unique_cols"] = $("#validation_dest_unique_cols").val();
+    destFile["validation_dest_column_name"] = $("#validation_dest_column_name").val();
+    destFile["validation_dest_column_min"] = $("#validation_dest_column_min").val();
+    destFile["validation_dest_column_max"] = $("#validation_dest_column_max").val();
+    destFile["validation_dest_notnull_cols"] = $("#validation_dest_notnull_cols").val();
+
     result["destFile"] = destFile;
     /*******************************End dest Input*********************************/
 
@@ -1109,28 +1118,16 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         }
     } else if (destFile["datasetFormat"] == "JDBC") {
         var jdbcData = {};
-        jdbcData["jdbcUrl"] = destInput.jdbcUrl;
-        jdbcData["jdbcUser"] = destInput.jdbcUser;
-        jdbcData["jdbcPassword"] = destInput.jdbcPassword;
-        jdbcData["min"] = destInput.min;
-		jdbcData["max"] = destInput.max;
-		jdbcData["partitionColumn"] = destInput.partitionColumn;
-		jdbcData["numPartitions"] = destInput.numPartitions;
+        jdbcData["jdbcUrl"] = destInput.jdbcData.jdbcUrl;
+        jdbcData["jdbcUser"] = destInput.jdbcData.jdbcUser;
+        jdbcData["jdbcPassword"] = destInput.jdbcData.jdbcPassword;
         if (getCookie("localMode") == "true")
             jdbcData["jdbcDriverPath"] = "";
         else
-            jdbcData["jdbcDriverPath"] = destInput.jdbcDriverPath;
+            jdbcData["jdbcDriverPath"] = destInput.jdbcData.jdbcDriverPath;
+        jdbcData["jdbcDriverClass"] = destInput.jdbcData.jdbcDriverClass;
         destFile["jdbcData"] = jdbcData;
     }
-    else if (destFile["datasetFormat"] == "HIVE") {
-        if ($("#dest_radio_table").is(':checked')) {
-          destFile["datasetPath"] = $("#dest_table_path").val();
-          }
-          else if($("#dest_radio_sql").is(':checked')) {
-              destFile["datasetPath"] = $("#dest_sql_path").val();
-              destFile["transformationSQL"] = true;
-          }
-      }
 
     destFile["transformations"] = destInput.transformations;
     filesCompareData["destFile"] = destFile;
@@ -1156,31 +1153,208 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         }
     } else if (srcFile["datasetFormat"] == "JDBC") {
         var jdbcData = {};
-        jdbcData["jdbcUrl"] = srcInput.jdbcUrl;
-        jdbcData["jdbcUser"] = srcInput.jdbcUser;
-        jdbcData["jdbcPassword"] = srcInput.jdbcPassword;
-        jdbcData["min"] = srcInput.min;
-		jdbcData["max"] = srcInput.max;
-		jdbcData["partitionColumn"] = srcInput.partitionColumn;
-		jdbcData["numPartitions"] = srcInput.numPartitions;
+        jdbcData["jdbcUrl"] = srcInput.jdbcData.jdbcUrl;
+        jdbcData["jdbcUser"] = srcInput.jdbcData.jdbcUser;
+        jdbcData["jdbcPassword"] = srcInput.jdbcData.jdbcPassword;
         if (getCookie("localMode") == "true")
             jdbcData["jdbcDriverPath"] = "";
         else
-            jdbcData["jdbcDriverPath"] = srcInput.jdbcDriverPath;
+            jdbcData["jdbcDriverPath"] = srcInput.jdbcData.jdbcDriverPath;
+
+        jdbcData["jdbcDriverClass"] = srcInput.jdbcData.jdbcDriverClass;
         srcFile["jdbcData"] = jdbcData;
     }
-    else if (srcFile["datasetFormat"] == "HIVE") {
-        if ($("#src_radio_table").is(':checked')) {
-          srcFile["datasetPath"] = $("#src_table_path").val();
-          }
-          else if($("#src_radio_sql").is(':checked')) {
-              srcFile["datasetPath"] = $("#src_sql_path").val();
-              srcFile["transformationSQL"] = true;
-          }
-      }
+
     srcFile["transformations"] = srcInput.transformations;
 
     filesCompareData["srcFile"] = srcFile;
+
+    /*src validation*/
+    /*
+    srcFile["validation_src_sql"] = $("#validation_src_sql").val();
+    srcFile["validation_src_sql_value_min"] = $("#validation_src_sql_value_min").val();
+    srcFile["validation_src_sql_value_max"] = $("#validation_src_sql_value_max").val();
+    srcFile["validation_src_unique_cols"] = $("#validation_src_unique_cols").val();
+    srcFile["validation_src_column_name"] = $("#validation_src_column_name").val();
+    srcFile["validation_src_column_min"] = $("#validation_src_column_min").val();
+    srcFile["validation_src_column_max"] = $("#validation_src_column_max").val();
+    srcFile["validation_src_notnull_cols"] = $("#validation_src_notnull_cols").val();
+    */
+    var srcvalidationSQL = new Array;
+    /*sql*/
+    var src_sql = srcInput.validation_src_sql;
+    if (src_sql){
+        var sql_value = {};
+        sql_value["beginTime"] = 0;
+        sql_value["beginTime"] = 0;
+        sql_value["endTime"] = 0;
+        sql_value["submittedTime"] = 0;
+
+        var validationStatement = {};
+        validationStatement["continueIfFail"] = false;
+        validationStatement["sql"] = src_sql;
+
+        if (srcInput.validation_src_column_min)
+            validationStatement["sqlValidRangeMin"] = parseInt(srcInput.validation_src_sql_value_min);
+        if (srcInput.validation_src_sql_value_max)
+            validationStatement["sqlValidRangeMax"] = parseInt(srcInput.validation_src_sql_value_max);
+
+        sql_value["validationStatement"] = validationStatement;
+        srcvalidationSQL.push(sql_value);
+    }
+    
+    /*unique*/
+    var validation_src_unique_cols = srcInput.validation_src_unique_cols;
+    if (validation_src_unique_cols){
+        var sql_value = {};
+        sql_value["beginTime"] = 0;
+        sql_value["beginTime"] = 0;
+        sql_value["endTime"] = 0;
+        sql_value["submittedTime"] = 0;
+
+        var validationStatement = {};
+        validationStatement["continueIfFail"] = false;
+        validationStatement["uniqueColumns"] = validation_src_unique_cols.split(",")
+                                                    .map(Function.prototype.call, String.prototype.trim);
+        
+        sql_value["validationStatement"] = validationStatement;
+        srcvalidationSQL.push(sql_value);
+    }
+    /*column*/
+    var validation_src_column_name = srcInput.validation_src_column_name;
+    if (validation_src_column_name){
+        var sql_value = {};
+        sql_value["beginTime"] = 0;
+        sql_value["beginTime"] = 0;
+        sql_value["endTime"] = 0;
+        sql_value["submittedTime"] = 0;
+
+        var validationStatement = {};
+        validationStatement["continueIfFail"] = false;
+        validationStatement["columnName"] = validation_src_column_name;
+
+        if (srcInput.validation_src_column_min)
+            validationStatement["columnRangeMin"] = parseInt(srcInput.validation_src_column_min);
+        if (srcInput.validation_src_column_max)
+            validationStatement["columnRangeMax"] = parseInt(srcInput.validation_src_column_max);
+        
+        sql_value["validationStatement"] = validationStatement;
+        srcvalidationSQL.push(sql_value);
+    }
+    /*notnull*/
+    var validation_src_notnull_cols = srcInput.validation_src_notnull_cols;
+    if (validation_src_notnull_cols){
+
+        var notnull_cols = srcInput.validation_src_notnull_cols.split(",")
+                                .map(Function.prototype.call, String.prototype.trim);
+
+        for(i = 0 ; i < notnull_cols.length ; i++){
+
+            var sql_value = {};
+            sql_value["beginTime"] = 0;
+            sql_value["beginTime"] = 0;
+            sql_value["endTime"] = 0;
+            sql_value["submittedTime"] = 0;
+
+            var validationStatement = {};
+            validationStatement["continueIfFail"] = false;
+            validationStatement["columnName"] = notnull_cols[i];
+            validationStatement["notNull"] = true;
+
+            sql_value["validationStatement"] = validationStatement;
+            srcvalidationSQL.push(sql_value);
+        }
+    }
+
+    /*dest validation*/
+    var destvalidationSQL = new Array;
+    /*sql*/
+    var dest_sql = destInput.validation_dest_sql;
+    if (dest_sql){
+        var sql_value = {};
+        sql_value["beginTime"] = 0;
+        sql_value["beginTime"] = 0;
+        sql_value["endTime"] = 0;
+        sql_value["submittedTime"] = 0;
+
+        var validationStatement = {};
+        validationStatement["continueIfFail"] = false;
+        validationStatement["sql"] = dest_sql;
+
+        if (destInput.validation_dest_sql_value_min)
+            validationStatement["sqlValidRangeMin"] = parseInt(destInput.validation_dest_sql_value_min);
+        if (destInput.validation_dest_sql_value_max)
+            validationStatement["sqlValidRangeMax"] = parseInt(destInput.validation_dest_sql_value_max);
+
+        sql_value["validationStatement"] = validationStatement;
+        destvalidationSQL.push(sql_value);
+    }
+    /*unique*/
+    var validation_dest_unique_cols = destInput.validation_dest_unique_cols;
+    if (validation_dest_unique_cols){
+        var sql_value = {};
+        sql_value["beginTime"] = 0;
+        sql_value["beginTime"] = 0;
+        sql_value["endTime"] = 0;
+        sql_value["submittedTime"] = 0;
+
+        var validationStatement = {};
+        validationStatement["continueIfFail"] = false;
+        validationStatement["uniqueColumns"] = validation_dest_unique_cols.split(",")
+                                                .map(Function.prototype.call, String.prototype.trim);
+        
+        sql_value["validationStatement"] = validationStatement;
+        destvalidationSQL.push(sql_value);
+    }
+    /*column*/
+    var validation_dest_column_name = destInput.validation_dest_column_name;
+    if (validation_dest_column_name){
+        var sql_value = {};
+        sql_value["beginTime"] = 0;
+        sql_value["beginTime"] = 0;
+        sql_value["endTime"] = 0;
+        sql_value["submittedTime"] = 0;
+
+        var validationStatement = {};
+        validationStatement["continueIfFail"] = false;
+        validationStatement["columnName"] = validation_dest_column_name;
+
+        if (destInput.validation_dest_column_min)
+            validationStatement["columnRangeMin"] = parseInt(destInput.validation_dest_column_min);
+        if (destInput.validation_dest_column_max)
+            validationStatement["columnRangeMax"] = parseInt(destInput.validation_dest_column_max);
+        
+        sql_value["validationStatement"] = validationStatement;
+        destvalidationSQL.push(sql_value);
+    }
+    /*notnull*/
+    var validation_dest_notnull_cols = destInput.validation_dest_notnull_cols;
+    if (validation_dest_notnull_cols){
+
+        var notnull_cols = destInput.validation_dest_notnull_cols.split(",")
+                                .map(Function.prototype.call, String.prototype.trim);
+
+        for(i = 0 ; i < notnull_cols.length ; i++){
+
+            var sql_value = {};
+            sql_value["beginTime"] = 0;
+            sql_value["beginTime"] = 0;
+            sql_value["endTime"] = 0;
+            sql_value["submittedTime"] = 0;
+            
+            var validationStatement = {};
+            validationStatement["continueIfFail"] = false;
+            validationStatement["columnName"] = notnull_cols[i];
+            validationStatement["notNull"] = true;
+
+            sql_value["validationStatement"] = validationStatement;
+            destvalidationSQL.push(sql_value);
+        }
+    }
+
+    filesCompareData["srcvalidationSQL"] = srcvalidationSQL;
+    filesCompareData["destvalidationSQL"] = destvalidationSQL;
+
     filesCompareList.push(filesCompareData);
     jsonTree["filesCompareList"] = filesCompareList;
     return JSON.stringify(jsonTree);
@@ -1195,3 +1369,4 @@ function transHelp() {
     //window.location.href = "https://tobymcdowell.wixsite.com/difftool/documentation";
     window.open("https://tobymcdowell.wixsite.com/difftool/documentation", '_blank', 'location=yes,scrollbars=yes,status=yes');
 }
+
