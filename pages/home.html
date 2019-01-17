@@ -73,7 +73,7 @@
         var interval = 10000;
 
         // Class Job
-        function Job(name, src, dest, submitTime, BeginTime,EndTime,Status,Result,jobId, input, srcColumns, destColumns, jobStatus, validationStatus) {
+        function Job(name, src, dest, submitTime, BeginTime,EndTime,Status,Result,jobId, input, srcColumns, destColumns, jobStatus, validationStatus, exception) {
             this.name = name;
             this.src = src;
             this.dest = dest;
@@ -86,8 +86,10 @@
             this.input = input;
             this.srcColumns = srcColumns;
             this.destColumns = destColumns;
+            /*new field*/
             this.jobStatus = jobStatus;
             this.validationStatus = validationStatus;
+            this.exception = exception;
         }
 
         // -- Table Functions -- //
@@ -184,14 +186,13 @@
         function stateFormatter(value, row, index) {
             if (row.Result == null)
                 return;
-            if (row.Result ==true) {
-                return "<a href='./jobresults.html?jobId="+ row.jobId + "'>Data Match</a>";
+
+            if (row.input.srcvalidationSQL && row.input.srcvalidationSQL.length > 0) {
+                var text = row.exception ? "Exception" : row.validationStatus;
+                return "<a href='./validationresult.html?jobId="+ row.jobId + "'>" + text + "</a>";
             } else {
-                if (row.validationStatus == 'Data Validation Fail')
-                    return "<a href='./validationresult.html?jobId="+ row.jobId + "'>" + row.validationStatus + "</a>";
-                else
-                    return "<a href='./jobresults.html?jobId="+ row.jobId + "'>Data Mismatch</a>";
-                //return "Data Not Match";
+                var text = row.Exception ? "Exception" : row.jobStatus;
+                return "<a href='./jobresults.html?jobId="+ row.jobId + "'>" + text + "</a>";
             }
         }
 
@@ -236,7 +237,7 @@
                         var eTime = new Date(tmp.endTime);
                         //tmp.endTime = eTime.toLocaleString('en-GB');
                         tmp.endTime = eTime.getFullYear() + "/" + ("0" + (eTime.getMonth() + 1)).slice(-2) + "/" + ("0" + eTime.getDate()).slice(-2) + " " + ("0" + eTime.getHours()).slice(-2) + ":" + ("0" + eTime.getMinutes()).slice(-2) + ":" + ("0" + eTime.getSeconds()).slice(-2);
-                        var tdData=new Job(tmp.input.name == null ? "No name" : tmp.input.name,tmp.input.srcFile.datasetPath, tmp.input.destFile.datasetPath, tmp.submittedTime, tmp.beginTime, tmp.endTime,tmp.status == "" ? "RUNNING" : tmp.status, tmp.dataMatch, tmp.jobId, tmp.input, tmp.srcColumns, tmp.destColumns, tmp.jobStatus, tmp.validationStatus);
+                        var tdData=new Job(tmp.input.name == null ? "No name" : tmp.input.name,tmp.input.srcFile.datasetPath, tmp.input.destFile.datasetPath, tmp.submittedTime, tmp.beginTime, tmp.endTime,tmp.status == "" ? "RUNNING" : tmp.status, tmp.dataMatch, tmp.jobId, tmp.input, tmp.srcColumns, tmp.destColumns, tmp.jobStatus, tmp.validationStatus, tmp.errorMsg);
                         tableData.push(tdData);
                     }
                     setTable(tableData);

@@ -172,49 +172,11 @@
 			
 			function setValidation(response){
 				if (response.srcValidationStmt)
-					for(i = 0 ; i < response.srcValidationStmt.length ; i++){
-						var srcValidationStmt = response.srcValidationStmt[i];
-						var validationPass = srcValidationStmt.validationPass;
-						var validationStatement = srcValidationStmt.validationStatement;
-						if (validationStatement.sql){
-							$('#validation_src_sql').val(validationStatement.sql);
-							$('#validation_src_sql_value_min').val(validationStatement.sqlValidRangeMin);
-							$('#validation_src_sql_value_max').val(validationStatement.sqlValidRangeMax);
-
-							if (validationPass == false){
-								$('#validation_src_sql').css('color', 'red');
-								$('#validation_src_sql_value_min').css('color', 'red');
-								$('#validation_src_sql_value_max').css('color', 'red');
-							}
-
-						}
-						if (validationStatement.uniqueColumns){
-							$('#validation_src_unique_cols').val(validationStatement.uniqueColumns.join(", "));
-							if (validationPass == false)
-								$('#validation_src_unique_cols').css('color', 'red');
-						}
-						if (validationStatement.columnName && !validationStatement.notNull){
-							$('#validation_src_column_name').val(validationStatement.columnName);
-							$('#validation_src_column_min').val(validationStatement.columnRangeMin);
-							$('#validation_src_column_max').val(validationStatement.columnRangeMax);
-
-							if (validationPass == false){
-								$('#validation_src_column_name').css('color', 'red');
-								$('#validation_src_column_min').css('color', 'red');
-								$('#validation_src_column_max').css('color', 'red');
-							}
-						}
-						if (validationStatement.columnName && validationStatement.notNull){
-							var defValue = $('#validation_src_notnull_cols').val();
-							var columnName = validationStatement.columnName;
-							if (defValue) columnName = ", " + columnName;
-							$('#validation_src_notnull_cols').val(defValue + columnName);
-
-							if (validationPass == false)
-								$('#validation_src_unique_cols').css('color', 'red');
-						}
-					}
-
+					setcondition(response.srcValidationStmt);
+				else{
+					setcondition(response.inputData.srcvalidationSQL);
+				}
+				/*
 				if (response.destValidationStmt)
 					for(i = 0 ; i < response.destValidationStmt.length ; i++){
 						var destValidationStmt = response.destValidationStmt[i];
@@ -259,6 +221,12 @@
 								$('#validation_dest_unique_cols').css('color', 'red');
 						}
 					}
+				*/
+
+				if (response.exception){
+					$('.alert-danger').show();
+					$('#danger-msg').html(response.exception);
+				}
 
 				if (response.sampleData){
 					var table = document.getElementById("src_table");
@@ -305,6 +273,52 @@
 					$('#src_table_panel').show();
 
 				}
+			}
+
+			function setcondition(srcvalidationStmt){
+				if (srcvalidationStmt)
+					for(i = 0 ; i < srcvalidationStmt.length ; i++){
+						var srcValidationStmt = srcvalidationStmt[i];
+						var validationPass = srcValidationStmt.validationPass;
+						var validationStatement = srcValidationStmt.validationStatement;
+						if (validationStatement.sql){
+							$('#validation_src_sql').val(validationStatement.sql);
+							$('#validation_src_sql_value_min').val(validationStatement.sqlValidRangeMin);
+							$('#validation_src_sql_value_max').val(validationStatement.sqlValidRangeMax);
+
+							if (validationPass == false){
+								$('#validation_src_sql').css('color', 'red');
+								$('#validation_src_sql_value_min').css('color', 'red');
+								$('#validation_src_sql_value_max').css('color', 'red');
+							}
+
+						}
+						if (validationStatement.uniqueColumns){
+							$('#validation_src_unique_cols').val(validationStatement.uniqueColumns.join(", "));
+							if (validationPass == false)
+								$('#validation_src_unique_cols').css('color', 'red');
+						}
+						if (validationStatement.columnName && !validationStatement.notNull){
+							$('#validation_src_column_name').val(validationStatement.columnName);
+							$('#validation_src_column_min').val(validationStatement.columnRangeMin);
+							$('#validation_src_column_max').val(validationStatement.columnRangeMax);
+
+							if (validationPass == false){
+								$('#validation_src_column_name').css('color', 'red');
+								$('#validation_src_column_min').css('color', 'red');
+								$('#validation_src_column_max').css('color', 'red');
+							}
+						}
+						if (validationStatement.columnName && validationStatement.notNull){
+							var defValue = $('#validation_src_notnull_cols').val();
+							var columnName = validationStatement.columnName;
+							if (defValue) columnName = ", " + columnName;
+							$('#validation_src_notnull_cols').val(defValue + columnName);
+
+							if (validationPass == false)
+								$('#validation_src_unique_cols').css('color', 'red');
+						}
+					}
 			}
 
 			//To Fetch URL parameters.
@@ -416,6 +430,27 @@
 					<!-- /.col-lg-12 -->
 				</div>
 
+				<div class="alert alert-success alert-dismissible" role="alert" style="display:none;">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<strong>SUCCESS!</strong> <span id="success-msg">Check Validation has passed successfully.</span>
+				</div>
+
+				<div class="alert alert-info alert-dismissible" role="alert" style="display:none;">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<strong>RUNNING!</strong> Job is running now.
+				</div>
+
+				<div class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<strong>ERROR!</strong> <span id="danger-msg">Check Validation has failed.</span>
+				</div>
+
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="panel panel-default">
@@ -424,8 +459,8 @@
 							</div>
 							<div id="specialCollapse" class="panel-collapse collapse in">
 								<div class="panel-body">
-											<div class="col-md-12">
-												<div class="col-md-6">
+											<div class="col-md-offset-2 col-md-8">
+												<div class="col-md-12">
 													<label>Source Dataset</label>
 													<div class="form-group row" style="margin-top: 15px;">
 														<!--<label class="col-sm-3">Column</label>-->
@@ -451,9 +486,12 @@
 														</div>
 
 														<div class="col-sm-12">
-															<label class="col-sm-3">Unique Cols</label>
-															<div class="col-sm-9">
+															<label class="col-sm-2">Unique Cols</label>
+															<div class="col-sm-10">
 																<input type="text" class="form-control" id="validation_src_unique_cols" placeholder="Enter Unique Columns">
+															</div>
+															<div class="col-sm-2 text-right sample_data_sec hidden">
+																<a href="">sample data</a>
 															</div>
 														</div>
 
@@ -463,9 +501,12 @@
 														
 
 														<div class="col-sm-12" style="margin-bottom:15px;">
-															<label class="col-sm-3">Column</label>
-															<div class="col-sm-9">
+															<label class="col-sm-2">Column</label>
+															<div class="col-sm-8">
 																<input type="text" class="form-control" id="validation_src_column_name" placeholder="Enter Column Name">
+															</div>
+															<div class="col-sm-2 text-right sample_data_sec">
+																<a href="">sample data</a>
 															</div>
 														</div>
 
@@ -489,10 +530,13 @@
 															<div class="col-sm-10">
 																<input type="text" class="form-control" id="validation_src_notnull_cols" placeholder="Enter Not Null Columns">
 															</div>
+															<div class="col-sm-2 text-right sample_data_sec hidden">
+																<a href="">sample data</a>
+															</div>
 														</div>
 													</div>
 												</div>
-												<div class="col-md-6">
+												<div class="col-md-6 hidden">
 													<label>Destination Dataset</label>
 													<div class="form-group row" style="margin-top: 15px;">
 														<div class="col-sm-12" style="margin-bottom:15px;">

@@ -1084,7 +1084,7 @@ function getInputData(compareCommon) {
 }
 
 function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, randomSample, matchBoth, process,
-                       columnMapping, srcInput, destInput, compareKey ) {
+                       columnMapping, srcInput, destInput, compareKey, checkValidation ) {
 
     var jsonTree = {};
     var filesCompareList = new Array;
@@ -1194,7 +1194,7 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         validationStatement["continueIfFail"] = false;
         validationStatement["sql"] = src_sql;
 
-        if (srcInput.validation_src_column_min)
+        if (srcInput.validation_src_sql_value_min)
             validationStatement["sqlValidRangeMin"] = parseInt(srcInput.validation_src_sql_value_min);
         if (srcInput.validation_src_sql_value_max)
             validationStatement["sqlValidRangeMax"] = parseInt(srcInput.validation_src_sql_value_max);
@@ -1352,8 +1352,13 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         }
     }
 
-    filesCompareData["srcvalidationSQL"] = srcvalidationSQL;
-    filesCompareData["destvalidationSQL"] = destvalidationSQL;
+    if (srcvalidationSQL.length != 0)
+        filesCompareData["srcvalidationSQL"] = srcvalidationSQL;
+    if (destvalidationSQL.length != 0)
+        filesCompareData["destvalidationSQL"] = destvalidationSQL;
+
+    /*check empty validation condition*/
+    if (checkValidation && srcvalidationSQL.length == 0 && destvalidationSQL.length == 0) return "";
 
     filesCompareList.push(filesCompareData);
     jsonTree["filesCompareList"] = filesCompareList;

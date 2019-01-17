@@ -310,9 +310,12 @@
 			data.destFile = data.srcFile;
 			var jsonStr = makeInputJson(data.jobname, data.compareCommonColumnsOnly,
 					data.validateRowsCount, data.randomSample, data.matchBoth, true,
-					data.columnMapping, data.srcFile, data.destFile, data.compareKey);
+					data.columnMapping, data.srcFile, data.destFile, data.compareKey, true);
 
-			
+			if (jsonStr == ""){
+				swal("Validation Error", "Enter Validation condition.", "error");
+				return;
+			}
 			$.ajax({
 				type: "POST",
 				url: "/job",
@@ -1319,7 +1322,7 @@
 									<div class="form-group required" id="src_file_path">
 										<label class="col-sm-3" id="table">Dataset path</label>
 										<div class="col-sm-6">
-										<input type="text" placeholder="Path..." class="form-control" name="src_path" id="src_path" value="sample_csv_files/golden_dest.csv"></div>
+										<input type="text" placeholder="Path..." class="form-control" name="src_path" id="src_path" value="sample_csv_files/golden_src.csv"></div>
 									</div>
 									<br><br>
 									<div class="form-group" id="src_file_format">
@@ -1452,7 +1455,7 @@
 									<div class="form-group required" id="dest_file_path">
 										<label class="col-sm-3" id="table_dest">Dataset path</label>
 										<div class="col-sm-6">
-											<input type="text" placeholder="Path..." class="form-control" name="dest_path" id="dest_path" value="sample_csv_files/golden_dest.csv">
+											<input type="text" placeholder="Path..." class="form-control" name="dest_path" id="dest_path" value="sample_csv_files/golden_src.csv">
 										</div>
 									</div>
 									<br><br>
