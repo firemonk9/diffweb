@@ -286,27 +286,50 @@
 							$('#validation_src_sql_value_min').val(validationStatement.sqlValidRangeMin);
 							$('#validation_src_sql_value_max').val(validationStatement.sqlValidRangeMax);
 
-							if (validationPass == false){
-								$('#validation_src_sql').css('color', 'red');
-								$('#validation_src_sql_value_min').css('color', 'red');
-								$('#validation_src_sql_value_max').css('color', 'red');
+							if (validationPass == false)
+							{
+								//$('#validation_src_sql').css('color', 'red');
+								//$('#validation_src_sql_value_min').css('color', 'red');
+								//$('#validation_src_sql_value_max').css('color', 'red');
+
+								$('#failed_messge_sql').show();
 							}
 
 						}
 						if (validationStatement.uniqueColumns){
 							$('#validation_src_unique_cols').val(validationStatement.uniqueColumns.join(", "));
 							if (validationPass == false)
-								$('#validation_src_unique_cols').css('color', 'red');
+							{
+								//$('#validation_src_unique_cols').css('color', 'red');
+								$('#failed_messge_unique').show();
+								if (srcValidationStmt.sampleData){
+									$('#sample_data_unique').removeClass('hidden');
+									setSampleDataTable(srcValidationStmt.sampleData, 'unique');
+									setSampleDataTable(srcValidationStmt.sampleData, 'column');
+									setSampleDataTable(srcValidationStmt.sampleData, 'notnull');
+								}
+							}
 						}
-						if (validationStatement.columnName && !validationStatement.notNull){
+						if (validationStatement.columnName && !validationStatement.notNull)
+						{
 							$('#validation_src_column_name').val(validationStatement.columnName);
 							$('#validation_src_column_min').val(validationStatement.columnRangeMin);
 							$('#validation_src_column_max').val(validationStatement.columnRangeMax);
 
-							if (validationPass == false){
+							if (validationPass == false)
+							{
+								$('#failed_messge_column').show();
+								/*
 								$('#validation_src_column_name').css('color', 'red');
 								$('#validation_src_column_min').css('color', 'red');
 								$('#validation_src_column_max').css('color', 'red');
+								*/
+
+								if (srcValidationStmt.sampleData)
+								{
+									$('#sample_data_column').removeClass('hidden');
+									setSampleDataTable(srcValidationStmt.sampleData, 'column');
+								}
 							}
 						}
 						if (validationStatement.columnName && validationStatement.notNull){
@@ -316,7 +339,17 @@
 							$('#validation_src_notnull_cols').val(defValue + columnName);
 
 							if (validationPass == false)
+							{
 								$('#validation_src_unique_cols').css('color', 'red');
+								$('#failed_messge_notnull').show();
+								if (srcValidationStmt.sampleData)
+								{
+									$('#validation_src_notnull_cols').parent().removeClass("col-sm-10").addClass("col-sm-8");
+									$('#sample_data_notnull').removeClass('hidden');
+
+									setSampleDataTable(srcValidationStmt.sampleData, 'notnull');
+								}
+							}
 						}
 					}
 			}
@@ -367,6 +400,69 @@
 					getDataFromJsonFile("../json/diff_result.json");
 				}*/
 			});
+
+			function sample_data_show(type){
+				$('.sample_data_div').hide();
+				$('.sample_data_table_' + type).show();
+				$('#advancedRulesModal').show();
+			}
+
+			function setSampleDataTable(data, type){
+				var id = "sample_data_table_" + type;
+				var table = document.getElementById(id);
+				var columns = Array();
+
+				/*setting data*/
+				var tabledata = Array();
+				for (var i = 0; i < data.length; i++) {
+					var row = data[i];
+					var rowdata = {};
+					for (var j = 0; j < row.length; j++) {
+						var cell = row[j];
+						var col = cell.col;
+						var value = cell.value;
+						rowdata[col] = value;
+
+						/*set header*/
+						if (i == 0){
+							columns.push(cell.col);
+						}
+					}
+					tabledata.push(rowdata);
+				}
+
+				/**/
+				table.innerHTML = "";
+				var thead = document.createElement("thead");
+				var tr = document.createElement("tr");
+				/*header*/
+				for (var i = 0; i < columns.length; i++) {
+					var col = columns[i];
+					var th = document.createElement("th");
+					th.setAttribute("data-field", col);
+					th.setAttribute("data-sortable", "true");
+					th.innerHTML = col;
+					tr.appendChild(th);
+				}
+				thead.appendChild(tr);
+				table.appendChild(thead);
+
+				$('#' + id).bootstrapTable("destroy");
+				$('#' + id).bootstrapTable({
+					data: tabledata
+				});
+				$('#' + id).bootstrapTable('refresh');
+			}
+
+			$(function(){
+				$('#btn_close').click(function(){
+					$('#advancedRulesModal').hide();
+				});
+				$('#advanced').click(function(){
+					$('#advancedRulesModal').hide();
+				});
+			});
+			
 
 		</script>
 
@@ -461,9 +557,13 @@
 								<div class="panel-body">
 											<div class="col-md-offset-2 col-md-8">
 												<div class="col-md-12">
-													<label>Source Dataset</label>
+													<!-- <label>Source Dataset</label> -->
 													<div class="form-group row" style="margin-top: 15px;">
-														<!--<label class="col-sm-3">Column</label>-->
+														<!--<label class="col-sm-3">Column</label>--> 
+														<div class="col-md-12">
+															<label class="col-sm-12 data-filter-header font-weight-bold">SQL Condition</label>
+														</div>
+
 														<div class="col-sm-12" style="margin-bottom:15px;">
 															<label class="col-sm-2">SQL</label>
 															<div class="col-sm-10">
@@ -481,8 +581,12 @@
 															</div>
 														</div>
 
-														<div class="col-sm-12">
-															<hr width="100%" size="8">
+														<div class="col-sm-12" style="margin-top:10px; color:red; display:none;" id="failed_messge_sql">
+															<label class="col-sm-offset-2 col-sm-10">Validation Failed</label>
+														</div>
+
+														<div class="col-md-12">
+															<label class="col-sm-12 data-filter-header font-weight-bold">Unique Condition</label>
 														</div>
 
 														<div class="col-sm-12">
@@ -490,25 +594,29 @@
 															<div class="col-sm-10">
 																<input type="text" class="form-control" id="validation_src_unique_cols" placeholder="Enter Unique Columns">
 															</div>
-															<div class="col-sm-2 text-right sample_data_sec hidden">
-																<a href="">sample data</a>
+														</div>	
+
+														<div class="col-sm-12" style="margin-top:10px; color:red; display:none;" id="failed_messge_unique">
+															<label class="col-sm-offset-2 col-sm-2">Validation Failed</label>
+
+															<div class="col-sm-2 text-right sample_data_sec" id="sample_data_unique">
+																<a href="javascript:sample_data_show('unique')">sample data</a>
 															</div>
 														</div>
 
-														<div class="col-sm-12">
-															<hr width="100%" size="8">
-														</div>
 														
+
+														<div class="col-md-12">
+															<label class="col-sm-12 data-filter-header font-weight-bold">Column Range Condition</label>
+														</div>
 
 														<div class="col-sm-12" style="margin-bottom:15px;">
 															<label class="col-sm-2">Column</label>
-															<div class="col-sm-8">
+															<div class="col-sm-10">
 																<input type="text" class="form-control" id="validation_src_column_name" placeholder="Enter Column Name">
 															</div>
-															<div class="col-sm-2 text-right sample_data_sec">
-																<a href="">sample data</a>
-															</div>
 														</div>
+
 
 														<div class="col-sm-12">
 															<label class="col-sm-2">Min</label>
@@ -521,8 +629,17 @@
 															</div>
 														</div>
 
-														<div class="col-sm-12">
-															<hr width="100%" size="8">
+														<div class="col-sm-12" style="margin-top:10px; color:red; display:none;" id="failed_messge_column">
+															<label class="col-sm-offset-2 col-sm-2">Validation Failed</label>
+
+															<div class="col-sm-2 text-right sample_data_sec" id="sample_data_column">
+																<a href="javascript:sample_data_show('column')">sample data</a>
+															</div>
+
+														</div>
+
+														<div class="col-md-12">
+															<label class="col-sm-12 data-filter-header font-weight-bold">Not Null Condition</label>
 														</div>
 
 														<div class="col-sm-12" style="margin-bottom:25px;">
@@ -530,15 +647,22 @@
 															<div class="col-sm-10">
 																<input type="text" class="form-control" id="validation_src_notnull_cols" placeholder="Enter Not Null Columns">
 															</div>
-															<div class="col-sm-2 text-right sample_data_sec hidden">
-																<a href="">sample data</a>
+														</div>
+
+														<div class="col-sm-12" style="margin-top:10px; color:red; display:none;" id="failed_messge_notnull">
+															<label class="col-sm-offset-2 col-sm-2">Validation Failed</label>
+
+															<div class="col-sm-2 text-right sample_data_sec" id="sample_data_unique">
+																<a href="javascript:sample_data_show('notnull')">sample data</a>
 															</div>
 														</div>
+
 													</div>
 												</div>
 												<div class="col-md-6 hidden">
 													<label>Destination Dataset</label>
 													<div class="form-group row" style="margin-top: 15px;">
+
 														<div class="col-sm-12" style="margin-bottom:15px;">
 															<label class="col-sm-2">SQL</label>
 															<div class="col-sm-10">
@@ -614,15 +738,7 @@
 
 										</div>
 
-										<div class="panel-body" id="src_table_panel">
-											<table id="src_table" class="table table-hover"
-												data-height="100%"
-												data-search="true"
-												data-show-export="true"
-												data-show-columns="true"
-												data-pagination="true" >
-											</table>
-										</div>
+
 							</div>
 						</div>
 					</div>
@@ -643,370 +759,53 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" id="advanced" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel">Advanced Rules Mapping</h4>
+						<h4 class="modal-title" id="myModalLabel">Sample Data</h4>
 					</div>
 					
 					<div class="modal-body">
 						<ul class="nav nav-tabs">
-							<li class="active">
+							<!-- <li class="active">
 								<a data-toggle="tab" href="#column_map" aria-expanded="true">Column Map</a>
-							</li>
-							<!--<li>
-								<a data-toggle="tab" href="#transmation" aria-expanded="false">Transformations</a>
-							</li>-->
+							</li> -->
 						</ul>
-						<div class="col-md-6" style="margin-left: 20%;">
-							<div class="form-group">
-								<label class="col-sm-4" style="margin-top:13px;">Job Name <span style="color: red;">*</span></label>
-								<div class="col-sm-8">
-									<input type="text" id="job_name" placeholder="Name" class="form-control" style="margin-top:9px;">
-								</div>
-							</div>
-						</div>
 						<div class="tab-content" style="margin-top: 40px;">
 							
 							<div class="row tab-pane fade active in" id="column_map">
 								<!--<img src="../dest/img/help.png" width="30px" height="30px" style="position: fixed;right: 20px;top: 75px" onclick="colMapHelp()" />-->
 								<div class="accordion">
 									<div class="panel-group" id="accordion">
-										<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
-											
-											
-											<div class="panel-heading" data-toggle="collapse" data-parent="#accordion"data-target="#collapseThree">
-												<h3 class="panel-title accordion-toggle">Data Filter</h3>	
-											</div>
-											
-											<div id="collapseThree" class="panel-collapse collapse">
-												<div class="panel-body">
-													<div class="col-md-12" style="margin-bottom: 25px;">
-														<div class="form-group">
-															<label class="col-sm-4">Compare only a sample records</label>
-															<div class="col-sm-8">
-																<input type="number" placeholder="Insert number of keys to comapre between 1 to 100,000" class="form-control" id="rule_randomsample" min="0">
-															</div>
-														</div>
-													</div>
-													<div class="col-md-12">
-														<div class="form-group">
-															<label class="col-sm-4">Source Filter Sql</label>
-															<div class="col-sm-8">
-																<input type="text" placeholder="Insert sql here to filter Source Dataset..." class="form-control" id="src_filter_sql">
-															</div>
-															<br><br>
-														</div>
-													</div>
-													<div class="col-md-12">
-														<div class="form-group">
-															<label class="col-sm-4">Destination Filter Sql</label>
-															<div class="col-sm-8">
-																<input type="text" placeholder="Insert sql here to filter Destination Dataset..." class="form-control" id="dest_filter_sql">
-															</div>
-															<br><br>
-														</div>
-													</div>
-													<div class="col-md-12">
-														<div class="modal fade" id="what1" role="dialog">
-															<div class="modal-dialog">
-																<div class="modal-content">
-																	<div class="modal-header">
-																		<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
-																	</div>
-																	<div class="modal-body">
-																		<p><b>Run on sample of:</b>To run the data comparision on a sample(random) of records instead of the whole data. Accepts a number between 1 to 100,000.</p>
-																		
-																		<p>Note : The actual output may have less number of keys count. (As there could be multiple records for a key)</p>
-																		<p><b>Src Filter Sql/dest Filter Sql :</b> To filter the dataset instead of comparing the whole data provide a SQL statement.</p>
-																		
-																		<p>Note :  You can refer to the dataset as my_data.</p>
-																		
-																		<p>Ex : select * from my_data where age > 30</p>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													
-													
-													<div class="col-md-12">
-														<!--<button class="btn btn-danger" data-toggle="modal" data-target="#what" id="btn_delete">What is this</button>-->
-														<img src="../dest/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what1" />
-													</div>
-												</div>
-											</div>
+										<div class="panel-body sample_data_div sample_data_table_unique">
+											<h3>Unique Sample Data</h3>
+											<table id="sample_data_table_unique" class="table table-hover"
+												data-height="100%"
+												data-search="true"
+												data-show-export="true"
+												data-show-columns="true"
+												data-pagination="true" >
+											</table>
 										</div>
-										
-										<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
-											
-											<div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFour">
-												<h3 class="panel-title accordion-toggle">Dataset Comparision Options</h3>	
-											</div>
-											<div id="collapseFour" class="panel-collapse collapse">
-												<div class="panel-body">
-													<div class="col-md-12">
-														<div class="modal fade" id="what" role="dialog">
-															<div class="modal-dialog">
-																<div class="modal-content">
-																	<div class="modal-header">
-																		<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
-																	</div>
-																	<div class="modal-body">
-																		<p><b>Compare two way : </b>When the checkbox is selected compares both source and destination datasets with each other. When destination dataset is subset of source dataset unselect the check box.</p>	
-																	</div>
-																	
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="col-md-12">
-														<div class="checkbox" style="margin-bottom: 30px;display: inline-block;margin-left: 30px;">
-															<label style="margin-right: 10px"><!--<input type="checkbox" id="rule_matchboth" checked> --><input type="checkbox" name="checkbox" value="" id="rule_matchboth" checked>Compare two way</label>
-														</div>
-													</div>
-													<div class="col-md-12">
-														
-														<img src="../dest/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what" />
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
-											
-											<div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFive">
-												<h3 class="panel-title accordion-toggle">Data Transformations</h3>	
-											</div>
-											
-											<div id="collapseFive" class="panel-collapse collapse">
-												<div class="panel-body">
-													
-													<div class="col-md-12">
-														<div class="col-md-6">
-															<label>Source Dataset</label>
-															<div class="form-group row" style="margin-top: 15px;">
-																<!--<label class="col-sm-3">Column</label>-->
-																<div class="col-sm-9 src_dataset">
-																	<div class="src_trans_column">
-																		<input type="text" class="form-control ">
-																	</div>
-																</div>
-																<label class="col-sm-3">SQL</label>
-																<div class="col-sm-9">
-																	<input type="text" placeholder="Enter transformation SQL" class="form-control src_trans_rule">
-																</div>
-															</div>
-															<!--<div class="form-group row" id="src_trans_next">
-																<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="src_trans_plus">
-																	<span class="glyphicon glyphicon-plus"></span>
-																</button>
-																<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="src_trans_minus">
-																	<span class="glyphicon glyphicon-minus"></span>
-																</button>
-															</div>-->
-															
-														</div>
-														
-														<div class="col-md-6">
-															<label>Destination Dataset</label>
-															<div class="form-group row" style="margin-top: 15px;" id="dest_trans_first">
-																<!--<label class="col-sm-3">Column</label>-->
-																<div class="col-sm-9 desti_dataset">
-																	<div class="dest_trans_column">
-																		<input type="text" class="form-control" value="">
-																	</div>
-																</div>
-																<label class="col-sm-3">SQL</label>
-																<div class="col-sm-9">
-																	<input type="text" placeholder="Enter transformation SQL" class="form-control dest_trans_rule">
-																</div>
-															</div>
-															<!--<div class="form-group row" id="dest_trans_next">
-																<button class="btn btn-default btn-sm col-sm-offset-4 col-sm-1" id="dest_trans_plus">
-																	<span class="glyphicon glyphicon-plus"></span>
-																</button>
-																<button class="btn btn-default btn-sm col-sm-offset-2 col-sm-1" id="dest_trans_minus">
-																	<span class="glyphicon glyphicon-minus"></span>
-																</button>
-															</div>-->
-														</div>
-													</div>
-													<div class="col-md-12">
-														<div class="modal fade" id="what2" role="dialog">
-															<div class="modal-dialog">
-																<div class="modal-content">
-																	<div class="modal-header">
-																		<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
-																	</div>
-																	<div class="modal-body">
-																		<p>	<b>Transformations</b> : DiffTool provides ability to transform the columns before comparing. Transformation rule can be applied to one or more columns. The transformations can be applied using SQL functions.</p>
-																		
-																		<table class="table2" style="width:100%">
-																			<th>Example scenario</th>
-																			<th>Rule</th>
-																			<tr>
-																				<td>Convert column “first_name” to lower case</td>
-																				<td>
-																					LOWER(first_name) as first_name
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>Convert column “first_name” to lower case , increase column “age” by 1</td>
-																				<td>
-																					LOWER(first_name) as first_name, (age+1) as age
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>Trim a string and upper case for column “organization”</td>
-																				<td>
-																					trim(upper(organization)) as organization
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>Make a substring of at most 10 charecters for column “organization”</td>
-																				<td>
-																					substring(organization,0,10)  as organization
-																				</td>
-																			</tr>
-																			<tr>
-																				<td>Join columns “first_name” and “last_name” and populate column “name”
-Note : column “name” should already exist and be marked for comparision.</td>
-																				<td>
-																					concat(first_name | last_name) as name
-																				</td>
-																			</tr>
-																		</table>
-																		
-																		<style>
-																			table.table2 tr {
-																			text-transform: none;
-																			}
-																			table.table2 th{border: 1px solid black;
-																			border-collapse: collapse;padding: 6px;}
-																			
-																			table.table2 td{border: 1px solid black;
-																			border-collapse: collapse;padding: 6px;}
-																		</style>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="col-md-12">
-														<img src="../dest/img/question.png" width="30px" height="30px" data-toggle="modal" data-target="#what2" />
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!--changes-->
-								<!-- <div id="cluster_resources" class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
-								<div class="panel-heading" data-toggle="collapse" data-parent="#accordion"data-target="#cluster">
-										<h3 class="panel-title accordion-toggle">Cluster Resources</h3>
-									</div>
-									<div id="cluster" class="panel-collapse collapse">
-										<div class="panel-body">
-									
-									 <div class="col-md-12" style="margin-bottom: 25px;">
-												<div class="form-group">
-													<label class="col-sm-4">Number of Executors</label>
-													<div class="col-sm-8">
-														<input type="number" class="form-control" id="numExecutors" min="0">
-													</div>
-												</div>
-											</div><br><br>
-											
-											<div class="col-md-12">
-												<div class="form-group">
-													<label class="col-sm-4">Executor Memory</label>
-													<div class="col-sm-8">
-														<input type="text" class="form-control" id="executorMemory">
-													</div>
-													<br><br>
-												</div>
-											</div>
-											
-											<div class="col-md-12" style="margin-bottom: 25px;">
-												<div class="form-group">
-													<label class="col-sm-4">Number of cores per executor</label>
-													<div class="col-sm-8">
-														<input type="number" class="form-control" id="executorCores" min="0">
-													</div>
-												</div>
-											</div>
-									
-									
-										</div>
-									
-									</div>
-								</div> -->
-								
-									
-											
-								
-								<!--end changes-->
-								<div class="panel-body">
-									<div class="col-md-12">
-										<div class="modal fade" id="what3" role="dialog">
-											<div class="modal-dialog">
-												<div class="modal-content">
-													<div class="modal-header">
-														<button type="button" class="close" data-dismiss-modal="modal2" aria-hidden="true">&times;</button>
-													</div>
-													<div class="modal-body">
-														
-														
-														<p><b>Source Dataset Columns</b> : Atleast one column needs to be a compare key column to compare datasets. Compare key columns are used to join the datasets in order to compare record by record. Select the check box next to column name to define a column/s as key column/s.  Drag the columns to map them to the corresponding column in the destination dataset.</p>
-														
-														<p><b>Destination Dataset Columns</b> :  Column names from the destination dataset. Drag the columns to map them to the corresponding source dataset column.</p>
-														
-														<p><b>Exclude Columns</b> : Only columns which have green icon next to them are compared. Click on the green icon( changes to red cross) to exclude the column from comparision.</p>
-														
-													</div>
-													
-													
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<div class="col-md-12">
-										
-										<img src="../dest/img/question.png" width="30px" height="30px" style="float: right" data-toggle="modal" data-target="#what3" />
-									</div>
-								</div>
-								
-								
-								<div>
-									<div class="col-md-12">
-										<h3 class="data-filter-header">Columns Mapping</h3>
-									</div>
-									
-									<div class="col-md-12">
-										<!--<div class="checkbox" style="margin-left:30px;margin-bottom: 30px;display: inline-block">-->
-										<!--<label style="margin-right: 10px"><input type="checkbox" value="" id="auto_mapping">Auto Column Mapping</label>-->
-										<!--</div>-->
-										
-									</div>
-									<div class="col-md-5">
-									<ul style="padding-left: 0px;margin-left: 30px;">
-											<label style="width: 100%;font-weight: bold;
-											color: #000000;">Source Columns <span style="float:right">Compare Key<span style="color: red;"> *</span></span></label>
-									</ul>
-										<ul class="list-group connectedSortable1" style="padding-left: 0px;margin-left: 30px" id="src_column">	
-										</ul>
-									</div>
 
-									<label style="position: relative; right: 325px; top: 84px; hfont-weight: bold;color: #000000;margin-left:-17%">Columns Included</label>
+										<div class="panel-body sample_data_div sample_data_table_column">
+											<h3>Column Sample Data</h3>
+											<table id="sample_data_table_column" class="table table-hover"
+												data-height="100%"
+												data-search="true"
+												data-show-export="true"
+												data-show-columns="true"
+												data-pagination="true" >
+											</table>
+										</div>
 
-									<div class="col-md-2" style="margin-top: 35px;text-align: center;" id="mapper">
-									</div>
-									
-									<div class="col-md-5">
-										<ul style="padding-right: 0px;margin-right: 30px;">
-											<label style="font-weight: bold;color: #000000;margin-left:-17%">Destination Columns</label>
-										</ul>
-										<ul class="list-group connectedSortable2" style="padding-right: 0px;margin-right: 30px;" id="dest_column">
-											
-										</ul>
+										<div class="panel-body sample_data_div sample_data_table_notnull">
+											<h3>Notnull Sample Data</h3>
+											<table id="sample_data_table_notnull" class="table table-hover"
+												data-height="100%"
+												data-search="true"
+												data-show-export="true"
+												data-show-columns="true"
+												data-pagination="true" >
+											</table>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -1014,8 +813,7 @@ Note : column “name” should already exist and be marked for comparision.</td
 					</div>
 					
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" id="btn_cancel_rules">Cancel</button>
-						<a class="btn btn-success btn-ok" id="btn_save_rules">Submit Job</a>
+						<a class="btn btn-success btn-ok" id="btn_close">Close</a>
 					</div>
 				</div>
 			</div>
