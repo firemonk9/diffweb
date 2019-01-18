@@ -44,6 +44,9 @@
 	<script src="../dest/js/sweetalert-dev.js"></script>
 	<script src="../dest/js/app.js"></script>
 
+	<script src="../dest/js/selectize.js"></script>
+	<script src="../dest/js/index.js"></script>
+
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -415,6 +418,12 @@
 						$('#src_error-msg').hide();
 						$('.src_alert-danger').hide();
 						srcAjax = null;
+
+						
+						setSelect(srcColumns, 'validation_src_unique_cols');
+						setSelect(srcColumns, 'validation_src_column_name');
+						setSelect(srcColumns, 'validation_src_notnull_cols');
+
 					}
 				},
 				error: function (response) {
@@ -1344,7 +1353,7 @@
 									<div class="form-group required" id="src_file_delimiter">
 										<div class="col-sm-3 tooltipd">
 										<label>Delimiter </label>
-										<img src="../dest/img/tooltip.jpg" style="height:11%;width:11%">
+										<img src="../dest/img/tooltip.jpg" style="height:6%;width:6%">
 											<span class="tooltiptext">Enter, For Comma = , For Tab = \t</span>
 										</div>
 
@@ -1478,7 +1487,7 @@
 									<div class="form-group required" id="dest_file_delimiter">
 									<div class="col-sm-3 tooltipd">
 										<label>Delimiter </label>
-										<img src="../dest/img/tooltip.jpg" style="height:11%;width:11%">
+										<img src="../dest/img/tooltip.jpg" style="height:6%;width:6%">
 											<span class="tooltiptext">Enter, For Comma = , For Tab = \t</span>
 										</div>
 										<div class="col-sm-6">
@@ -1867,7 +1876,7 @@
 													<div class="form-group row" style="margin-top: 15px;">
 
 														<div class="col-md-12">
-															<label class="col-sm-12 data-filter-header font-weight-bold">SQL Condition</label>
+															<label class="col-sm-12 data-filter-header font-weight-bold text-center">SQL Condition</label>
 														</div>
 
 														<div class="col-sm-12" style="margin-bottom:15px;">
@@ -1888,25 +1897,30 @@
 														</div>
 
 														<div class="col-md-12">
-															<label class="col-sm-12 data-filter-header font-weight-bold">Unique Condition</label>
+															<label class="col-sm-12 data-filter-header font-weight-bold text-center">Unique Condition</label>
 														</div>
 
 														<div class="col-sm-12">
 															<label class="col-sm-3">Unique Cols</label>
 															<div class="col-sm-9">
-																<input type="text" class="form-control" id="validation_src_unique_cols" placeholder="A, B">
+																<!-- <input type="text" class="form-control" id="validation_src_unique_cols" placeholder="A, B"> -->
+
+																<select id="validation_src_unique_cols" multiple placeholder="Select fields..."></select>
+
 															</div>
 														</div>
 
 
 														<div class="col-md-12">
-															<label class="col-sm-12 data-filter-header font-weight-bold">Column Range Condition</label>
+															<label class="col-sm-12 data-filter-header font-weight-bold text-center">Column Range Condition</label>
 														</div>
 
 														<div class="col-sm-12" style="margin-bottom:15px;">
 															<label class="col-sm-2">Column</label>
 															<div class="col-sm-10">
-																<input type="text" class="form-control" id="validation_src_column_name" placeholder="A">
+																<!-- <input type="text" class="form-control" id="validation_src_column_name" placeholder="A"> -->
+
+																<select id="validation_src_column_name" multiple placeholder="Select fields..."></select>
 															</div>
 														</div>
 
@@ -1922,13 +1936,14 @@
 														</div>
 
 														<div class="col-md-12">
-															<label class="col-sm-12 data-filter-header font-weight-bold">Not Null Condition</label>
+															<label class="col-sm-12 data-filter-header font-weight-bold text-center">Not Null Condition</label>
 														</div>
 
 														<div class="col-sm-12" style="margin-bottom:25px;">
 															<label class="col-sm-2">Not Null</label>
 															<div class="col-sm-10">
-																<input type="text" class="form-control" id="validation_src_notnull_cols" placeholder="C, D">
+															<!-- <input type="text" class="form-control" id="validation_src_notnull_cols" placeholder="C, D"> -->
+															<select id="validation_src_notnull_cols" multiple placeholder="Select fields..."></select>
 															</div>
 														</div>
 													</div>
@@ -2267,6 +2282,32 @@
 			}
 		});
 	});
+
+	function setSelect(fields, id){
+		
+		var fields_name = Array();
+
+		for(i = 0 ; i < fields.length ; i++){
+			var one = {};
+			one['title'] = fields[i].name;
+			one['id'] = fields[i].name;
+			fields_name.push(one);
+		}
+
+		$('#' + id).selectize({
+			maxItems: null,
+			valueField: 'id',
+			labelField: 'title',
+			searchField: 'title',
+			/*options: [
+				{id: 1, title: 'Spectrometer', url: 'http://en.wikipedia.org/wiki/Spectrometers'},
+				{id: 2, title: 'Star Chart', url: 'http://en.wikipedia.org/wiki/Star_chart'},
+				{id: 3, title: 'Electrical Tape', url: 'http://en.wikipedia.org/wiki/Electrical_tape'}
+			],*/
+			options: fields_name,
+			create: false
+		});
+	}
 </script>
 <style>
 	#mapper div img {

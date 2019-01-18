@@ -1214,8 +1214,7 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
 
         var validationStatement = {};
         validationStatement["continueIfFail"] = false;
-        validationStatement["uniqueColumns"] = validation_src_unique_cols.split(",")
-                                                    .map(Function.prototype.call, String.prototype.trim);
+        validationStatement["uniqueColumns"] = validation_src_unique_cols;
         
         sql_value["validationStatement"] = validationStatement;
         srcvalidationSQL.push(sql_value);
@@ -1245,8 +1244,7 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
     var validation_src_notnull_cols = srcInput.validation_src_notnull_cols;
     if (validation_src_notnull_cols){
 
-        var notnull_cols = srcInput.validation_src_notnull_cols.split(",")
-                                .map(Function.prototype.call, String.prototype.trim);
+        var notnull_cols = srcInput.validation_src_notnull_cols;
 
         for(i = 0 ; i < notnull_cols.length ; i++){
 
@@ -1300,8 +1298,7 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
 
         var validationStatement = {};
         validationStatement["continueIfFail"] = false;
-        validationStatement["uniqueColumns"] = validation_dest_unique_cols.split(",")
-                                                .map(Function.prototype.call, String.prototype.trim);
+        validationStatement["uniqueColumns"] = validation_dest_unique_cols;
         
         sql_value["validationStatement"] = validationStatement;
         destvalidationSQL.push(sql_value);
@@ -1331,8 +1328,7 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
     var validation_dest_notnull_cols = destInput.validation_dest_notnull_cols;
     if (validation_dest_notnull_cols){
 
-        var notnull_cols = destInput.validation_dest_notnull_cols.split(",")
-                                .map(Function.prototype.call, String.prototype.trim);
+        var notnull_cols = destInput.validation_dest_notnull_cols;
 
         for(i = 0 ; i < notnull_cols.length ; i++){
 
