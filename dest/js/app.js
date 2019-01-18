@@ -1230,7 +1230,7 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
 
         var validationStatement = {};
         validationStatement["continueIfFail"] = false;
-        validationStatement["columnName"] = validation_src_column_name;
+        validationStatement["columnName"] = validation_src_column_name[0];
 
         if (srcInput.validation_src_column_min)
             validationStatement["columnRangeMin"] = parseInt(srcInput.validation_src_column_min);
