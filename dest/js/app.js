@@ -1377,7 +1377,7 @@ function create_new_item(ischeck, column, value, min, max, actualvalue, checkres
 
         var condition = Array();
         condition['col'] = 'check';
-        condition['value'] = checkresult ? "<b>Greet PASS</b>" : "<b style='color:red'>Failed</b>";
+        condition['value'] = checkresult ? "<b style='color:green'>Greet PASS</b>" : "<b style='color:red'>Failed</b>";
         result.push(condition);
     }
     return result;
