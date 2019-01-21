@@ -121,6 +121,17 @@
 	
 <body>
 	<script type="text/javascript">
+
+		var condition_sql = Array();
+		var condition_sql_current = -1;
+		var condition_column = Array();
+		var condition_column_current = -1;
+
+		$(function(){
+			//show_data_table(condition_sql, 'table_condition_sql');
+			//show_data_table(condition_column, 'table_condition_column');
+		});
+
 		$(document).on('mouseenter', ".datapath-tiff", function () {
 			var $this = $(this);
 			if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
@@ -289,7 +300,7 @@
 		}
 
 		function submitJobJson() {
-			var data = getInputData(srcRecordCnt != destRecordCnt);
+			var data = getInputData(srcRecordCnt != destRecordCnt, condition_sql, condition_column);
 			if (data.compareKey.length <= 0) {
 				//swal("Validation Error", "Atleast one column should be selectd as Compare Key.", "error");
 				//return;
@@ -422,7 +433,7 @@
 						
 						setSelect(srcColumns, 'validation_src_unique_cols');
 						setSelect(srcColumns, 'validation_src_column_name', 1);
-						setSelect(srcColumns, 'validation_src_notnull_cols', 1);
+						setSelect(srcColumns, 'validation_src_notnull_cols');
 
 					}
 				},
@@ -1329,13 +1340,13 @@
 								<div class="col-md-12">
 									<!-- CSV -->
 									<div class="form-group required" id="src_file_path">
-										<label class="col-sm-3" id="table">Dataset path</label>
-										<div class="col-sm-6">
+										<label class="col-sm-offset-1 col-sm-3" id="table">Dataset path</label>
+										<div class="col-sm-6">	
 										<input type="text" placeholder="Path..." class="form-control" name="src_path" id="src_path" value="sample_csv_files/golden_src.csv"></div>
 									</div>
 									<br><br>
 									<div class="form-group" id="src_file_format">
-										<label class="col-sm-3">Dataset Format</label>
+										<label class="col-sm-offset-1 col-sm-3">Dataset Format</label>
 										<div class="col-sm-6">
 											<select class="form-control" id="select_src_type">
 												<option>PARQUET</option>
@@ -1351,7 +1362,7 @@
 									<br><br>
 									<!-- CSV -->
 									<div class="form-group required" id="src_file_delimiter">
-										<div class="col-sm-3 tooltipd">
+										<div class="col-sm-offset-1 col-sm-3 tooltipd">
 										<label>Delimiter </label>
 										<img src="../dest/img/tooltip.jpg" style="height:6%;width:6%">
 											<span class="tooltiptext">Enter, For Comma = , For Tab = \t</span>
@@ -1364,7 +1375,7 @@
 										<br><br>
 									</div>
 									<div class="form-group required" id="src_file_header">
-										<label class="col-sm-3">Header </label>
+										<label class="col-sm-offset-1 col-sm-3">Header </label>
 										<div class="col-sm-6">
 											<select class="form-control" id="src_header">
 												<option>True</option>
@@ -1374,7 +1385,7 @@
 										<br><br>
 									</div>
 									<div class="form-group" id="src_custom_schema">
-										<label class="col-sm-3">Custom Schema</label>
+										<label class="col-sm-offset-1 col-sm-3">Custom Schema</label>
 										<div class="col-sm-6">
 											<input type="text" placeholder="Custom schema..." class="form-control" id="src_file_schema">
 										</div>
@@ -1383,42 +1394,42 @@
 									<!-- /#CSV -->
 									<!-- JDBC -->
 									<div class="form-group required" id="src_jdbc_url">
-										<label class="col-sm-3">URL</label>
+										<label class="col-sm-offset-1 col-sm-3">URL</label>
 										<div class="col-sm-6">
 											<input type="text" placeholder="Connection URL..." class="form-control" name="src_url" id="src_url">
 										</div>
 										<br><br>
 									</div>
 									<div class="form-group required" id="src_jdbc_user">
-										<label class="col-sm-3">User</label>
+										<label class="col-sm-offset-1 col-sm-3">User</label>
 										<div class="col-sm-6">
 											<input type="text" placeholder="User..." class="form-control" name="src_user" id="src_user">
 										</div>
 										<br><br>
 									</div>
 									<div class="form-group required" id="src_jdbc_pass">
-										<label class="col-sm-3">Password</label>
+										<label class="col-sm-offset-1 col-sm-3">Password</label>
 										<div class="col-sm-6">
 											<input type="text" placeholder="Password..." class="form-control" name="src_pass" id="src_pass">
 										</div>
 										<br><br>
 									</div>
 									<div class="form-group required" id="src_jdbc_table">
-										<label class="col-sm-3">Table Name/SQL</label>
+										<label class="col-sm-offset-1 col-sm-3">Table Name/SQL</label>
 										<div class="col-sm-6">
 											<input type="text" placeholder="Table..." class="form-control" name="src_table" id="src_jtable">
 										</div>
 										<br><br>
 									</div>
 									<div class="form-group required" id="src_jdbc_driver">
-										<label class="col-sm-3">Driver Path</label>
+										<label class="col-sm-offset-1 col-sm-3">Driver Path</label>
 										<div class="col-sm-6">
 											<input type="text" placeholder="JDBC driver path" class="form-control" name="src_driver" id="src_driver">
 										</div>
 										<br>
 									</div>
                                     <div class="form-group required " id="src_jdbc_driver_class">
-                                        <label class="col-sm-3">Driver Class Name</label>
+                                        <label class="col-sm-offset-1 col-sm-3">Driver Class Name</label>
                                         <div class="col-sm-6">
                                             <input type="text" placeholder="e.g. Mysql : com.mysql.jdbc.Driver" class="form-control" name="src_driver_class" id="src_driver_class">
                                         </div>
@@ -1426,7 +1437,7 @@
                                     </div>                                        
 									<!-- /#JDBC -->
 									<div class="form-group" id="src_validate">
-										<label class="col-sm-3"> </label>
+										<label class="col-sm-offset-1 col-sm-3"> </label>
 										<div class="col-sm-6" style="text-align:right">
 											<button class='btn btn-warning' id="btn_src_validate">Validate</button>
 										</div>
@@ -1615,7 +1626,7 @@
 
 	<!-- Advanced Rule Modal -->
 	<div class="ui-dialog" id="advancedRulesModal" style="z-index:9999;display: none;width: 50%;position: absolute;top: 5%;left: 20%;">
-		<div class="modal-dialog" style="width: 700px;">
+		<div class="modal-dialog" style="width: 800px;">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" id="advanced" aria-hidden="true">&times;</button>
@@ -1881,18 +1892,36 @@
 
 														<div class="col-sm-12" style="margin-bottom:15px;">
 															<label class="col-sm-2">SQL</label>
-															<div class="col-sm-10">
+															<div class="col-sm-8">
 																<input type="text" class="form-control" id="validation_src_sql" placeholder="select count(*) from src">
+															</div>
+															<div class="col-sm-2">
+																<a class="btn btn-primary col-sm-12" href="javascript:save_sql('add')" id="add_btn_sql">ADD</a>
 															</div>
 														</div>
 														<div class="col-sm-12">
 															<label class="col-sm-2">Min</label>
-															<div class="col-sm-4">
-																<input type="text" class="form-control" id="validation_src_sql_value_min" placeholder="1">
+															<div class="col-sm-3">
+																<input type="number" class="form-control" id="validation_src_sql_value_min" placeholder="1">
 															</div>
 															<label class="col-sm-2">Max</label>
-															<div class="col-sm-4">
-																<input type="text" class="form-control" id="validation_src_sql_value_max" placeholder="100">
+															<div class="col-sm-3">
+																<input type="number" class="form-control" id="validation_src_sql_value_max" placeholder="100">
+															</div>
+															<div class="col-sm-2">
+																<a class="btn btn-primary col-sm-12 disabled" href="javascript:save_sql('save')" id="save_btn_sql">SAVE</a>
+															</div>
+														</div>
+
+														<div class="col-sm-12" style="margin-top:20px;">
+															<div class="col-sm-12">
+																<table id="table_condition_sql" class="table table-hover"
+																	data-height="100%"
+																	data-search="true"
+																	data-show-export="true"
+																	data-show-columns="true"
+																	data-pagination="true" >
+																</table>
 															</div>
 														</div>
 
@@ -1917,21 +1946,40 @@
 
 														<div class="col-sm-12" style="margin-bottom:15px;">
 															<label class="col-sm-2">Column</label>
-															<div class="col-sm-10">
+															<div class="col-sm-8">
 																<!-- <input type="text" class="form-control" id="validation_src_column_name" placeholder="A"> -->
 
-																<select id="validation_src_column_name" multiple placeholder="Select fields..."></select>
+																<select id="validation_src_column_name" placeholder="Select fields..." class="form-control"></select>
+																<span style="color:red">(Only Numeric Columns)</span>
+															</div>
+															<div class="col-sm-2">
+																<a class="btn btn-primary col-sm-12" href="javascript:save_column('add')" id="add_btn_column">ADD</a>
 															</div>
 														</div>
 
 														<div class="col-sm-12">
 															<label class="col-sm-2">Min</label>
-															<div class="col-sm-4">
-																<input type="text" class="form-control" id="validation_src_column_min" placeholder="1">
+															<div class="col-sm-3">
+																<input type="number" class="form-control" id="validation_src_column_min" placeholder="1">
 															</div>	
 															<label class="col-sm-2">Max</label>
-															<div class="col-sm-4">
-																<input type="text" class="form-control" id="validation_src_column_max" placeholder="100">
+															<div class="col-sm-3">
+																<input type="number" class="form-control" id="validation_src_column_max" placeholder="100">
+															</div>
+															<div class="col-sm-2">
+																<a class="btn btn-primary col-sm-12 disabled" href="javascript:save_column('save')" id="save_btn_column">SAVE</a>
+															</div>
+														</div>
+
+														<div class="col-sm-12" style="margin-top:15px;">
+															<div class="col-sm-12">
+																<table id="table_condition_column" class="table table-hover"
+																	data-height="100%"
+																	data-search="true"
+																	data-show-export="true"
+																	data-show-columns="true"
+																	data-pagination="true" >
+																</table>
 															</div>
 														</div>
 
@@ -1969,7 +2017,7 @@
 														</div>
 
 														<div class="col-md-12">
-															<label class="col-sm-12 data-filter-header font-weight-bold">SQL Condition</label>
+															<label class="col-sm-12 data-filter-header font-weight-bold">Unique Condition</label>
 														</div>
 
 														<div class="col-sm-12">
@@ -2003,7 +2051,7 @@
 														</div>
 
 														<div class="col-md-12">
-															<label class="col-sm-12 data-filter-header font-weight-bold">SQL Condition</label>
+															<label class="col-sm-12 data-filter-header font-weight-bold">Notnull Condition</label>
 														</div>
 
 														<div class="col-sm-12" style="margin-bottom:25px;">
@@ -2295,6 +2343,14 @@
 		}
 
 		if (!maxCount) maxCount  = null;
+		if (maxCount == 1){
+			var html = '';
+			for(i = 0 ; i < fields.length ; i++){
+				html += '<option>' + fields[i].name + '</option>';
+			}
+			$('#' + id).html(html);
+			return;
+		}
 
 		$('#' + id).selectize({
 			maxItems: null,
@@ -2311,6 +2367,112 @@
 			create: false
 		});
 	}
+
+
+	function save_sql(type){
+
+		var sql = $('#validation_src_sql').val();
+		var min = $('#validation_src_sql_value_min').val();
+		var max = $('#validation_src_sql_value_max').val();
+
+		if (!sql){
+			swal("Validation Error", "please input sql query.", "error");
+			return;
+		}
+
+		if (!min && !max){
+			swal("Validation Error", "please input min or max", "error");
+			return;
+		}
+
+		var item = create_new_item(false, 'sql', sql, min, max);
+
+		if (type == 'add'){
+			condition_sql.push(item);
+
+			condition_sql_current = -1;
+			$('#save_btn_sql').addClass('disabled');
+
+			$('#validation_src_sql').val('');
+			$('#validation_src_sql_value_min').val('');
+			$('#validation_src_sql_value_max').val('');
+
+		}else if (type == 'save'){
+			condition_sql[condition_sql_current] = item;
+		}
+
+		show_data_table(condition_sql, 'table_condition_sql');
+
+		$('table tr').click(function(){
+			edit_function(this);
+		});
+
+	}
+
+	function save_column(type){
+
+		var name = $('#validation_src_column_name').val();
+		var min = $('#validation_src_column_min').val();
+		var max = $('#validation_src_column_max').val();
+
+		if (!name){
+			swal("Validation Error", "please input column name.", "error");
+			return;
+		}
+
+		if (!min && !max){
+			swal("Validation Error", "please input min or max", "error");
+			return;
+		}
+
+		var item = create_new_item(false, 'column', name, min, max);
+
+		if (type == 'add'){
+			condition_column.push(item);
+
+			condition_column_current = -1;
+			$('#save_btn_column').addClass('disabled');
+
+			$('#validation_src_column_name').val('');
+			$('#validation_src_column_min').val('');
+			$('#validation_src_column_max').val('');
+
+		}else if (type == 'save'){
+			condition_column[condition_column_current] = item;
+		}
+
+		show_data_table(condition_column, 'table_condition_column');
+
+		$('table tr').click(function(){
+			edit_function(this);
+		});
+
+	}
+
+
+	function edit_function(this_obj){
+		var index = $(this_obj)[0].sectionRowIndex;
+		var id = $(this_obj).parent().parent().prop('id');
+		if (id == 'table_condition_sql'){
+
+			$('#validation_src_sql').val(condition_sql[index][0].value);
+			$('#validation_src_sql_value_min').val(condition_sql[index][1].value);
+			$('#validation_src_sql_value_max').val(condition_sql[index][2].value);
+
+			condition_sql_current = index;
+			$('#save_btn_sql').removeClass('disabled');
+
+		}else if (id == 'table_condition_column'){
+			$('#validation_src_column_name').val(condition_column[index][0].value);
+			$('#validation_src_column_min').val(condition_column[index][1].value);
+			$('#validation_src_column_max').val(condition_column[index][2].value);
+
+			condition_column_current = index;
+			$('#save_btn_column').removeClass('disabled');
+		}
+	}
+
+	
 </script>
 <style>
 	#mapper div img {

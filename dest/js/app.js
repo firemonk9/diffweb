@@ -888,7 +888,7 @@ function uncheckbox(){
 }
 
 
-function getInputData(compareCommon) {
+function getInputData(compareCommon, sql, column) {
     var result = {};
 
     result["jobname"] = $('#job_name').val();
@@ -985,13 +985,9 @@ function getInputData(compareCommon) {
     srcFile["transformations"] = transformations;
 
     /*validation*/
-    srcFile["validation_src_sql"] = $("#validation_src_sql").val();
-    srcFile["validation_src_sql_value_min"] = $("#validation_src_sql_value_min").val();
-    srcFile["validation_src_sql_value_max"] = $("#validation_src_sql_value_max").val();
+    srcFile["validation_src_sql"] = sql;
     srcFile["validation_src_unique_cols"] = $("#validation_src_unique_cols").val();
-    srcFile["validation_src_column_name"] = $("#validation_src_column_name").val();
-    srcFile["validation_src_column_min"] = $("#validation_src_column_min").val();
-    srcFile["validation_src_column_max"] = $("#validation_src_column_max").val();
+    srcFile["validation_src_column_name"] = column;
     srcFile["validation_src_notnull_cols"] = $("#validation_src_notnull_cols").val();
     
     result["srcFile"] = srcFile;
@@ -1064,12 +1060,8 @@ function getInputData(compareCommon) {
 
     /*validation*/
     destFile["validation_dest_sql"] = $("#validation_dest_sql").val();
-    destFile["validation_dest_sql_value_min"] = $("#validation_dest_sql_value_min").val();
-    destFile["validation_dest_sql_value_max"] = $("#validation_dest_sql_value_max").val();
     destFile["validation_dest_unique_cols"] = $("#validation_dest_unique_cols").val();
     destFile["validation_dest_column_name"] = $("#validation_dest_column_name").val();
-    destFile["validation_dest_column_min"] = $("#validation_dest_column_min").val();
-    destFile["validation_dest_column_max"] = $("#validation_dest_column_max").val();
     destFile["validation_dest_notnull_cols"] = $("#validation_dest_notnull_cols").val();
 
     result["destFile"] = destFile;
@@ -1184,30 +1176,43 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
     /*sql*/
     var src_sql = srcInput.validation_src_sql;
     if (src_sql){
-        var sql_value = {};
-        sql_value["beginTime"] = 0;
-        sql_value["beginTime"] = 0;
-        sql_value["endTime"] = 0;
-        sql_value["submittedTime"] = 0;
+        for(i = 0 ; i < src_sql.length ; i++){
+            var sql_value = {};
+            sql_value["beginTime"] = 0;
+            sql_value["endTime"] = 0;
+            sql_value["submittedTime"] = 0;
 
-        var validationStatement = {};
-        validationStatement["continueIfFail"] = false;
-        validationStatement["sql"] = src_sql;
+            var validationStatement = {};
+            validationStatement["continueIfFail"] = false;
 
-        if (srcInput.validation_src_sql_value_min)
-            validationStatement["sqlValidRangeMin"] = parseInt(srcInput.validation_src_sql_value_min);
-        if (srcInput.validation_src_sql_value_max)
-            validationStatement["sqlValidRangeMax"] = parseInt(srcInput.validation_src_sql_value_max);
+            for(j = 0 ; j < src_sql[i].length ; j++){
 
-        sql_value["validationStatement"] = validationStatement;
-        srcvalidationSQL.push(sql_value);
+                var col = src_sql[i][j].col;
+                var value = src_sql[i][j].value;
+
+                if (col == 'sql')
+                    validationStatement["sql"] = value;
+                else if (col == 'min')
+                    validationStatement["sqlValidRangeMin"] = parseInt(value);
+                else if (col == 'max')
+                    validationStatement["sqlValidRangeMax"] = parseInt(value);
+                else continue;
+
+                sql_value["validationStatement"] = validationStatement;
+            }
+
+            srcvalidationSQL.push(sql_value);
+        }
     }
     
     /*unique*/
     var validation_src_unique_cols = srcInput.validation_src_unique_cols;
     if (validation_src_unique_cols){
+        if (!Array.isArray(validation_src_unique_cols))
+            validation_src_unique_cols = validation_src_unique_cols.split(",")
+                                                    .map(Function.prototype.call, String.prototype.trim);
+
         var sql_value = {};
-        sql_value["beginTime"] = 0;
         sql_value["beginTime"] = 0;
         sql_value["endTime"] = 0;
         sql_value["submittedTime"] = 0;
@@ -1219,37 +1224,49 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         sql_value["validationStatement"] = validationStatement;
         srcvalidationSQL.push(sql_value);
     }
+
     /*column*/
-    var validation_src_column_name = srcInput.validation_src_column_name;
-    if (validation_src_column_name){
-        var sql_value = {};
-        sql_value["beginTime"] = 0;
-        sql_value["beginTime"] = 0;
-        sql_value["endTime"] = 0;
-        sql_value["submittedTime"] = 0;
+    var column = srcInput.validation_src_column_name;
+    if (column){
+        for(i = 0 ; i < column.length ; i++){
+            var sql_value = {};
+            sql_value["beginTime"] = 0;
+            sql_value["endTime"] = 0;
+            sql_value["submittedTime"] = 0;
 
-        var validationStatement = {};
-        validationStatement["continueIfFail"] = false;
-        validationStatement["columnName"] = validation_src_column_name[0];
+            var validationStatement = {};
+            validationStatement["continueIfFail"] = false;
 
-        if (srcInput.validation_src_column_min)
-            validationStatement["columnRangeMin"] = parseInt(srcInput.validation_src_column_min);
-        if (srcInput.validation_src_column_max)
-            validationStatement["columnRangeMax"] = parseInt(srcInput.validation_src_column_max);
-        
-        sql_value["validationStatement"] = validationStatement;
-        srcvalidationSQL.push(sql_value);
+            for(j = 0 ; j < column[i].length ; j++){
+
+                var col = column[i][j].col;
+                var value = column[i][j].value;
+
+                if (col == 'column')
+                    validationStatement["columnName"] = value;
+                else if (col == 'min')
+                    validationStatement["columnRangeMin"] = parseInt(value);
+                else if (col == 'max')
+                    validationStatement["columnRangeMax"] = parseInt(value);
+                else continue;
+
+                sql_value["validationStatement"] = validationStatement;
+            }
+            srcvalidationSQL.push(sql_value);
+        }
     }
     /*notnull*/
     var validation_src_notnull_cols = srcInput.validation_src_notnull_cols;
     if (validation_src_notnull_cols){
 
-        var notnull_cols = srcInput.validation_src_notnull_cols;
+        var notnull_cols = validation_src_notnull_cols;
+        if (!Array.isArray(validation_src_notnull_cols))
+            notnull_cols = validation_src_notnull_cols.split(",")
+                                                    .map(Function.prototype.call, String.prototype.trim);
 
         for(i = 0 ; i < notnull_cols.length ; i++){
 
             var sql_value = {};
-            sql_value["beginTime"] = 0;
             sql_value["beginTime"] = 0;
             sql_value["endTime"] = 0;
             sql_value["submittedTime"] = 0;
@@ -1264,97 +1281,13 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         }
     }
 
-    /*dest validation*/
-    var destvalidationSQL = new Array;
-    /*sql*/
-    var dest_sql = destInput.validation_dest_sql;
-    if (dest_sql){
-        var sql_value = {};
-        sql_value["beginTime"] = 0;
-        sql_value["beginTime"] = 0;
-        sql_value["endTime"] = 0;
-        sql_value["submittedTime"] = 0;
-
-        var validationStatement = {};
-        validationStatement["continueIfFail"] = false;
-        validationStatement["sql"] = dest_sql;
-
-        if (destInput.validation_dest_sql_value_min)
-            validationStatement["sqlValidRangeMin"] = parseInt(destInput.validation_dest_sql_value_min);
-        if (destInput.validation_dest_sql_value_max)
-            validationStatement["sqlValidRangeMax"] = parseInt(destInput.validation_dest_sql_value_max);
-
-        sql_value["validationStatement"] = validationStatement;
-        destvalidationSQL.push(sql_value);
-    }
-    /*unique*/
-    var validation_dest_unique_cols = destInput.validation_dest_unique_cols;
-    if (validation_dest_unique_cols){
-        var sql_value = {};
-        sql_value["beginTime"] = 0;
-        sql_value["beginTime"] = 0;
-        sql_value["endTime"] = 0;
-        sql_value["submittedTime"] = 0;
-
-        var validationStatement = {};
-        validationStatement["continueIfFail"] = false;
-        validationStatement["uniqueColumns"] = validation_dest_unique_cols;
-        
-        sql_value["validationStatement"] = validationStatement;
-        destvalidationSQL.push(sql_value);
-    }
-    /*column*/
-    var validation_dest_column_name = destInput.validation_dest_column_name;
-    if (validation_dest_column_name){
-        var sql_value = {};
-        sql_value["beginTime"] = 0;
-        sql_value["beginTime"] = 0;
-        sql_value["endTime"] = 0;
-        sql_value["submittedTime"] = 0;
-
-        var validationStatement = {};
-        validationStatement["continueIfFail"] = false;
-        validationStatement["columnName"] = validation_dest_column_name;
-
-        if (destInput.validation_dest_column_min)
-            validationStatement["columnRangeMin"] = parseInt(destInput.validation_dest_column_min);
-        if (destInput.validation_dest_column_max)
-            validationStatement["columnRangeMax"] = parseInt(destInput.validation_dest_column_max);
-        
-        sql_value["validationStatement"] = validationStatement;
-        destvalidationSQL.push(sql_value);
-    }
-    /*notnull*/
-    var validation_dest_notnull_cols = destInput.validation_dest_notnull_cols;
-    if (validation_dest_notnull_cols){
-
-        var notnull_cols = destInput.validation_dest_notnull_cols;
-
-        for(i = 0 ; i < notnull_cols.length ; i++){
-
-            var sql_value = {};
-            sql_value["beginTime"] = 0;
-            sql_value["beginTime"] = 0;
-            sql_value["endTime"] = 0;
-            sql_value["submittedTime"] = 0;
-            
-            var validationStatement = {};
-            validationStatement["continueIfFail"] = false;
-            validationStatement["columnName"] = notnull_cols[i];
-            validationStatement["notNull"] = true;
-
-            sql_value["validationStatement"] = validationStatement;
-            destvalidationSQL.push(sql_value);
-        }
-    }
-
-    if (srcvalidationSQL.length != 0)
+    if (srcvalidationSQL.length != 0){
         filesCompareData["srcvalidationSQL"] = srcvalidationSQL;
-    if (destvalidationSQL.length != 0)
-        filesCompareData["destvalidationSQL"] = destvalidationSQL;
+        filesCompareData["destvalidationSQL"] = srcvalidationSQL;
+    }
 
     /*check empty validation condition*/
-    if (checkValidation && srcvalidationSQL.length == 0 && destvalidationSQL.length == 0) return "";
+    if (checkValidation && srcvalidationSQL.length == 0) return "";
 
     filesCompareList.push(filesCompareData);
     jsonTree["filesCompareList"] = filesCompareList;
@@ -1371,3 +1304,151 @@ function transHelp() {
     window.open("https://tobymcdowell.wixsite.com/difftool/documentation", '_blank', 'location=yes,scrollbars=yes,status=yes');
 }
 
+function setSampleDataTable(data, type){
+    var id = "sample_data_table_" + type;
+    var table = document.getElementById(id);
+    var columns = Array();
+
+    /*setting data*/
+    var tabledata = Array();
+    for (var i = 0; i < data.length; i++) {
+        var row = data[i];
+        var rowdata = {};
+        for (var j = 0; j < row.length; j++) {
+            var cell = row[j];
+            var col = cell.col;
+            var value = cell.value;
+            rowdata[col] = value;
+
+            /*set header*/
+            if (i == 0){
+                columns.push(cell.col);
+            }
+        }
+        tabledata.push(rowdata);
+    }
+
+    /**/
+    table.innerHTML = "";
+    var thead = document.createElement("thead");
+    var tr = document.createElement("tr");
+    /*header*/
+    for (var i = 0; i < columns.length; i++) {
+        var col = columns[i];
+        var th = document.createElement("th");
+        th.setAttribute("data-field", col);
+        th.setAttribute("data-sortable", "true");
+        th.innerHTML = col;
+        tr.appendChild(th);
+    }
+    thead.appendChild(tr);
+    table.appendChild(thead);
+
+    $('#' + id).bootstrapTable("destroy");
+    $('#' + id).bootstrapTable({
+        data: tabledata
+    });
+    $('#' + id).bootstrapTable('refresh');
+}
+
+function create_new_item(ischeck, column, value, min, max, actualvalue, checkresult){
+
+    var result = Array();
+    var condition = Array();
+    condition['col'] = column;
+    condition['value'] = value;
+    result.push(condition);
+
+    var condition = Array();
+    condition['col'] = 'min';
+    condition['value'] = min;
+    result.push(condition); 
+
+    var condition = Array();
+    condition['col'] = 'max';
+    condition['value'] = max;
+    result.push(condition);
+
+    if (ischeck){
+        var condition = Array();
+        condition['col'] = 'actual';
+        condition['value'] = "<b>" + actualvalue + "</b>";
+        result.push(condition);
+
+        var condition = Array();
+        condition['col'] = 'check';
+        condition['value'] = checkresult ? "<b>Greet Pass</b>" : "<b style='color:red'>Failed</b>";
+        result.push(condition);
+    }
+    return result;
+}
+
+function show_data_table(data, id){
+
+    var table = document.getElementById(id);
+    var columns = Array();
+
+    /*setting data*/
+    var tabledata = Array();
+    for (var i = 0; i < data.length; i++) {
+        var row = data[i];
+        var rowdata = {};
+        for (var j = 0; j < row.length; j++) {
+            var cell = row[j];
+            var col = cell.col;
+            var value = cell.value;
+
+            if (row[0].col == 'column'){
+                if (col == 'min')
+                    col = "Min Column Value";
+                else if (col == 'max')
+                    col = "Max Column Value";
+                else if (col == "actual")
+                    col = "Actual Value";
+            }else{
+                if (col == 'min')
+                    col = "Excepted Min";
+                else if (col == 'max')
+                    col = "Excepted Max";
+                else if (col == "actual")
+                    col = "Actual Value";
+            } 
+
+            /*set header*/
+            if (i == 0){
+                columns.push(col);
+            }
+
+            rowdata[col] = value;
+        }
+        tabledata.push(rowdata);
+    }
+
+    /**/
+    table.innerHTML = "";
+    var thead = document.createElement("thead");
+    var tr = document.createElement("tr");
+    /*header*/
+    for (var i = 0; i < columns.length; i++) {
+        var col = columns[i];
+        var th = document.createElement("th");
+        th.setAttribute("data-field", col);
+        th.setAttribute("data-sortable", "true");
+        th.innerHTML = col;
+        tr.appendChild(th);
+    }
+    thead.appendChild(tr);
+    table.appendChild(thead);
+
+    $('#' + id).bootstrapTable("destroy");
+    $('#' + id).bootstrapTable({
+        data: tabledata,
+
+    });
+
+    $('#' + id).bootstrapTable('refresh');
+
+    $('#' + id + ' table tr').click(function(){
+        alert($(this).html());
+    });
+}
