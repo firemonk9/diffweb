@@ -307,7 +307,7 @@
 			}
 
 			if (data.jobname == "") {
-				swal("Validation Error", "Enter a name for the job.", "error");
+				swal("Validation Error", "Please enter a name for the job.", "error");
 				return;
 			}
 
@@ -1900,11 +1900,11 @@
 															</div>
 														</div>
 														<div class="col-sm-12">
-															<label class="col-sm-2">Min</label>
+															<label class="col-sm-2">Excepted Min</label>
 															<div class="col-sm-3">
 																<input type="number" class="form-control" id="validation_src_sql_value_min" placeholder="1">
 															</div>
-															<label class="col-sm-2">Max</label>
+															<label class="col-sm-2">Excepted Max</label>
 															<div class="col-sm-3">
 																<input type="number" class="form-control" id="validation_src_sql_value_max" placeholder="100">
 															</div>
@@ -1950,7 +1950,7 @@
 																<!-- <input type="text" class="form-control" id="validation_src_column_name" placeholder="A"> -->
 
 																<select id="validation_src_column_name" placeholder="Select fields..." class="form-control"></select>
-																<span style="color:red">(Only Numeric Columns)</span>
+																<span style="">(Only Numeric Columns)</span>
 															</div>
 															<div class="col-sm-2">
 																<a class="btn btn-primary col-sm-12" href="javascript:save_column('add')" id="add_btn_column">ADD</a>
@@ -1958,11 +1958,11 @@
 														</div>
 
 														<div class="col-sm-12">
-															<label class="col-sm-2">Min</label>
+															<label class="col-sm-2">Column Min</label>
 															<div class="col-sm-3">
 																<input type="number" class="form-control" id="validation_src_column_min" placeholder="1">
 															</div>	
-															<label class="col-sm-2">Max</label>
+															<label class="col-sm-2">Column Max</label>
 															<div class="col-sm-3">
 																<input type="number" class="form-control" id="validation_src_column_max" placeholder="100">
 															</div>
@@ -2330,44 +2330,6 @@
 			}
 		});
 	});
-
-	function setSelect(fields, id, maxCount){
-		
-		var fields_name = Array();
-
-		for(i = 0 ; i < fields.length ; i++){
-			var one = {};
-			one['title'] = fields[i].name;
-			one['id'] = fields[i].name;
-			fields_name.push(one);
-		}
-
-		if (!maxCount) maxCount  = null;
-		if (maxCount == 1){
-			var html = '';
-			for(i = 0 ; i < fields.length ; i++){
-				html += '<option>' + fields[i].name + '</option>';
-			}
-			$('#' + id).html(html);
-			return;
-		}
-
-		$('#' + id).selectize({
-			maxItems: null,
-			valueField: 'id',
-			labelField: 'title',
-			searchField: 'title',
-			/*options: [
-				{id: 1, title: 'Spectrometer', url: 'http://en.wikipedia.org/wiki/Spectrometers'},
-				{id: 2, title: 'Star Chart', url: 'http://en.wikipedia.org/wiki/Star_chart'},
-				{id: 3, title: 'Electrical Tape', url: 'http://en.wikipedia.org/wiki/Electrical_tape'}
-			],*/
-			options: fields_name,
-			maxItems : maxCount,
-			create: false
-		});
-	}
-
 
 	function save_sql(type){
 

@@ -422,6 +422,12 @@
                 return false; 
             });
 
+            $('#filehref_validation').click( function(e) {
+                e.preventDefault();
+                $('#fileInput').click();
+                return false; 
+            });
+
             //Export Json
             $('#btn_export').click(function(e) {
                 var jobIds = $.map($table.bootstrapTable('getSelections'), function (row) {
@@ -625,7 +631,8 @@
                                         <li><a href="addjob.html">Add Data Compare Job</a></li>
                                         <li><a href="addvalidationjob.html">Add Validation Job</a></li>
                                         <li role="separator" class="divider"></li>
-                                        <li><a href="" id="filehref">Import Data Imoprt JSON</a></li>
+                                        <li><a href="" id="filehref">Import Compare Job</a></li>
+                                        <li><a href="" id="filehref_validation">Import Data Validation Job</a></li>
                                     </ul>
                                 </div>
 								<button class='btn btn-primary' id="btn_export" disabled>Export JSON</button>

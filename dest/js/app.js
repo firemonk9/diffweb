@@ -1377,7 +1377,7 @@ function create_new_item(ischeck, column, value, min, max, actualvalue, checkres
 
         var condition = Array();
         condition['col'] = 'check';
-        condition['value'] = checkresult ? "<b>Greet Pass</b>" : "<b style='color:red'>Failed</b>";
+        condition['value'] = checkresult ? "<b>Greet PASS</b>" : "<b style='color:red'>Failed</b>";
         result.push(condition);
     }
     return result;
@@ -1385,6 +1385,7 @@ function create_new_item(ischeck, column, value, min, max, actualvalue, checkres
 
 function show_data_table(data, id){
 
+    if (data.length == 0) return;
     var table = document.getElementById(id);
     var columns = Array();
 
@@ -1447,8 +1448,49 @@ function show_data_table(data, id){
     });
 
     $('#' + id).bootstrapTable('refresh');
+}
 
-    $('#' + id + ' table tr').click(function(){
-        alert($(this).html());
+/*auto complete*/
+function setSelect(fields, id, maxCount, default_value){
+        
+    var fields_name = Array();
+
+    for(i = 0 ; i < fields.length ; i++){
+        var one = {};
+        one['title'] = fields[i].name;
+        one['id'] = fields[i].name;
+        fields_name.push(one);
+    }
+
+    if (!maxCount) maxCount  = null;
+    if (maxCount == 1){
+        var html = '';
+        for(i = 0 ; i < fields.length ; i++){
+            html += '<option>' + fields[i].name + '</option>';
+        }
+        $('#' + id).html(html);
+        $('#' + id).val('');
+        return;
+    }
+
+    var $select = $('#' + id).selectize({
+        maxItems: null,
+        valueField: 'id',
+        labelField: 'title',
+        searchField: 'title',
+        /*options: [
+            {id: 1, title: 'Spectrometer', url: 'http://en.wikipedia.org/wiki/Spectrometers'},
+            {id: 2, title: 'Star Chart', url: 'http://en.wikipedia.org/wiki/Star_chart'},
+            {id: 3, title: 'Electrical Tape', url: 'http://en.wikipedia.org/wiki/Electrical_tape'}
+        ],*/
+        options: fields_name,
+        maxItems : maxCount,
+        create: false
     });
+
+    //default_value = ["email", "company"];
+    if (default_value){
+        var selectize = $select[0].selectize;
+        selectize.setValue(default_value);
+    }
 }

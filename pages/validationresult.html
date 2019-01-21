@@ -40,6 +40,9 @@
 		<script src="https://code.highcharts.com/highcharts.js"></script>
 		<script src="../dest/js/sweetalert-dev.js"></script>
 		<script src="../dest/js/app.js"></script>
+
+		<script src="../dest/js/selectize.js"></script>
+		<script src="../dest/js/index.js"></script>
 		
 		<style>
 			.clickable{
@@ -116,7 +119,9 @@
 			var condition_column_current = -1;
 
 			var inputData = Array();
+			var srcColumns = Array();
 			var srcRecordCnt = 0, destRecordCnt = 0;
+			var default_job_name = "";
 
 			$(document).ready(function(){
 				
@@ -208,6 +213,8 @@
 
 				inputData = response.inputData;
 				$('#job_name').val(inputData.name);
+				default_job_name = inputData.name;
+				srcColumns = response.srcSchema;
 
 				if (response.srcValidationStmt)
 					setcondition(response.srcValidationStmt);
@@ -271,6 +278,10 @@
 				condition_sql = Array();
 				condtion_column = Array();
 				
+				var default_unique_fields = Array();
+				var default_column_fields = Array();
+				var default_notnull_fields = Array();
+
 				if (srcvalidationStmt){
 					for(i = 0 ; i < srcvalidationStmt.length ; i++){
 						var srcValidationStmt = srcvalidationStmt[i];
@@ -308,6 +319,13 @@
 									//setSampleDataTable(srcValidationStmt.sampleData, 'notnull');
 								}
 							}
+
+							/*default value on autocomplete*/
+							for(j = 0 ; j < validationStatement.uniqueColumns.length ; j++)
+							{
+								default_unique_fields.push(validationStatement.uniqueColumns[j]);
+							}
+
 						}
 						if (validationStatement.columnName && !validationStatement.notNull)
 						{
@@ -337,6 +355,9 @@
 
 							condition_column.push(condition);
 
+							/*default value on autocomplete*/
+							default_column_fields.push(validationStatement.columnName);
+
 						}
 						if (validationStatement.columnName && validationStatement.notNull){
 							var defValue = $('#validation_src_notnull_cols').val();
@@ -356,6 +377,9 @@
 									setSampleDataTable(srcValidationStmt.sampleData, 'notnull');
 								}
 							}
+
+							/*default value on autocomplete*/
+							default_notnull_fields.push(validationStatement.columnName);
 						}
 					}
 
@@ -365,6 +389,13 @@
 					$('table tr').click(function(){
 						edit_function(this);
 					});
+
+					/*srcColumns default*/
+					/*var srcColumns = [{"name" : "name"}, {"name" : "company"}, {"name" : "phone"}, {"name" : "email"}, {"name" : "date"}, {"name" : "street"}];*/
+
+					setSelect(srcColumns, 'validation_src_unique_cols', null, default_unique_fields);
+					setSelect(srcColumns, 'validation_src_column_name', 1);
+					setSelect(srcColumns, 'validation_src_notnull_cols', null, default_notnull_fields);
 
 				}
 
@@ -577,8 +608,8 @@
 													<div class="form-group row" style="margin-top: 15px;">
 
 														<div class="col-sm-12">
-															<label class="col-sm-4" style="margin-top:13px;">Job Name <span style="color: red;">*</span></label>
-															<div class="col-sm-8">
+															<label class="col-sm-offset-2 col-sm-2" style="margin-top:13px;">Job Name <span style="color: red;">*</span></label>
+															<div class="col-sm-6">
 																<input type="text" id="job_name" placeholder="Name" class="form-control" style="margin-top:9px;">
 															</div>
 														</div>
@@ -598,11 +629,11 @@
 															</div>
 														</div>
 														<div class="col-sm-12">
-															<label class="col-sm-2">Min</label>
+															<label class="col-sm-2">Excepted Min</label>
 															<div class="col-sm-3">
 																<input type="number" class="form-control" id="validation_src_sql_value_min" placeholder="Enter expected min value">
 															</div>
-															<label class="col-sm-2">Max</label>
+															<label class="col-sm-2">Excepted Max</label>
 															<div class="col-sm-3">
 																<input type="number" class="form-control" id="validation_src_sql_value_max" placeholder="Enter expected max value">
 															</div>
@@ -635,9 +666,9 @@
 														<div class="col-sm-12">
 															<label class="col-sm-2">Unique Cols</label>
 															<div class="col-sm-10">
-																<input type="text" class="form-control" id="validation_src_unique_cols" placeholder="Enter Unique Columns">
+																<!-- <input type="text" class="form-control" id="validation_src_unique_cols" placeholder="Enter Unique Columns"> -->
 
-																<!-- <select id="validation_src_unique_cols" multiple placeholder="Select fields..."></select> -->
+																<select id="validation_src_unique_cols" multiple placeholder="Select fields..."></select>
 															</div>
 														</div>	
 
@@ -658,8 +689,11 @@
 														<div class="col-sm-12" style="margin-bottom:15px;">
 															<label class="col-sm-2">Column</label>
 															<div class="col-sm-8">
-																<input type="text" class="form-control" id="validation_src_column_name" placeholder="Enter Column Name">
-																<span style="color:red">(Only Numeric Columns)</span>
+																<!-- <input type="text" class="form-control" id="validation_src_column_name" placeholder="Enter Column Name"> -->
+
+																<select id="validation_src_column_name" placeholder="Select fields..." class="form-control"></select>
+
+																<span style="">(Only Numeric Columns)</span>
 															</div>
 
 															<div class="col-sm-2">
@@ -669,11 +703,11 @@
 
 
 														<div class="col-sm-12">
-															<label class="col-sm-2">Min</label>
+															<label class="col-sm-2">Column Min</label>
 															<div class="col-sm-3">
 																<input type="number" class="form-control" id="validation_src_column_min" placeholder="Enter expected min value">
 															</div>	
-															<label class="col-sm-2">Max</label>
+															<label class="col-sm-2">Column Max</label>
 															<div class="col-sm-3">
 																<input type="number" class="form-control" id="validation_src_column_max" placeholder="Enter expected max value">
 															</div>
@@ -710,7 +744,9 @@
 														<div class="col-sm-12" style="margin-bottom:25px;">
 															<label class="col-sm-2">Not Null</label>
 															<div class="col-sm-10">
-																<input type="text" class="form-control" id="validation_src_notnull_cols" placeholder="Enter Not Null Columns">
+																<!-- <input type="text" class="form-control" id="validation_src_notnull_cols" placeholder="Enter Not Null Columns">-->
+																<select id="validation_src_notnull_cols" multiple placeholder="Select fields..."></select>
+
 															</div>
 														</div>
 
@@ -823,11 +859,11 @@
 		</div>
 		<!-- /#wrapper -->
 		
-		<div class="ui-dialog" id="advancedRulesModal_noneed" style="z-index:9999;display: none;width: 50%;position: absolute;top: 5%;left: 20%;">
+		<div class="ui-dialog" id="advancedRulesModal_noneed" style="z-index:9999;display: none;width: 50%;position: absolute;top: 5%;left: 20%;overflow-y: scroll;">
 			<div class="modal-dialog" style="width: 800px;">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" id="advanced" aria-hidden="true">&times;</button>
+						<button type="button" class="close" id="advanced_noneed" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="myModalLabel">Advanced Rules Mapping</h4>
 					</div>
 					
@@ -1330,16 +1366,6 @@
 					$(this).addClass('accordion-closed');
 				}
 			});
-
-			$("table_condition_sql > table > tr").bind('click', function() {
-		        alert("You clicked my <tr>!");
-		        //get <td> element values here!!??
-		    });
-
-			$('#table_condition_sql tr').on('click', function(){
-				alert(this);
-			});
-
 			$('#btn_save_rules').on('click', function(e){
 				submitJobJson();
 			});
@@ -1354,9 +1380,14 @@
 				//return;
 			}
 			if (data.jobname == "") {
-				swal("Validation Error", "Enter a name for the job.", "error");
+				swal("Validation Error", "Please enter a name for the job.", "error");
 				return;
 			}
+
+			if (data.jobname == default_job_name){
+				swal("Validation Error", "Please change a name of the job.", "error");
+				return;
+			}			
 
 			var srcFile = data.srcFile;
 
