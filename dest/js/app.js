@@ -1283,7 +1283,7 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
 
     if (srcvalidationSQL.length != 0){
         filesCompareData["srcvalidationSQL"] = srcvalidationSQL;
-        filesCompareData["destvalidationSQL"] = srcvalidationSQL;
+        //filesCompareData["destvalidationSQL"] = srcvalidationSQL;
     }
 
     /*check empty validation condition*/
@@ -1359,19 +1359,21 @@ function create_new_item(ischeck, column, value, min, max, actualvalue, checkres
     condition['value'] = value;
     result.push(condition);
 
-    var condition = Array();
-    condition['col'] = 'min';
-    condition['value'] = min;
-    result.push(condition); 
+    if (column == 'sql' || column == 'column'){
+        var condition = Array();
+        condition['col'] = 'min';
+        condition['value'] = min;
+        result.push(condition); 
 
-    var condition = Array();
-    condition['col'] = 'max';
-    condition['value'] = max;
-    result.push(condition);
+        var condition = Array();
+        condition['col'] = 'max';
+        condition['value'] = max;
+        result.push(condition);
+    }
 
     if (ischeck){
 
-        if (column != 'column'){        
+        if (column == 'sql'){        
             var condition = Array();
             condition['col'] = 'actual';
             condition['value'] = "<b>" + actualvalue + "</b>";
@@ -1379,14 +1381,14 @@ function create_new_item(ischeck, column, value, min, max, actualvalue, checkres
         }
 
         var condition = Array();
-        condition['col'] = 'check';
+        condition['col'] = 'Status';
         condition['value'] = checkresult ? "<b style='color:green'>Pass</b>" : "<b style='color:red'>Fail</b>";
         result.push(condition);
 
-        if (column == 'column'){
+        if (column == 'column' || column == 'notnull'){
             var condition = Array();
             condition['col'] = 'sample_data';
-            condition['value'] = checkresult ? "" : "<a style='color:red' href='javascript:sample_data_show(\"column\")'>sample data</a>";
+            condition['value'] = checkresult ? "" : "<a style='color:red' href='javascript:sample_data_show(\"" + column + "\")'>sample data</a>";
             result.push(condition);
         }
 
@@ -1417,6 +1419,9 @@ function show_data_table(data, id){
                     col = "Max Column Value";
                 else if (col == "actual")
                     col = "Actual Value";
+            }else if (row[0].col == 'notnull'){
+                if (col == 'notnull')
+                    col = 'Field';
             }else{
                 if (col == 'min')
                     col = "Excepted Min";

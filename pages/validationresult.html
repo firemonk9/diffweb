@@ -117,8 +117,11 @@
 			var condition_sql_current = -1;
 			var condition_column = Array();
 			var condition_column_current = -1;
+			var condition_notnull = Array();
+			var condition_notnull_current = -1;
 
 			var sample_data_column = Array();
+			var sample_data_notnull = Array();
 
 			var inputData = Array();
 			var srcColumns = Array();
@@ -278,7 +281,8 @@
 
 			function setcondition(srcvalidationStmt){
 				condition_sql = Array();
-				condtion_column = Array();
+				condition_column = Array();
+				condition_notnull = Array();
 				
 				var default_unique_fields = Array();
 				var default_column_fields = Array();
@@ -364,12 +368,12 @@
 
 						}
 						if (validationStatement.columnName && validationStatement.notNull){
-							var defValue = $('#validation_src_notnull_cols').val();
+							/*var defValue = $('#validation_src_notnull_cols').val();
 							var columnName = validationStatement.columnName;
 							if (defValue) columnName = ", " + columnName;
 							$('#validation_src_notnull_cols').val(defValue + columnName);
-
-							if (validationPass == false)
+*/
+							/*if (validationPass == false)
 							{
 								$('#validation_src_unique_cols').css('color', 'red');
 								$('#failed_messge_notnull').show();
@@ -380,7 +384,13 @@
 
 									setSampleDataTable(srcValidationStmt.sampleData, 'notnull');
 								}
-							}
+							}*/
+
+							sample_data_notnull.push(srcValidationStmt.sampleData);
+
+							var condition = create_new_item(true, 'notnull', validationStatement.columnName, null, null, null, srcValidationStmt.validationPass);
+
+							condition_notnull.push(condition);
 
 							/*default value on autocomplete*/
 							default_notnull_fields.push(validationStatement.columnName);
@@ -389,6 +399,7 @@
 
 					show_data_table(condition_sql, 'table_condition_sql');
 					show_data_table(condition_column, 'table_condition_column');
+					show_data_table(condition_notnull, 'table_condition_notnull');
 
 					$('table tr').click(function(){
 						edit_function(this);
@@ -456,6 +467,8 @@
 
 				if (type == 'column')
 					setSampleDataTable(sample_data_column[condition_column_current], 'column');
+				if (type == 'notnull')
+					setSampleDataTable(sample_data_notnull[condition_notnull_current], 'notnull');
 
 				$('.sample_data_div').hide();
 				$('.sample_data_table_' + type).show();
@@ -703,7 +716,7 @@
 
 																<select id="validation_src_column_name" placeholder="Select fields..." class="form-control"></select>
 
-																<span style="">(Only Numeric Columns)</span>
+																<span style="margin-top:10px">(Only Numeric Columns)</span>
 															</div>
 
 															<div class="col-sm-2">
@@ -751,11 +764,15 @@
 															</div>
 														</div>
 
-														<div class="col-sm-12" style="margin-top:10px; color:red; display:none;" id="failed_messge_notnull">
-															<label class="col-sm-offset-2 col-sm-3">Validation Failed</label>
-
-															<div class="col-sm-7 text-right sample_data_sec" id="sample_data_unique">
-																<a href="javascript:sample_data_show('notnull')">sample data</a>
+														<div class="col-sm-12" style="margin-top:15px;">
+															<div class="col-sm-12">
+																<table id="table_condition_notnull" class="table table-hover"
+																	data-height="100%"
+																	data-search="true"
+																	data-show-export="true"
+																	data-show-columns="true"
+																	data-pagination="true" >
+																</table>
 															</div>
 														</div>
 													</div>
@@ -1279,7 +1296,7 @@
 										</div>
 
 										<div class="panel-body sample_data_div sample_data_table_notnull">
-											<h3>Notnull Sample Data</h3>
+											<h3>Not Empty Sample Data</h3>
 											<table id="sample_data_table_notnull" class="table table-hover"
 												data-height="100%"
 												data-search="true"
@@ -1532,6 +1549,8 @@
 
 				condition_column_current = index;
 				$('#save_btn_column').removeClass('disabled');
+			}else if (id == 'table_condition_notnull'){
+				condition_notnull_current = index;
 			}
 		}
 		

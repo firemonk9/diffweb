@@ -209,6 +209,7 @@
 					except.innerHTML = response.exception;
 					$('.alert-warning').show();
 					setTimeout(function () {$('.alert-warning').fadeOut();}, 10000);
+					$('#loadingDiv').hide();
 					return;
 				} else if (response.differencessForKey == null) {
 					document.getElementById("danger-msg").innerHTML = "Json is not correct.";

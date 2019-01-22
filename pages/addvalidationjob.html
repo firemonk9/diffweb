@@ -336,6 +336,9 @@
 				crossDomain: true,
 				dataType: 'json',
 				data: jsonStr,
+				beforeSend: function () {
+					$("#loadingDiv").show();
+				},
 				contentType: 'application/json',
 				success: function (response) {
 					jobId = response.jobIds[0];
@@ -353,6 +356,10 @@
 				},
 				error: function (response) {
 					$('#advancedRulesModal').hide();
+					$("#loadingDiv").hide();
+				},
+				complete: function () {
+					$("#loadingDiv").hide();
 				}
 			});
 		}
@@ -1950,7 +1957,7 @@
 																<!-- <input type="text" class="form-control" id="validation_src_column_name" placeholder="A"> -->
 
 																<select id="validation_src_column_name" placeholder="Select fields..." class="form-control"></select>
-																<span style="">(Only Numeric Columns)</span>
+																<span style="margin-top:10px">(Only Numeric Columns)</span>
 															</div>
 															<div class="col-sm-2">
 																<a class="btn btn-primary col-sm-12" href="javascript:save_column('add')" id="add_btn_column">ADD</a>
