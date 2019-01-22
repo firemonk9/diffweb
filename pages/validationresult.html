@@ -118,6 +118,8 @@
 			var condition_column = Array();
 			var condition_column_current = -1;
 
+			var sample_data_column = Array();
+
 			var inputData = Array();
 			var srcColumns = Array();
 			var srcRecordCnt = 0, destRecordCnt = 0;
@@ -351,6 +353,8 @@
 							}
 							*/
 
+							sample_data_column.push(srcValidationStmt.sampleData);
+
 							var condition = create_new_item(true, 'column', validationStatement.columnName, validationStatement.columnRangeMin, validationStatement.columnRangeMax, srcValidationStmt.validActual, srcValidationStmt.validationPass);
 
 							condition_column.push(condition);
@@ -449,12 +453,18 @@
 			});
 
 			function sample_data_show(type){
+
+				if (type == 'column')
+					setSampleDataTable(sample_data_column[condition_column_current], 'column');
+
 				$('.sample_data_div').hide();
 				$('.sample_data_table_' + type).show();
 				$('#advancedRulesModal').show();
 			}
 
 			function setSampleDataTable(data, type){
+
+				if (!data || data.legnth == 0) return;
 				var id = "sample_data_table_" + type;
 				var table = document.getElementById(id);
 				var columns = Array();
@@ -728,21 +738,12 @@
 															</div>
 														</div>
 
-														<div class="col-sm-12" style="margin-top:10px; color:red; display:none;" id="failed_messge_column">
-															<label class="col-sm-offset-2 col-sm-3">Validation Failed</label>
-
-															<div class="col-sm-7 text-right sample_data_sec" id="sample_data_column">
-																<a href="javascript:sample_data_show('column')">sample data</a>
-															</div>
-
-														</div>
-
 														<div class="col-md-12">
-															<label class="col-sm-12 data-filter-header font-weight-bold text-center">Not Null Condition</label>
+															<label class="col-sm-12 data-filter-header font-weight-bold text-center">Not Empty Condition</label>
 														</div>
 
 														<div class="col-sm-12" style="margin-bottom:25px;">
-															<label class="col-sm-2">Not Null</label>
+															<label class="col-sm-2">Not Empty</label>
 															<div class="col-sm-10">
 																<!-- <input type="text" class="form-control" id="validation_src_notnull_cols" placeholder="Enter Not Null Columns">-->
 																<select id="validation_src_notnull_cols" multiple placeholder="Select fields..."></select>
