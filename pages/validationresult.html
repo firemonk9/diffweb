@@ -117,11 +117,14 @@
 			var condition_sql_current = -1;
 			var condition_column = Array();
 			var condition_column_current = -1;
+			var condition_notempty = Array();
+			var condition_notempty_current = -1;
 			var condition_notnull = Array();
 			var condition_notnull_current = -1;
 
 			var sample_data_column = Array();
 			var sample_data_notnull = Array();
+			var sample_data_notempty = Array();
 
 			var inputData = Array();
 			var srcColumns = Array();
@@ -283,10 +286,12 @@
 				condition_sql = Array();
 				condition_column = Array();
 				condition_notnull = Array();
+				condition_notempty = Array();
 				
 				var default_unique_fields = Array();
 				var default_column_fields = Array();
 				var default_notnull_fields = Array();
+				var default_notempty_fields = Array();
 
 				if (srcvalidationStmt){
 					for(i = 0 ; i < srcvalidationStmt.length ; i++){
@@ -321,8 +326,6 @@
 								if (srcValidationStmt.sampleData){
 									$('#sample_data_unique').removeClass('hidden');
 									setSampleDataTable(srcValidationStmt.sampleData, 'unique');
-									//setSampleDataTable(srcValidationStmt.sampleData, 'column');
-									//setSampleDataTable(srcValidationStmt.sampleData, 'notnull');
 								}
 							}
 
@@ -333,7 +336,7 @@
 							}
 
 						}
-						if (validationStatement.columnName && !validationStatement.notNull)
+						if (validationStatement.columnName && (validationStatement.columnRangeMin || validationStatement.columnRangeMax))
 						{
 							//$('#validation_src_column_name').val(validationStatement.columnName);
 							//$('#validation_src_column_min').val(validationStatement.columnRangeMin);
@@ -368,23 +371,6 @@
 
 						}
 						if (validationStatement.columnName && validationStatement.notNull){
-							/*var defValue = $('#validation_src_notnull_cols').val();
-							var columnName = validationStatement.columnName;
-							if (defValue) columnName = ", " + columnName;
-							$('#validation_src_notnull_cols').val(defValue + columnName);
-*/
-							/*if (validationPass == false)
-							{
-								$('#validation_src_unique_cols').css('color', 'red');
-								$('#failed_messge_notnull').show();
-								if (srcValidationStmt.sampleData)
-								{
-									$('#validation_src_notnull_cols').parent().removeClass("col-sm-10").addClass("col-sm-8");
-									$('#sample_data_notnull').removeClass('hidden');
-
-									setSampleDataTable(srcValidationStmt.sampleData, 'notnull');
-								}
-							}*/
 
 							sample_data_notnull.push(srcValidationStmt.sampleData);
 
@@ -395,11 +381,24 @@
 							/*default value on autocomplete*/
 							default_notnull_fields.push(validationStatement.columnName);
 						}
+
+						if (validationStatement.columnName && validationStatement.notEmpty){
+
+							sample_data_notempty.push(srcValidationStmt.sampleData);
+
+							var condition = create_new_item(true, 'notempty', validationStatement.columnName, null, null, null, srcValidationStmt.validationPass);
+
+							condition_notempty.push(condition);
+
+							/*default value on autocomplete*/
+							default_notempty_fields.push(validationStatement.columnName);
+						}
 					}
 
 					show_data_table(condition_sql, 'table_condition_sql');
 					show_data_table(condition_column, 'table_condition_column');
 					show_data_table(condition_notnull, 'table_condition_notnull');
+					show_data_table(condition_notempty, 'table_condition_notempty');
 
 					$('table tr').click(function(){
 						edit_function(this);
@@ -411,6 +410,7 @@
 					setSelect(srcColumns, 'validation_src_unique_cols', null, default_unique_fields);
 					setSelect(srcColumns, 'validation_src_column_name', 1);
 					setSelect(srcColumns, 'validation_src_notnull_cols', null, default_notnull_fields);
+					setSelect(srcColumns, 'validation_src_notempty_cols', null, default_notempty_fields);
 
 				}
 
@@ -469,6 +469,8 @@
 					setSampleDataTable(sample_data_column[condition_column_current], 'column');
 				if (type == 'notnull')
 					setSampleDataTable(sample_data_notnull[condition_notnull_current], 'notnull');
+				if (type == 'notempty')
+					setSampleDataTable(sample_data_notempty[condition_notempty_current], 'notempty');
 
 				$('.sample_data_div').hide();
 				$('.sample_data_table_' + type).show();
@@ -752,13 +754,12 @@
 														</div>
 
 														<div class="col-md-12">
-															<label class="col-sm-12 data-filter-header font-weight-bold text-center">Not Empty Condition</label>
+															<label class="col-sm-12 data-filter-header font-weight-bold text-center">Not Null Condition</label>
 														</div>
 
 														<div class="col-sm-12" style="margin-bottom:25px;">
-															<label class="col-sm-2">Not Empty</label>
+															<label class="col-sm-2">Not Null</label>
 															<div class="col-sm-10">
-																<!-- <input type="text" class="form-control" id="validation_src_notnull_cols" placeholder="Enter Not Null Columns">-->
 																<select id="validation_src_notnull_cols" multiple placeholder="Select fields..."></select>
 
 															</div>
@@ -775,6 +776,31 @@
 																</table>
 															</div>
 														</div>
+
+														<div class="col-md-12">
+															<label class="col-sm-12 data-filter-header font-weight-bold text-center">Not Empty Condition</label>
+														</div>
+
+														<div class="col-sm-12" style="margin-bottom:25px;">
+															<label class="col-sm-2">Not Empty</label>
+															<div class="col-sm-10">
+																<select id="validation_src_notempty_cols" multiple placeholder="Select fields..."></select>
+
+															</div>
+														</div>
+
+														<div class="col-sm-12" style="margin-top:15px;">
+															<div class="col-sm-12">
+																<table id="table_condition_notempty" class="table table-hover"
+																	data-height="100%"
+																	data-search="true"
+																	data-show-export="true"
+																	data-show-columns="true"
+																	data-pagination="true" >
+																</table>
+															</div>
+														</div>
+
 													</div>
 												</div>
 												<div class="col-md-6 hidden">
@@ -1296,8 +1322,19 @@
 										</div>
 
 										<div class="panel-body sample_data_div sample_data_table_notnull">
-											<h3>Not Empty Sample Data</h3>
+											<h3>Not Null Sample Data</h3>
 											<table id="sample_data_table_notnull" class="table table-hover"
+												data-height="100%"
+												data-search="true"
+												data-show-export="true"
+												data-show-columns="true"
+												data-pagination="true" >
+											</table>
+										</div>
+
+										<div class="panel-body sample_data_div sample_data_table_notempty">
+											<h3>Not Empty Sample Data</h3>
+											<table id="sample_data_table_notempty" class="table table-hover"
 												data-height="100%"
 												data-search="true"
 												data-show-export="true"
@@ -1414,6 +1451,7 @@
 		    data.srcFile["validation_src_unique_cols"] = srcFile["validation_src_unique_cols"];
 		    data.srcFile["validation_src_column_name"] = srcFile["validation_src_column_name"];
 		    data.srcFile["validation_src_notnull_cols"] = srcFile["validation_src_notnull_cols"];
+		    data.srcFile["validation_src_notempty_cols"] = srcFile["validation_src_notempty_cols"];
 
 			data.destFile = inputData.destFile;
 			
@@ -1551,6 +1589,8 @@
 				$('#save_btn_column').removeClass('disabled');
 			}else if (id == 'table_condition_notnull'){
 				condition_notnull_current = index;
+			}else if (id == 'table_condition_notempty'){
+				condition_notempty_current = index;
 			}
 		}
 		

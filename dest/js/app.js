@@ -989,6 +989,7 @@ function getInputData(compareCommon, sql, column) {
     srcFile["validation_src_unique_cols"] = $("#validation_src_unique_cols").val();
     srcFile["validation_src_column_name"] = column;
     srcFile["validation_src_notnull_cols"] = $("#validation_src_notnull_cols").val();
+    srcFile["validation_src_notempty_cols"] = $("#validation_src_notempty_cols").val();
     
     result["srcFile"] = srcFile;
     /***********************************End src Input********************************/
@@ -1063,6 +1064,7 @@ function getInputData(compareCommon, sql, column) {
     destFile["validation_dest_unique_cols"] = $("#validation_dest_unique_cols").val();
     destFile["validation_dest_column_name"] = $("#validation_dest_column_name").val();
     destFile["validation_dest_notnull_cols"] = $("#validation_dest_notnull_cols").val();
+    destFile["validation_dest_notempty_cols"] = $("#validation_dest_notempty_cols").val();
 
     result["destFile"] = destFile;
     /*******************************End dest Input*********************************/
@@ -1281,6 +1283,32 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
         }
     }
 
+    /*notempty*/
+    var validation_src_notempty_cols = srcInput.validation_src_notempty_cols;
+    if (validation_src_notempty_cols){
+
+        var notempty_cols = validation_src_notempty_cols;
+        if (!Array.isArray(validation_src_notempty_cols))
+            notempty_cols = validation_src_notempty_cols.split(",")
+                                                    .map(Function.prototype.call, String.prototype.trim);
+
+        for(i = 0 ; i < notempty_cols.length ; i++){
+
+            var sql_value = {};
+            sql_value["beginTime"] = 0;
+            sql_value["endTime"] = 0;
+            sql_value["submittedTime"] = 0;
+
+            var validationStatement = {};
+            validationStatement["continueIfFail"] = false;
+            validationStatement["columnName"] = notempty_cols[i];
+            validationStatement["notEmpty"] = true;
+
+            sql_value["validationStatement"] = validationStatement;
+            srcvalidationSQL.push(sql_value);
+        }
+    }
+
     if (srcvalidationSQL.length != 0){
         filesCompareData["srcvalidationSQL"] = srcvalidationSQL;
         //filesCompareData["destvalidationSQL"] = srcvalidationSQL;
@@ -1385,7 +1413,7 @@ function create_new_item(ischeck, column, value, min, max, actualvalue, checkres
         condition['value'] = checkresult ? "<b style='color:green'>Pass</b>" : "<b style='color:red'>Fail</b>";
         result.push(condition);
 
-        if (column == 'column' || column == 'notnull'){
+        if (column == 'column' || column == 'notnull' || column == 'notempty'){
             var condition = Array();
             condition['col'] = 'sample_data';
             condition['value'] = checkresult ? "" : "<a style='color:red' href='javascript:sample_data_show(\"" + column + "\")'>sample data</a>";
@@ -1421,6 +1449,9 @@ function show_data_table(data, id){
                     col = "Actual Value";
             }else if (row[0].col == 'notnull'){
                 if (col == 'notnull')
+                    col = 'Field';
+            }else if (row[0].col == 'notempty'){
+                if (col == 'notempty')
                     col = 'Field';
             }else{
                 if (col == 'min')

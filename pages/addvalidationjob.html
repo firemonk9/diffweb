@@ -440,6 +440,7 @@
 						
 						setSelect(srcColumns, 'validation_src_unique_cols');
 						setSelect(srcColumns, 'validation_src_column_name', 1);
+						setSelect(srcColumns, 'validation_src_notempty_cols');
 						setSelect(srcColumns, 'validation_src_notnull_cols');
 
 					}
@@ -1991,16 +1992,30 @@
 														</div>
 
 														<div class="col-md-12">
+															<label class="col-sm-12 data-filter-header font-weight-bold text-center">Not Null Condition</label>
+														</div>
+
+														<div class="col-sm-12" style="margin-bottom:25px;">
+															<label class="col-sm-2">Not Null</label>
+															<div class="col-sm-10">
+															<select id="validation_src_notnull_cols" multiple placeholder="Select fields..."></select>
+															</div>
+														</div>
+														
+
+														<div class="col-md-12">
 															<label class="col-sm-12 data-filter-header font-weight-bold text-center">Not Empty Condition</label>
 														</div>
 
 														<div class="col-sm-12" style="margin-bottom:25px;">
 															<label class="col-sm-2">Not Empty</label>
 															<div class="col-sm-10">
-															<!-- <input type="text" class="form-control" id="validation_src_notnull_cols" placeholder="C, D"> -->
-															<select id="validation_src_notnull_cols" multiple placeholder="Select fields..."></select>
+															<select id="validation_src_notempty_cols" multiple placeholder="Select fields..."></select>
 															</div>
 														</div>
+
+														
+
 													</div>
 												</div>
 												<div class="col-md-6 hidden">
