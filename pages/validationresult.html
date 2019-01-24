@@ -374,7 +374,7 @@
 
 							sample_data_notnull.push(srcValidationStmt.sampleData);
 
-							var condition = create_new_item(true, 'notnull', validationStatement.columnName, null, null, null, srcValidationStmt.validationPass);
+							var condition = create_new_item(true, 'notnull', validationStatement.columnName, null, null, srcValidationStmt.validActual, srcValidationStmt.validationPass);
 
 							condition_notnull.push(condition);
 
@@ -386,7 +386,7 @@
 
 							sample_data_notempty.push(srcValidationStmt.sampleData);
 
-							var condition = create_new_item(true, 'notempty', validationStatement.columnName, null, null, null, srcValidationStmt.validationPass);
+							var condition = create_new_item(true, 'notempty', validationStatement.columnName, null, null, srcValidationStmt.validActual, srcValidationStmt.validationPass);
 
 							condition_notempty.push(condition);
 
@@ -475,6 +475,7 @@
 				$('.sample_data_div').hide();
 				$('.sample_data_table_' + type).show();
 				$('#advancedRulesModal').show();
+				$('#advancedRulesModal').css('top', $(document).scrollTop());
 			}
 
 			function setSampleDataTable(data, type){

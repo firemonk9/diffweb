@@ -1401,7 +1401,7 @@ function create_new_item(ischeck, column, value, min, max, actualvalue, checkres
 
     if (ischeck){
 
-        if (column == 'sql'){        
+        if (column == 'sql' || column == 'notnull' || column == 'notempty'){
             var condition = Array();
             condition['col'] = 'actual';
             condition['value'] = "<b>" + actualvalue + "</b>";
@@ -1450,9 +1450,13 @@ function show_data_table(data, id){
             }else if (row[0].col == 'notnull'){
                 if (col == 'notnull')
                     col = 'Field';
+                else if (col == 'actual')
+                    col = 'Null Count';
             }else if (row[0].col == 'notempty'){
                 if (col == 'notempty')
                     col = 'Field';
+                else if (col == 'actual')
+                    col = 'Empty Count';
             }else{
                 if (col == 'min')
                     col = "Excepted Min";
