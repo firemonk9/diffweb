@@ -384,6 +384,15 @@
 						if (edit == "true") {
 							info = response;
 							createAdvancedRulePage(response);
+
+							/*job resources*/
+							if (response.numExecutors)
+								$('#numExecutors').val(response.numExecutors);
+							if (response.executorCores)
+								$('#executorCores').val(response.executorCores);
+							if (response.executorMemory)
+								$('#executorMemory').val(response.executorMemory);
+
 						}
 					},
 					// xhr: function() {
@@ -486,7 +495,7 @@
 				
 				var jsonStr = makeInputJson(data.jobname,data.compareCommonColumnsOnly,
                 data.validateRowsCount,data.randomSample,data.matchBoth,true,
-                data.columnMapping,data.srcFile,data.destFile,data.compareKey);
+                data.columnMapping,data.srcFile,data.destFile,data.compareKey, data.jobResources);
 				
 				//console.log(jsonStr);
 				//alert(jsonStr);
@@ -1193,7 +1202,7 @@
 					success: function (response) {
 						if (response.localMode == true) {
 							$('#nav_logout').hide();
-							$('#cluster_resources').hide();
+							$('#job_resources').hide();
 						}
 						setCookie("version", response.displayVersion);
 						setCookie("localMode", response.localMode);
@@ -1800,38 +1809,37 @@ Note : column “name” should already exist and be marked for comparision.</td
 									</div>
 								</div>
 								<!--changes-->
-								<!-- <div id="cluster_resources" class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
+								<div id="job_resources" class="panel panel-default" style="margin-left: 30px;margin-right: 30px;border-radius: 0;margin-top:15px;">
 								<div class="panel-heading" data-toggle="collapse" data-parent="#accordion"data-target="#cluster">
-										<h3 class="panel-title accordion-toggle">Cluster Resources</h3>
+										<h3 class="panel-title accordion-toggle">Job Resources</h3>
 									</div>
 									<div id="cluster" class="panel-collapse collapse">
 										<div class="panel-body">
 									
-									 <div class="col-md-12" style="margin-bottom: 25px;">
+									 		<div class="col-sm-12" style="margin-bottom: 25px;">
 												<div class="form-group">
-													<label class="col-sm-4">Number of Executors</label>
+													<label class="col-sm-4">Total number of Java process</label>
 													<div class="col-sm-8">
-														<input type="number" class="form-control" id="numExecutors" min="0">
+														<input type="number" placeholder="Insert total number of Java process to run in parallel ..." class="form-control" id="numExecutors" min="0">
 													</div>
 												</div>
-											</div><br><br>
-											
-											<div class="col-md-12">
+											</div>
+											<div class="col-sm-12">
 												<div class="form-group">
-													<label class="col-sm-4">Executor Memory</label>
+													<label class="col-sm-4">Number of threads in each java process </label>
 													<div class="col-sm-8">
-														<input type="text" class="form-control" id="executorMemory">
+														<input type="number" placeholder="Insert number of threads in each java process ..." class="form-control" id="executorCores" min="0">
 													</div>
 													<br><br>
 												</div>
 											</div>
-											
-											<div class="col-md-12" style="margin-bottom: 25px;">
+											<div class="col-sm-12">
 												<div class="form-group">
-													<label class="col-sm-4">Number of cores per executor</label>
+													<label class="col-sm-4">Memory for each java process (GB)</label>
 													<div class="col-sm-8">
-														<input type="number" class="form-control" id="executorCores" min="0">
+														<input type="text" placeholder="Insert memory for each java process (GB) ..." class="form-control" id="executorMemory">
 													</div>
+													<br><br>
 												</div>
 											</div>
 									
@@ -1839,7 +1847,7 @@ Note : column “name” should already exist and be marked for comparision.</td
 										</div>
 									
 									</div>
-								</div> -->
+								</div>
 								
 									
 											

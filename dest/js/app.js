@@ -924,6 +924,14 @@ function getInputData(compareCommon, sql, column) {
     }
     result["columnMapping"] = columnMapping;
 
+    /*job resources*/
+    var jobResources = {};
+    jobResources["numExecutors"] = $("#numExecutors").val();
+    jobResources["executorCores"] = $("#executorCores").val();
+    jobResources["executorMemory"] = $("#executorMemory").val();
+
+    result["jobResources"] = jobResources;
+    
     /*********************************Make Src Input***********************************/
     var srcFile = {};
     /*
@@ -996,10 +1004,6 @@ function getInputData(compareCommon, sql, column) {
 
     /**********************************Make dest Input*******************************/
     var destFile = {};
-
-    /*validation*/
-    destFile["dest_validate_sql"] = $("#dest_validate_sql").val();
-    destFile["dest_validate_value"] = $("#dest_validate_value").val();
 
     /*
     for (var i = 0; i < $('ul#dest_excluded li').length; i++) {
@@ -1078,7 +1082,7 @@ function getInputData(compareCommon, sql, column) {
 }
 
 function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, randomSample, matchBoth, process,
-                       columnMapping, srcInput, destInput, compareKey, checkValidation ) {
+                       columnMapping, srcInput, destInput, compareKey, jobResources, checkValidation ) {
 
     var jsonTree = {};
     var filesCompareList = new Array;
@@ -1316,6 +1320,16 @@ function makeInputJson(jobname, compareCommonColumnsOnly, validateRowsCount, ran
 
     /*check empty validation condition*/
     if (checkValidation && srcvalidationSQL.length == 0) return "";
+
+    /*job results*/
+    if (jobResources){
+        if (jobResources["numExecutors"])
+            jsonTree["numExecutors"] = parseInt(jobResources["numExecutors"]);
+        if (jobResources["executorCores"])
+            jsonTree["executorCores"] = parseInt(jobResources["executorCores"]);
+        if (jobResources["executorMemory"])
+            jsonTree["executorMemory"] = jobResources["executorMemory"];
+    }
 
     filesCompareList.push(filesCompareData);
     jsonTree["filesCompareList"] = filesCompareList;
