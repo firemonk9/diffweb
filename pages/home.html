@@ -362,8 +362,12 @@
                 var jobs = $.map($table.bootstrapTable('getSelections'), function (row) {
                     return row;
                 });
-
-                location.href = "./jobresults.html?jobId=" + jobs[0].jobId + "&edit=true";
+                
+                if (jobs[0].input.srcvalidationSQL && jobs[0].input.srcvalidationSQL.length > 0) {
+                    location.href = "./validationresult.html?jobId="+ jobs[0].jobId;
+                } else {
+                    location.href = "./jobresults.html?jobId=" + jobs[0].jobId + "&edit=true";
+                }
             });
 
             // Table row select check
