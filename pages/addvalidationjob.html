@@ -169,6 +169,8 @@
 				$('#form_advanced').hide();
 				$('#form_advanced2').hide();
 
+				/*csv sftp*/
+				$('.src_sftp_info_section').hide();
 				$('#src_file_delimiter').hide();
 				$('#src_file_header').hide();
 				$('#src_custom_schema').hide();
@@ -202,6 +204,8 @@
 				$('#form_advanced').hide();
 				$('#form_advanced2').hide();
 
+				/*csv sftp*/
+				$('.src_sftp_info_section').hide();
 				$('#src_file_delimiter').hide();
 				$('#src_file_header').hide();
 				$('#src_custom_schema').hide();
@@ -549,6 +553,9 @@
 		function resetFormData() {
 			$('#src_file_path input').val("");
 			$("#select_src_type").prop("selectedIndex", 0);
+
+			/*csv sftp*/
+			$('.src_sftp_info_section input').val("");
 			$('#src_file_delimiter input').val("");
 			$('#src_header').prop("selectedIndex", 0);
 			$('#src_custom_schema input').val("");
@@ -577,6 +584,9 @@
 		function resetSrcFormData() {
 			$('#src_file_path input').val("");
 			$("#select_src_type").prop("selectedIndex", 0);
+
+			/*csv sftp*/
+			$('.src_sftp_info_section input').val("");
 			$('#src_file_delimiter input').val("");
 			$('#src_header').prop("selectedIndex", 0);
 			$('#src_custom_schema input').val("");
@@ -685,9 +695,28 @@
 					params["datasetPath"] = $('#src_path').val();
 					params["header"] = $('#src_header').val() == "True" ? true : false;
 					params["datasetDelimiter"] = $('#src_delimiter').val();
+
+					/*csv sftp*/
+					params["sftpHost"] = $('#src_sftp_host').val();
+					params["sftpUsername"] = $('#src_sftp_username').val();
+					params["sftpPassword"] = $('#src_sftp_password').val();
+					params["inferSchema"] = $('#src_sftp_schema').val() == 'True';
+
 					if (params["datasetPath"] == '') {
-						swal("Validation Error", "You should input data path.", "error");
-						return;
+						/*csv sftp*/
+						if (params["sftpHost"] == ''){
+							swal("Validation Error", "You should input data path.", "error");
+							return;
+						}else{
+							if (params["sftpUsername"] == ''){
+								swal("Validation Error", "You should input sftp username.", "error");
+								return;
+							}
+							if (params["sftpUsername"] == ''){
+								swal("Validation Error", "You should input sftp password.", "error");
+								return;
+							}
+						}
 					}
 					if (params["datasetDelimiter"] == '') {
 						swal("Validation Error", "You should input delimiter.", "error");
@@ -921,6 +950,9 @@
 				$('#src_file_path').show();
 				// PARQUET, ORC, JDBC, CSV, JSON, AVRO
 				if (selected === "CSV") {
+
+					/*csv sftp*/
+					$('.src_sftp_info_section').show();
 					$('#src_file_delimiter').show();
 					$('#src_file_header').show();
 					if ($('#src_header').val() == "True")
@@ -1369,6 +1401,39 @@
 									</div>
 									<br><br>
 									<!-- CSV -->
+									<!--csv sftp-->
+									<div class="form-group required src_sftp_info_section">
+										<label class="col-sm-offset-1 col-sm-3">SFTP Host</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Connection SFTP Host..." class="form-control" name="src_sftp_host" id="src_sftp_host" value="ftp://localhost/golden_dest.csv">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required src_sftp_info_section">
+										<label class="col-sm-offset-1 col-sm-3">Username</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Username..." class="form-control" name="src_sftp_username" id="src_sftp_username" value="test">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required src_sftp_info_section">
+										<label class="col-sm-offset-1 col-sm-3">Password</label>
+										<div class="col-sm-6">
+											<input type="password" placeholder="Password..." class="form-control" name="src_sftp_password" id="src_sftp_password" value="test">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required src_sftp_info_section">
+										<label class="col-sm-offset-1 col-sm-3">inferSchema</label>
+										<div class="col-sm-6">
+											<select class="form-control" id="src_sftp_schema">
+												<option>True</option>
+												<option>False</option>
+											</select>
+										</div>
+										<br><br>
+									</div>
+
 									<div class="form-group required" id="src_file_delimiter">
 										<div class="col-sm-offset-1 col-sm-3 tooltipd">
 										<label>Delimiter </label>
