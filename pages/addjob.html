@@ -155,8 +155,7 @@
 				$('#form_advanced').hide();
 				$('#form_advanced2').hide();
 
-				/*csf sftp*/
-				$('.src_sftp_info_section').hide();
+				setSftpSection('src', false);
 				$('#src_file_delimiter').hide();
 				$('#src_file_header').hide();
 				$('#src_custom_schema').hide();
@@ -172,8 +171,7 @@
 				$('#src_table_panel').hide();
 				$('#src_form_panel').show();
 
-				/*csf sftp*/
-				$('.dest_sftp_info_section').hide();
+				setSftpSection('dest', false);
 				$('#dest_file_delimiter').hide();
 				$('#dest_file_header').hide();
 				$('#dest_custom_schema').hide();
@@ -192,8 +190,7 @@
 				$('#form_advanced').hide();
 				$('#form_advanced2').hide();
 
-				/*csf sftp*/
-				$('.src_sftp_info_section').hide();
+				setSftpSection('src', false);
 				$('#src_file_delimiter').hide();
 				$('#src_file_header').hide();
 				$('#src_custom_schema').hide();
@@ -211,8 +208,7 @@
 				$('#form_advanced').hide();
 				$('#form_advanced2').hide();
 
-				/*csf sftp*/
-				$('.dest_sftp_info_section').hide();
+				setSftpSection('dest', false);
 				$('#dest_file_delimiter').hide();
 				$('#dest_file_header').hide();
 				$('#dest_custom_schema').hide();
@@ -669,26 +665,28 @@
 					params["datasetDelimiter"] = $('#src_delimiter').val();
 
 					/*csf sftp*/
-					params["sftpHost"] = $('#src_sftp_host').val();
-					params["sftpUsername"] = $('#src_sftp_username').val();
-					params["sftpPassword"] = $('#src_sftp_password').val();
-					params["inferSchema"] = $('#src_sftp_schema').val() == 'True';
+					var isSftpMode = $("#src_sftp_check").is(':checked');
+					if (isSftpMode){
+						params["sftpHost"] = $('#src_sftp_host').val();
+						params["sftpUsername"] = $('#src_sftp_username').val();
+						params["sftpPassword"] = $('#src_sftp_password').val();
+						params["inferSchema"] = $('#src_sftp_schema').val() == 'True';
 
-					if (params["datasetPath"] == '') {
-						/*csf sftp*/
 						if (params["sftpHost"] == ''){
-							swal("Validation Error", "You should input data path.", "error");
+							swal("Validation Error", "You should input sftp host.", "error");
 							return;
-						}else{
-							if (params["sftpUsername"] == ''){
-								swal("Validation Error", "You should input sftp username.", "error");
-								return;
-							}
-							if (params["sftpUsername"] == ''){
-								swal("Validation Error", "You should input sftp password.", "error");
-								return;
-							}
 						}
+						if (params["sftpUsername"] == ''){
+							swal("Validation Error", "You should input sftp username.", "error");
+							return;
+						}
+						if (params["sftpPassword"] == ''){
+							swal("Validation Error", "You should input sftp password.", "error");
+							return;
+						}
+					}else if (params["datasetPath"] == '') {
+						swal("Validation Error", "You should input data path.", "error");
+						return;
 					}
 					if (params["datasetDelimiter"] == '') {
 						swal("Validation Error", "You should input delimiter.", "error");
@@ -785,27 +783,28 @@
 					params["header"] = $('#dest_header').val() == "True" ? true : false;
 					params["datasetDelimiter"] = $('#dest_delimiter').val();
 
-					/*csf sftp*/
-					params["sftpHost"] = $('#dest_sftp_host').val();
-					params["sftpUsername"] = $('#dest_sftp_username').val();
-					params["sftpPassword"] = $('#dest_sftp_password').val();
-					params["inferSchema"] = $('#dest_sftp_schema').val() == 'True';
+					var isSftpMode = $("#dest_sftp_check").is(':checked');
+					if (isSftpMode){
+						params["sftpHost"] = $('#dest_sftp_host').val();
+						params["sftpUsername"] = $('#dest_sftp_username').val();
+						params["sftpPassword"] = $('#dest_sftp_password').val();
+						params["inferSchema"] = $('#dest_sftp_schema').val() == 'True';
 
-					if (params["datasetPath"] == '') {
-						/*csf sftp*/
 						if (params["sftpHost"] == ''){
-							swal("Validation Error", "You should input dataset path.", "error");
+							swal("Validation Error", "You should input sftp host.", "error");
 							return;
-						}else{
-							if (params["sftpUsername"] == ''){
-								swal("Validation Error", "You should input sftp username.", "error");
-								return;
-							}
-							if (params["sftpUsername"] == ''){
-								swal("Validation Error", "You should input sftp password.", "error");
-								return;
-							}
 						}
+						if (params["sftpUsername"] == ''){
+							swal("Validation Error", "You should input sftp username.", "error");
+							return;
+						}
+						if (params["sftpPassword"] == ''){
+							swal("Validation Error", "You should input sftp password.", "error");
+							return;
+						}
+					}else if (params["datasetPath"] == '') {
+						swal("Validation Error", "You should input data path.", "error");
+						return;
 					}
 					if (params["datasetDelimiter"] == '') {
 						swal("Validation Error", "You should input delimiter.", "error");
@@ -942,8 +941,8 @@
 				// PARQUET, ORC, JDBC, CSV, JSON, AVRO
 				if (selected === "CSV") {
 
-					/*csf sftp*/
-					$('.src_sftp_info_section').show();
+					setSftpSection('src', true);
+
 					$('#src_file_delimiter').show();
 					$('#src_file_header').show();
 					if ($('#src_header').val() == "True")
@@ -960,6 +959,8 @@
 					
 
 				} else if (selected === "JDBC") {
+
+					setSftpSection('src', false);
 					$('#src_file_path').hide();
 
 					$('#src_file_delimiter').hide();
@@ -977,6 +978,7 @@
 					else
 						$('#src_jdbc_driver').show();
 				} else {
+					setSftpSection('src', false);
 					initForm(1);
 				}
 			});
@@ -987,8 +989,8 @@
 				// PARQUET, ORC, JDBC, CSV, JSON, AVRO
 				if (selected === "CSV") {
 
-					/*csf sftp*/
-					$('.dest_sftp_info_section').show();
+					setSftpSection('dest', true);
+
 					$('#dest_file_delimiter').show();
 					$('#dest_file_header').show();
 					if ($('#dest_header').val() == "True")
@@ -1004,6 +1006,9 @@
                     $('#dest_jdbc_driver_class').hide();
 
 				} else if (selected === "JDBC") {
+
+					setSftpSection('dest', false);
+
 					$('#dest_file_path').hide();
 
 					$('#dest_file_delimiter').hide();
@@ -1021,6 +1026,7 @@
 					else
 						$('#dest_jdbc_driver').show();
 				} else {
+					setSftpSection('dest', false);
 					initForm(2);
 				}
 			});
@@ -1158,7 +1164,38 @@
 			initForm(0);
 
 			setListeners();
+
+			$('#src_sftp_check').change(function(){
+				if ($("#src_sftp_check").is(':checked')){
+					$('.src_sftp_info_section').show();
+				}else {
+					$('.src_sftp_info_section').hide();
+				}
+			});
+
+			$('#dest_sftp_check').change(function(){
+				if ($("#dest_sftp_check").is(':checked')){
+					$('.dest_sftp_info_section').show();
+				}else {
+					$('.dest_sftp_info_section').hide();
+				}
+			});
+
 		});
+
+		function setSftpSection(type, visible){
+			if (visible){
+				$('#' + type + '_sftp_check_div').show();
+				if ($('#' + type + '_sftp_check').is(':checked')){
+					$('.' + type + '_sftp_info_section').show();
+				}else{
+					$('.' + type + '_sftp_info_section').hide();
+				}
+			}else{
+				$('#' + type + '_sftp_check_div').hide();
+				$('.' + type + '_sftp_info_section').hide();
+			}
+		}
 
 	</script>
 	<div id="loadingDiv">
@@ -1395,7 +1432,47 @@
 									</div>
 									<br><br>
 									<!-- CSV -->
+									<div class="form-group required" id="src_file_delimiter">
+										<div class="col-sm-3 tooltipd">
+										<label>Delimiter </label>
+										<img src="../dest/img/tooltip.jpg" style="height:11%;width:11%">
+											<span class="tooltiptext">Enter, For Comma = , For Tab = \t</span>
+										</div>
+
+
+										<div class="col-sm-6">
+											<input type="text" placeholder="Delimiter..." class="form-control" name="src_delimiter" id="src_delimiter" value=",">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required" id="src_file_header">
+										<label class="col-sm-3">Header </label>
+										<div class="col-sm-6">
+											<select class="form-control" id="src_header">
+												<option>True</option>
+												<option>False</option>
+											</select>
+										</div>
+										<br><br>
+									</div>
+
+									<div class="form-group" id="src_custom_schema">
+										<label class="col-sm-3">Custom Schema</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Custom schema..." class="form-control" id="src_file_schema">
+										</div>
+										<br><br>
+									</div>
+
 									<!--CSV SFTP -->
+									<div class="form-group required" id="src_sftp_check_div">
+										<div class="col-sm-offset-3 col-sm-6">
+											<input type="checkbox" class="col-sm-1" id="src_sftp_check">
+											<label class="col-sm-10">SFTP Dataset</label>
+										</div>
+										<br><br>
+									</div>
+
 									<div class="form-group required src_sftp_info_section">
 										<label class="col-sm-3">SFTP Host</label>
 										<div class="col-sm-6">
@@ -1427,37 +1504,7 @@
 										</div>
 										<br><br>
 									</div>
-
-									<div class="form-group required" id="src_file_delimiter">
-										<div class="col-sm-3 tooltipd">
-										<label>Delimiter </label>
-										<img src="../dest/img/tooltip.jpg" style="height:6%;width:6%">
-											<span class="tooltiptext">Enter, For Comma = , For Tab = \t</span>
-										</div>
-
-
-										<div class="col-sm-6">
-											<input type="text" placeholder="Delimiter..." class="form-control" name="src_delimiter" id="src_delimiter" value=",">
-										</div>
-										<br><br>
-									</div>
-									<div class="form-group required" id="src_file_header">
-										<label class="col-sm-3">Header </label>
-										<div class="col-sm-6">
-											<select class="form-control" id="src_header">
-												<option>True</option>
-												<option>False</option>
-											</select>
-										</div>
-										<br><br>
-									</div>
-									<div class="form-group" id="src_custom_schema">
-										<label class="col-sm-3">Custom Schema</label>
-										<div class="col-sm-6">
-											<input type="text" placeholder="Custom schema..." class="form-control" id="src_file_schema">
-										</div>
-										<br><br>
-									</div>
+									<!--CSV SFTP END-->
 									<!-- /#CSV -->
 									<!-- JDBC -->
 									<div class="form-group required" id="src_jdbc_url">
@@ -1562,7 +1609,43 @@
 									</div>
 									<br><br>
 									<!-- CSV -->
+									<div class="form-group required" id="dest_file_delimiter">
+									<div class="col-sm-3 tooltipd">
+										<label>Delimiter </label>
+										<img src="../dest/img/tooltip.jpg" style="height:11%;width:11%">
+											<span class="tooltiptext">Enter, For Comma = , For Tab = \t</span>
+										</div>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Delimiter..." class="form-control" name="dest_delimiter" id="dest_delimiter" value=",">
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group required" id="dest_file_header">
+										<label class="col-sm-3">Header </label>
+										<div class="col-sm-6">
+											<select class="form-control" id="dest_header">
+												<option>True</option>
+												<option>False</option>
+											</select>
+										</div>
+										<br><br>
+									</div>
+									<div class="form-group" id="dest_custom_schema">
+										<label class="col-sm-3">Custom Schema</label>
+										<div class="col-sm-6">
+											<input type="text" placeholder="Custom schema..." class="form-control" id="dest_file_schema">
+										</div>
+										<br><br>
+									</div>
+
 									<!--CSV SFTP-->
+									<div class="form-group required" id="dest_sftp_check_div">
+										<div class="col-sm-offset-3 col-sm-6">
+											<input type="checkbox" class="col-sm-1" id="dest_sftp_check">
+											<label class="col-sm-10">SFTP Dataset</label>
+										</div>
+										<br><br>
+									</div>
 									<div class="form-group required dest_sftp_info_section">
 										<label class="col-sm-3">SFTP Host</label>
 										<div class="col-sm-6">
@@ -1594,35 +1677,8 @@
 										</div>
 										<br><br>
 									</div>
+									<!--CSV SFTP END-->
 
-									<div class="form-group required" id="dest_file_delimiter">
-									<div class="col-sm-3 tooltipd">
-										<label>Delimiter </label>
-										<img src="../dest/img/tooltip.jpg" style="height:11%;width:11%">
-											<span class="tooltiptext">Enter, For Comma = , For Tab = \t</span>
-										</div>
-										<div class="col-sm-6">
-											<input type="text" placeholder="Delimiter..." class="form-control" name="dest_delimiter" id="dest_delimiter" value=",">
-										</div>
-										<br><br>
-									</div>
-									<div class="form-group required" id="dest_file_header">
-										<label class="col-sm-3">Header </label>
-										<div class="col-sm-6">
-											<select class="form-control" id="dest_header">
-												<option>True</option>
-												<option>False</option>
-											</select>
-										</div>
-										<br><br>
-									</div>
-									<div class="form-group" id="dest_custom_schema">
-										<label class="col-sm-3">Custom Schema</label>
-										<div class="col-sm-6">
-											<input type="text" placeholder="Custom schema..." class="form-control" id="dest_file_schema">
-										</div>
-										<br><br>
-									</div>
 									<!-- /#CSV -->
 									<!-- JDBC -->
 									<div class="form-group required" id="dest_jdbc_url">
@@ -2342,7 +2398,7 @@
 		else{
 			$('#table').text('Dataset path');
 		}
-	})
+	});
 
 	$('select#select_dest_type').on('change', function() {
 		if( this.value == 'HIVE' ){
@@ -2351,7 +2407,7 @@
 		else{
 			$('#table_dest').text('Dataset path');
 		}
-	})
+	});
 
 	/* close the model*/
 	$("button[data-dismiss-modal=modal2]").click(function () {
@@ -2381,6 +2437,7 @@
 			}
 		});
 	});
+
 </script>
 <style>
 	#mapper div img {
