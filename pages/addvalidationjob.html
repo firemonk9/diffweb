@@ -172,6 +172,7 @@
 				setSftpSection('src', false);
 				$('#src_file_delimiter').hide();
 				$('#src_file_header').hide();
+				$('#src_infer_schema').hide();
 				$('#src_custom_schema').hide();
 
 				$('#src_jdbc_url').hide();
@@ -207,6 +208,7 @@
 				setSftpSection('src', false);
 				$('#src_file_delimiter').hide();
 				$('#src_file_header').hide();
+				$('#src_infer_schema').hide();
 				$('#src_custom_schema').hide();
 
 				$('#src_jdbc_url').hide();
@@ -701,14 +703,14 @@
 					params["datasetPath"] = $('#src_path').val();
 					params["header"] = $('#src_header').val() == "True" ? true : false;
 					params["datasetDelimiter"] = $('#src_delimiter').val();
-
+					params["inferSchema"] = $('#src_sftp_schema').val() == 'True';
+					
 					/*csv sftp*/
 					var isSftpMode = $("#src_sftp_check").is(':checked');
 					if (isSftpMode){
 						params["sftpHost"] = $('#src_sftp_host').val();
 						params["sftpUsername"] = $('#src_sftp_username').val();
 						params["sftpPassword"] = $('#src_sftp_password').val();
-						params["inferSchema"] = $('#src_sftp_schema').val() == 'True';
 
 						if (params["sftpHost"] == ''){
 							swal("Validation Error", "You should input sftp host.", "error");
@@ -963,6 +965,7 @@
 
 					$('#src_file_delimiter').show();
 					$('#src_file_header').show();
+					$('#src_infer_schema').show();
 					if ($('#src_header').val() == "True")
 						$('#src_custom_schema').hide();
 					else
@@ -982,6 +985,7 @@
 
 					$('#src_file_delimiter').hide();
 					$('#src_file_header').hide();
+					$('#src_infer_schema').hide();
 					$('#src_custom_schema').hide();
 
 					$('#src_jdbc_url').show();
@@ -1474,7 +1478,16 @@
 										</div>
 										<br><br>
 									</div>
-
+									<div class="form-group required" id="src_infer_schema">
+										<label class="col-sm-offset-1 col-sm-3">inferSchema</label>
+										<div class="col-sm-6">
+											<select class="form-control" id="src_sftp_schema">
+												<option>True</option>
+												<option selected>False</option>
+											</select>
+										</div>
+										<br><br>
+									</div>
 									<!--csv sftp-->
 									<div class="form-group required" id="src_sftp_check_div">
 										<div class="col-sm-offset-4 col-sm-6">
@@ -1502,16 +1515,6 @@
 										<label class="col-sm-offset-1 col-sm-3">Password</label>
 										<div class="col-sm-6">
 											<input type="password" placeholder="Password..." class="form-control" name="src_sftp_password" id="src_sftp_password" value="test">
-										</div>
-										<br><br>
-									</div>
-									<div class="form-group required src_sftp_info_section">
-										<label class="col-sm-offset-1 col-sm-3">inferSchema</label>
-										<div class="col-sm-6">
-											<select class="form-control" id="src_sftp_schema">
-												<option>True</option>
-												<option selected>False</option>
-											</select>
 										</div>
 										<br><br>
 									</div>
