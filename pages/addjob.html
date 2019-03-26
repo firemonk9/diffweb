@@ -167,6 +167,7 @@
 				$('#src_jdbc_table').hide();
 				$('#src_jdbc_driver').hide();
                 $('#src_jdbc_driver_class').hide();
+                $('#src_xml_rowtag_div').hide();
 
 				$('#src_progress').hide();
 				$('#src_table_panel').hide();
@@ -184,6 +185,7 @@
 				$('#dest_jdbc_table').hide();
 				$('#dest_jdbc_driver').hide();
                 $('#dest_jdbc_driver_class').hide();
+                $('#dest_xml_rowtag_div').hide();
 
 				$('#dest_progress').hide();
 				$('#dest_table_panel').hide();
@@ -204,6 +206,7 @@
 				$('#src_jdbc_table').hide();
 				$('#src_jdbc_driver').hide();
                 $('#src_jdbc_driver_class').hide();
+                $('#src_xml_rowtag_div').hide();
 
 				$('#src_progress').hide();
 				$('#src_table_panel').hide();
@@ -223,6 +226,7 @@
 				$('#dest_jdbc_table').hide();
 				$('#dest_jdbc_driver').hide();
                 $('#dest_jdbc_driver_class').hide();
+                $('#dest_xml_rowtag_div').hide();
 
 				$('#dest_progress').hide();
 				$('#dest_table_panel').hide();
@@ -745,6 +749,14 @@
 						swal("Validation Error", "You should input data path.", "error");
 						return;
 					}
+
+					if (format == 'XML'){
+						params["XMLrowTag"] = $('#src_xml_rowtag').val();
+						if (params["XMLrowTag"] == '') {
+							swal("Validation Error", "You should input Source XML row Tag.", "error");
+							return;
+						}						
+					}
 				}
 
 				var jsonStr = JSON.stringify(params);
@@ -863,6 +875,14 @@
 						swal("Validation Error", "You should input data path.", "error");
 						return;
 					}
+
+					if (format == 'XML'){
+						params["XMLrowTag"] = $('#dest_xml_rowtag').val();
+						if (params["XMLrowTag"] == '') {
+							swal("Validation Error", "You should input Destination XML row Tag.", "error");
+							return;
+						}						
+					}
 				}
 
 				var jsonStr = JSON.stringify(params);
@@ -961,7 +981,7 @@
 					$('#src_jdbc_table').hide();
 					$('#src_jdbc_driver').hide();
                     $('#src_jdbc_driver_class').hide();
-					
+					$('#src_xml_rowtag_div').hide();
 
 				} else if (selected === "JDBC") {
 
@@ -983,9 +1003,17 @@
 						$('#src_jdbc_driver').hide();
 					else
 						$('#src_jdbc_driver').show();
+
+					$('#src_xml_rowtag_div').hide();
 				} else {
 					setSftpSection('src', false);
 					initForm(1);
+
+					if (selected == 'XML'){
+						$('#src_xml_rowtag_div').show();
+					} else{
+						$('#src_xml_rowtag_div').hide();
+					}
 				}
 			});
 
@@ -1013,6 +1041,8 @@
 					$('#dest_jdbc_driver').hide();
                     $('#dest_jdbc_driver_class').hide();
 
+                    $('#dest_xml_rowtag_div').hide();
+
 				} else if (selected === "JDBC") {
 
 					setSftpSection('dest', false);
@@ -1029,6 +1059,9 @@
 					$('#dest_jdbc_pass').show();
 					$('#dest_jdbc_table').show();
                     $('#dest_jdbc_driver_class').show();
+
+                    $('#dest_xml_rowtag_div').hide();
+
 					
 					if (getCookie("localMode") == "true")
 						$('#dest_jdbc_driver').hide();
@@ -1037,6 +1070,12 @@
 				} else {
 					setSftpSection('dest', false);
 					initForm(2);
+
+					if (selected == 'XML'){
+						$('#dest_xml_rowtag_div').show();
+					} else{
+						$('#dest_xml_rowtag_div').hide();
+					}
 				}
 			});
 
@@ -1422,7 +1461,7 @@
 									<div class="form-group required" id="src_file_path">
 										<label class="col-sm-3" id="table">Dataset path</label>
 										<div class="col-sm-6">
-										<input type="text" placeholder="Path..." class="form-control" name="src_path" id="src_path" value="sample_csv_files/golden_dest.csv"></div>
+										<input type="text" placeholder="Path..." class="form-control" name="src_path" id="src_path" value="sample_csv_files/books.xml"></div>
 									</div>
 									<br><br>
 									<div class="form-group" id="src_file_format">
@@ -1436,6 +1475,7 @@
 												<option>JSON</option>
 												<option id="src_hive">HIVE</option>
 												<option>AVRO</option>
+												<option>XML</option>
 											</select>
 										</div>
 									</div>
@@ -1556,7 +1596,16 @@
                                             <input type="text" placeholder="e.g. Mysql : com.mysql.jdbc.Driver" class="form-control" name="src_driver_class" id="src_driver_class">
                                         </div>
                                         <br>
-                                    </div>                                        
+                                    </div>  
+
+                                    <div class="form-group required " id="src_xml_rowtag_div" style="margin-bottom:30px;">
+                                        <label class="col-sm-3">Row Tag</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" value="book" placeholder="" class="form-control" name="src_xml_rowtag" id="src_xml_rowtag">
+                                        </div>
+                                        <br>
+                                    </div>  
+
 									<!-- /#JDBC -->
 									<div class="form-group" id="src_validate">
 										<label class="col-sm-3"> </label>
@@ -1597,7 +1646,7 @@
 									<div class="form-group required" id="dest_file_path">
 										<label class="col-sm-3" id="table_dest">Dataset path</label>
 										<div class="col-sm-6">
-											<input type="text" placeholder="Path..." class="form-control" name="dest_path" id="dest_path" value="sample_csv_files/golden_dest.csv">
+											<input type="text" placeholder="Path..." class="form-control" name="dest_path" id="dest_path" value="sample_csv_files/books.xml">
 										</div>
 									</div>
 									<br><br>
@@ -1612,6 +1661,7 @@
 												<option>JSON</option>
 												<option id="dest_hive">HIVE</option>
 												<option>AVRO</option>
+												<option>XML</option>
 											</select>
 										</div>
 									</div>
@@ -1731,6 +1781,15 @@
 										</div>
 										<br>
 									</div>
+
+									<div class="form-group required " id="dest_xml_rowtag_div" style="margin-bottom:30px;">
+                                        <label class="col-sm-3">Row Tag</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="" value="book" class="form-control" name="deset_xml_rowtag" id="dest_xml_rowtag">
+                                        </div>
+                                        <br>
+                                    </div> 
+
 									<!-- /#JDBC -->
 									<div class="form-group" id="dest_validate">
 										<label class="col-sm-3"> </label>
