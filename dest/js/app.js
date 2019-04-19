@@ -407,7 +407,7 @@ function makeDataToColumn(data) {
 
 function makeSrcColumn(srcColumns) {
     var cols = srcColumns;
-    if (cols)
+    if (false && cols)
     for (var i = 0; i < cols.length; i++){
         if (cols[i].name.indexOf('__') > 0) {
             cols[i].name = cols[i].name.split('__')[0];
@@ -418,7 +418,7 @@ function makeSrcColumn(srcColumns) {
 
 function makedestColumn(destColumns) {
     var cols = destColumns;
-    if (cols)
+    if (false && cols)
     for (var i = 0; i < cols.length; i++){
         if (cols[i].name.indexOf('__') > 0) {
             cols[i].name = cols[i].name.split('__')[1];
@@ -490,7 +490,7 @@ function prepareAdvancedRule(reload, jobname, srcColumns, srcExcluded, destColum
                 }
                 if (flag == true)
                     continue;
-                if (srcColumns[i].name.indexOf('__') > 0) {
+                if (false && srcColumns[i].name.indexOf('__') > 0) {
                     var vals = srcColumns[i].name.split('__');
                     insertCheckLi(srcUl, vals[0], srcColumns[i].dataType,i);
                     insertLi(destUl, vals[1], srcColumns[i].dataType);
