@@ -167,6 +167,8 @@
 				$('#src_jdbc_table').hide();
 				$('#src_jdbc_driver').hide();
                 $('#src_jdbc_driver_class').hide();
+                $('.src_jdbc_partition_column').hide();
+
                 $('#src_xml_rowtag_div').hide();
 
 				$('#src_progress').hide();
@@ -185,6 +187,8 @@
 				$('#dest_jdbc_table').hide();
 				$('#dest_jdbc_driver').hide();
                 $('#dest_jdbc_driver_class').hide();
+                $('.dest_jdbc_partition_column').hide();
+                
                 $('#dest_xml_rowtag_div').hide();
 
 				$('#dest_progress').hide();
@@ -206,6 +210,8 @@
 				$('#src_jdbc_table').hide();
 				$('#src_jdbc_driver').hide();
                 $('#src_jdbc_driver_class').hide();
+                $('.src_jdbc_partition_column').hide();
+
                 $('#src_xml_rowtag_div').hide();
 
 				$('#src_progress').hide();
@@ -226,6 +232,8 @@
 				$('#dest_jdbc_table').hide();
 				$('#dest_jdbc_driver').hide();
                 $('#dest_jdbc_driver_class').hide();
+                $('.dest_jdbc_partition_column').hide();
+
                 $('#dest_xml_rowtag_div').hide();
 
 				$('#dest_progress').hide();
@@ -536,6 +544,7 @@
 			$('#src_jdbc_table input').val("");
 			$('#src_jdbc_driver input').val("");
             $('#src_jdbc_driver_class input').val("");
+            $('.src_jdbc_partition_column input').val("");
 
 			/*csf sftp*/
             $('.dest_sftp_info_section input').val("");
@@ -550,6 +559,7 @@
 			$('#dest_jdbc_table input').val("");
 			$('#dest_jdbc_driver input').val("");
             $('#dest_jdbc_driver_class input').val("");
+            $('.dest_jdbc_partition_column input').val("");
 
 			initForm(0);
 		}
@@ -569,6 +579,7 @@
 			$('#src_jdbc_table input').val("");
 			$('#src_jdbc_driver input').val("");
             $('#src_jdbc_driver_class input').val("");
+            $('.src_jdbc_partition_column input').val("");
             
 			initForm(1);
 			$('#src_file_path').show();
@@ -591,6 +602,7 @@
 			$('#dest_jdbc_table input').val("");
 			$('#dest_jdbc_driver input').val("");
             $('#dest_jdbc_driver_class input').val("");
+            $('.dest_jdbc_partition_column input').val("");
 
 			initForm(2);
 			$('#dest_file_path').show();
@@ -710,7 +722,7 @@
 						params["useOtherSchema"] = true;
 						params["columns"] = $('#src_file_schema').val().split(',');
 					}
-				} else if (format == "JDBC") {
+				} else if (format == "JDBC" || format == "NETEZZA") {
 					if ($("#src_url").val() == '') {
 						swal("Validation Error", "You should input url.", "error");
 						return;
@@ -726,6 +738,18 @@
 					} else if ($('#src_jtable').val() == '') {
 						swal("Validation Error", "You should input table.", "error");
 						return;
+					} else if (format == "JDBC" && $("#src_partition_column").val() == '') {
+						swal("Validation Error", "You should input partition column.", "error");
+						return;
+					} else if ($("#src_num_partitions").val() == '') {
+						swal("Validation Error", "You should input number of partitions.", "error");
+						return;
+					} else if (format == "JDBC" && $("#src_min_partition").val() == '') {
+						swal("Validation Error", "You should input minimum value.", "error");
+						return;
+					} else if (format == "JDBC" && $("#src_max_partition").val() == '') {
+						swal("Validation Error", "You should input maximum value.", "error");
+						return;
 					}
 					var jdbcData = {};
 					if (getCookie("localMode") != "true") {
@@ -737,12 +761,23 @@
 					} else {
 						jdbcData["jdbcDriverPath"] = "";
 					}
+
 					jdbcData["jdbcUrl"] = $('#src_url').val();
 					jdbcData["jdbcUser"] = $('#src_user').val();
 					jdbcData["jdbcPassword"] = $('#src_pass').val();
+
 					params["jdbcData"] = jdbcData;
 					params["datasetPath"] = $('#src_jtable').val();
-                    jdbcData["jdbcDriverClass"] = $('#src_driver_class').val();
+
+					jdbcData["jdbcDriverClass"] = $('#src_driver_class').val();
+
+					params["numPartitions"] = $('#src_num_partitions').val();
+					if (format == 'JDBC') {
+						params["partitionColumn"] = $('#src_partition_column').val();
+	                    params["min"] = $('#src_min_partition').val();
+	                    params["max"] = $('#src_max_partition').val();
+	                }
+
 				} else {
 					params["datasetPath"] = $('#src_path').val();
 					if (params["datasetPath"] == '') {
@@ -836,7 +871,7 @@
 						params["useOtherSchema"] = true;
 						params["columns"] = $('#dest_file_schema').val().split(',');
 					}
-				} else if (format == "JDBC") {
+				} else if (format == "JDBC" || format == "NETEZZA") {
 					if ($("#dest_url").val() == '') {
 						swal("Validation Error", "You should input url.", "error");
 						return;
@@ -852,7 +887,19 @@
 					}else if ($('#dest_driver_class').val() == '') {
                         swal("Validation Error", "You should input Driver Class Name.", "error");
                         return;
-                    }
+                    } else if (format == "JDBC" && $("#dest_partition_column").val() == '') {
+						swal("Validation Error", "You should input partition column.", "error");
+						return;
+					} else if ($("#dest_num_partitions").val() == '') {
+						swal("Validation Error", "You should input number of partitions.", "error");
+						return;
+					} else if (format == "JDBC" && $("#dest_min_partition").val() == '') {
+						swal("Validation Error", "You should input minimum value.", "error");
+						return;
+					} else if (format == "JDBC" && $("#dest_max_partition").val() == '') {
+						swal("Validation Error", "You should input maximum value.", "error");
+						return;
+					}
 					var jdbcData = {};
 					if (getCookie("localMode") != "true") {
 						if ($('#dest_driver').val() == '') {
@@ -869,6 +916,14 @@
 					params["jdbcData"] = jdbcData;
 					params["datasetPath"] = $('#dest_jtable').val();
                     jdbcData["jdbcDriverClass"] = $('#dest_driver_class').val();
+
+                    params["numPartitions"] = $('#dest_num_partitions').val();
+					if (format == 'JDBC') {
+						params["partitionColumn"] = $('#dest_partition_column').val();
+	                    params["min"] = $('#dest_min_partition').val();
+	                    params["max"] = $('#dest_max_partition').val();
+	                }
+
 				} else {
 					params["datasetPath"] = $('#dest_path').val();
 					if (params["datasetPath"] == '') {
@@ -981,9 +1036,11 @@
 					$('#src_jdbc_table').hide();
 					$('#src_jdbc_driver').hide();
                     $('#src_jdbc_driver_class').hide();
+                    $('.src_jdbc_partition_column').hide();
+
 					$('#src_xml_rowtag_div').hide();
 
-				} else if (selected === "JDBC") {
+				} else if (selected === "JDBC" || selected === "NETEZZA") {
 
 					setSftpSection('src', false);
 					$('#src_file_path').hide();
@@ -998,6 +1055,12 @@
 					$('#src_jdbc_pass').show();
 					$('#src_jdbc_table').show();
                     $('#src_jdbc_driver_class').show();
+
+                    $('.src_jdbc_partition_column').hide();
+                    if (selected == "JDBC")
+                    	$('.src_jdbc_partition_column').show();
+                    else
+                    	$('.src_jdbc_partition_column.netezza').show();
                     
 					if (getCookie("localMode") == "true")
 						$('#src_jdbc_driver').hide();
@@ -1040,10 +1103,11 @@
 					$('#dest_jdbc_table').hide();
 					$('#dest_jdbc_driver').hide();
                     $('#dest_jdbc_driver_class').hide();
+                    $('.dest_jdbc_partition_column').hide();
 
                     $('#dest_xml_rowtag_div').hide();
 
-				} else if (selected === "JDBC") {
+				} else if (selected === "JDBC" || selected === 'NETEZZA') {
 
 					setSftpSection('dest', false);
 
@@ -1059,6 +1123,12 @@
 					$('#dest_jdbc_pass').show();
 					$('#dest_jdbc_table').show();
                     $('#dest_jdbc_driver_class').show();
+
+                    $('.dest_jdbc_partition_column').hide();
+                    if (selected == "JDBC")
+                    	$('.dest_jdbc_partition_column').show();
+                    else
+                    	$('.dest_jdbc_partition_column.netezza').show();
 
                     $('#dest_xml_rowtag_div').hide();
 
@@ -1476,6 +1546,7 @@
 												<option id="src_hive">HIVE</option>
 												<option>AVRO</option>
 												<option>XML</option>
+												<option>NETEZZA</option>
 											</select>
 										</div>
 									</div>
@@ -1598,6 +1669,39 @@
                                         <br>
                                     </div>  
 
+                                    <div class="form-group required src_jdbc_partition_column" style="margin-top:30px; margin-bottom:30px;">
+                                        <label class="col-sm-3">Partition Column</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="Partition Column" class="form-control" name="src_partition_column" id="src_partition_column">
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                    <div class="form-group required src_jdbc_partition_column netezza" style="margin-top:30px; margin-bottom:30px;">
+                                        <label class="col-sm-3">Number of Partitions</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" placeholder="Number of Partitions" class="form-control" name="src_num_partitions" id="src_num_partitions">
+                                        </div>
+                                        <br>
+                                    </div>
+                                    
+                                    <div class="form-group required src_jdbc_partition_column" style="margin-top:30px; margin-bottom:30px;">
+                                        <label class="col-sm-3">Minimum value</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" placeholder="Partition Column" class="form-control" name="src_min_partition" id="src_min_partition">
+                                        </div>
+                                        <br>
+                                    </div>
+                                    
+                                    <div class="form-group required src_jdbc_partition_column" style="margin-top:30px; margin-bottom:30px;">
+                                        <label class="col-sm-3">Maximum value</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" placeholder="Partition Column" class="form-control" name="src_max_partition" id="src_max_partition">
+                                        </div>
+                                        <br>
+                                    </div>
+                                    
+
                                     <div class="form-group required " id="src_xml_rowtag_div" style="margin-bottom:30px;">
                                         <label class="col-sm-3">Row Tag</label>
                                         <div class="col-sm-6">
@@ -1662,6 +1766,7 @@
 												<option id="dest_hive">HIVE</option>
 												<option>AVRO</option>
 												<option>XML</option>
+												<option>NETEZZA</option>
 											</select>
 										</div>
 									</div>
@@ -1781,6 +1886,38 @@
 										</div>
 										<br>
 									</div>
+
+									<div class="form-group required dest_jdbc_partition_column" style="margin-top:30px; margin-bottom:30px;">
+                                        <label class="col-sm-3">Partition Column</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" placeholder="Partition Column" class="form-control" name="dest_partition_column" id="dest_partition_column">
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                    <div class="form-group required dest_jdbc_partition_column netezza" style="margin-top:30px; margin-bottom:30px;">
+                                        <label class="col-sm-3">Number of Partitions</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" placeholder="Number of Partitions" class="form-control" name="dest_num_partitions" id="dest_num_partitions">
+                                        </div>
+                                        <br>
+                                    </div>
+                                    
+                                    <div class="form-group required dest_jdbc_partition_column" style="margin-top:30px; margin-bottom:30px;">
+                                        <label class="col-sm-3">Minimum value</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" placeholder="Partition Column" class="form-control" name="dest_min_partition" id="dest_min_partition">
+                                        </div>
+                                        <br>
+                                    </div>
+                                    
+                                    <div class="form-group required dest_jdbc_partition_column" style="margin-top:30px; margin-bottom:30px;">
+                                        <label class="col-sm-3">Maximum value</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" placeholder="Partition Column" class="form-control" name="dest_max_partition" id="dest_max_partition">
+                                        </div>
+                                        <br>
+                                    </div>
 
 									<div class="form-group required " id="dest_xml_rowtag_div" style="margin-bottom:30px;">
                                         <label class="col-sm-3">Row Tag</label>
