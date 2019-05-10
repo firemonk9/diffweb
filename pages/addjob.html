@@ -739,17 +739,17 @@
 						swal("Validation Error", "You should input table.", "error");
 						return;
 					} else if (format == "JDBC" && $("#src_partition_column").val() == '') {
-						swal("Validation Error", "You should input partition column.", "error");
-						return;
+						//swal("Validation Error", "You should input partition column.", "error");
+						//return;
 					} else if ($("#src_num_partitions").val() == '') {
-						swal("Validation Error", "You should input number of partitions.", "error");
-						return;
+						//swal("Validation Error", "You should input number of partitions.", "error");
+						//return;
 					} else if (format == "JDBC" && $("#src_min_partition").val() == '') {
-						swal("Validation Error", "You should input minimum value.", "error");
-						return;
+						//swal("Validation Error", "You should input minimum value.", "error");
+						//return;
 					} else if (format == "JDBC" && $("#src_max_partition").val() == '') {
-						swal("Validation Error", "You should input maximum value.", "error");
-						return;
+						//swal("Validation Error", "You should input maximum value.", "error");
+						//return;
 					}
 					var jdbcData = {};
 					if (getCookie("localMode") != "true") {
